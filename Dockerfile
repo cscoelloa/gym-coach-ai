@@ -1,7 +1,7 @@
 FROM node:22-slim AS frontend
 WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json frontend/
-RUN --mount=type=bind,source=despliegue/casa,target=/tmp/casa \
+RUN --mount=type=bind,source=docker,target=/tmp/casa \
     cat /tmp/casa/certificados/*.crt > /tmp/extra.pem 2>/dev/null || true; \
     if [ -s /tmp/extra.pem ]; then export NODE_EXTRA_CA_CERTS=/tmp/extra.pem; fi; \
     npm --prefix frontend ci --include=dev
@@ -10,7 +10,7 @@ RUN npm --prefix frontend run build
 
 FROM python:3.11-slim
 
-RUN --mount=type=bind,source=despliegue/casa,target=/tmp/casa \
+RUN --mount=type=bind,source=docker,target=/tmp/casa \
     if ls /tmp/casa/certificados/*.crt >/dev/null 2>&1; then \
       cp /tmp/casa/certificados/*.crt /usr/local/share/ca-certificates/ \
       && update-ca-certificates; \

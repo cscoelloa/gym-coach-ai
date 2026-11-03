@@ -24,7 +24,7 @@ def get_cipher() -> MultiFernet:
             "Falta FIELD_ENCRYPTION_KEYS. Genera una clave con "
             "`python -c \"from cryptography.fernet import Fernet; "
             'print(Fernet.generate_key().decode())"` y añádela al .env. '
-            "Ver .docs/05-runbook.md"
+            "Ver el README"
         )
     return MultiFernet([Fernet(key.strip()) for key in keys])
 
@@ -40,7 +40,7 @@ def decrypt(value: str) -> str:
         raise DecryptionError(
             "No se pudo descifrar un valor: ninguna de las claves de FIELD_ENCRYPTION_KEYS sirve. "
             "¿Se retiró una clave antes de ejecutar `rotate_encryption_key`? "
-            "Ver .docs/05-runbook.md"
+            "Ver el README"
         ) from exc
 
 

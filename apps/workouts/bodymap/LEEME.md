@@ -9,10 +9,10 @@ Se eligió esa y no la alternativa MIT más conocida
 porque aquella **no separa los dorsales**: los mete dentro de `upper-back`. En una aplicación de
 gimnasio el dorsal es el objetivo de todo tirón del catálogo, y no poder distinguirlo del trapecio
 habría vaciado de sentido la mitad del mapa. Esta trae además serrato anterior y glúteo medio, que
-son los otros dos que faltaban. Ver ADR-045.
+son los otros dos que faltaban.
 
 **De openGym no hay nada**, ni aquí ni en ningún otro sitio del proyecto: es AGPL v3 y eso
-contaminaría la licencia de todo lo demás (ADR-022).
+contaminaría la licencia de todo lo demás.
 
 ## Qué pide Apache-2.0 y dónde se cumple
 

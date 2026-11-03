@@ -10,7 +10,7 @@ def main():
     except ImportError as exc:
         raise ImportError(
             "No se pudo importar Django. ¿Está instalado y el entorno virtual activado? "
-            "Consulta .docs/05-runbook.md"
+            "Consulta el README"
         ) from exc
     execute_from_command_line(sys.argv)
 

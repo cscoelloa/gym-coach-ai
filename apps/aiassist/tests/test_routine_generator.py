@@ -636,7 +636,7 @@ class TestCompatibilidadDelEsquema:
     def test_un_plan_guardado_con_campos_de_mas_sigue_validando(self):
         crudo = {
             "name": "Programa viejo",
-            "description": "Guardado antes de ADR-030",
+            "description": "Guardado con el formato antiguo",
             "routines": [{
                 "name": "Empuje",
                 "exercises": [{

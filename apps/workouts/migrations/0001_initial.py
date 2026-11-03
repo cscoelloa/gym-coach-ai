@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('instruction_steps', models.JSONField(blank=True, default=dict, help_text='Mapa idioma → lista de pasos. Se guardan los 10 idiomas del dataset.', verbose_name='pasos de ejecución')),
                 ('image', models.ImageField(blank=True, upload_to='exercises/images/', verbose_name='foto')),
                 ('animation', models.FileField(blank=True, upload_to='exercises/animations/', verbose_name='animación')),
-                ('attribution', models.CharField(blank=True, help_text='Requisito de licencia del material visual: debe mostrarse junto a la imagen y no puede alterarse. Ver ADR-007.', max_length=255, verbose_name='atribución')),
+                ('attribution', models.CharField(blank=True, help_text='Requisito de licencia del material visual: debe mostrarse junto a la imagen y no puede alterarse. Ver NOTICE.md.', max_length=255, verbose_name='atribución')),
                 ('is_cardio', models.BooleanField(db_index=True, default=False, verbose_name='es cardio')),
                 ('is_bodyweight', models.BooleanField(default=False, verbose_name='es de peso corporal')),
                 ('is_global', models.BooleanField(db_index=True, default=True, verbose_name='del catálogo')),

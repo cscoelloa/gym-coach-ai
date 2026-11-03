@@ -70,11 +70,6 @@ jobs:
           EMAIL_HOST: smtp.ejemplo.com
           EMAIL_HOST_USER: ci
           EMAIL_HOST_PASSWORD: ci
-          R2_ACCESS_KEY_ID: ci
-          R2_SECRET_ACCESS_KEY: ci
-          R2_BUCKET_NAME: ci-bucket
-          R2_ENDPOINT_URL: https://ejemplo.r2.cloudflarestorage.com
-          R2_PUBLIC_DOMAIN: pub-ejemplo.r2.dev
         run: python manage.py check --deploy --fail-level WARNING
 
       - name: Los estáticos se recolectan con los settings de producción
@@ -84,11 +79,6 @@ jobs:
           EMAIL_HOST: smtp.ejemplo.com
           EMAIL_HOST_USER: ci
           EMAIL_HOST_PASSWORD: ci
-          R2_ACCESS_KEY_ID: ci
-          R2_SECRET_ACCESS_KEY: ci
-          R2_BUCKET_NAME: ci-bucket
-          R2_ENDPOINT_URL: https://ejemplo.r2.cloudflarestorage.com
-          R2_PUBLIC_DOMAIN: pub-ejemplo.r2.dev
         run: python manage.py collectstatic --noinput
 
       - name: Tests

@@ -25,8 +25,7 @@ if __name__ == "__main__":
     except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
         print(
             f"Frontend incompleto: {error}\n"
-            "Construye la imagen con `sh scripts/build-frontend.sh` desde la raíz del repo. "
-            "En Railway usa railway.toml y railpack.json; nixpacks.toml solo aplica a Nixpacks.",
+            "Construye el frontend con `sh scripts/build-frontend.sh` desde la raíz del repo.",
             file=sys.stderr,
         )
         sys.exit(1)

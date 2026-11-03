@@ -7,21 +7,11 @@ import pytest
 import yaml
 from cryptography.fernet import Fernet
 from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 
 from scripts.casa_secretos import generar, main
 
 BASE_DIR = Path(settings.BASE_DIR)
-CASA = BASE_DIR / "despliegue" / "casa"
-VARIABLES_R2 = (
-    "R2_ACCESS_KEY_ID",
-    "R2_SECRET_ACCESS_KEY",
-    "R2_BUCKET_NAME",
-    "R2_ENDPOINT_URL",
-    "R2_PUBLIC_DOMAIN",
-)
-
-
+CASA = BASE_DIR / "docker"
 @pytest.fixture
 def prod_limpio():
     sys.modules.pop("config.settings.prod", None)
@@ -29,25 +19,17 @@ def prod_limpio():
     sys.modules.pop("config.settings.prod", None)
 
 
-class TestMediaEnDisco:
+class TestLaProduccionEnCasa:
     @pytest.fixture(autouse=True)
     def entorno_de_casa(self, monkeypatch):
         monkeypatch.setenv("ALLOWED_HOSTS", "gym.ejemplo.ts.net")
-        monkeypatch.setenv("MEDIA_STORAGE", "disco")
-        for variable in VARIABLES_R2:
-            monkeypatch.delenv(variable, raising=False)
 
-    def test_arranca_sin_ninguna_variable_de_r2(self, prod_limpio):
+    def test_arranca_solo_con_el_host(self, prod_limpio):
         prod = prod_limpio()
 
         assert prod.STORAGES["default"]["BACKEND"] == (
             "django.core.files.storage.FileSystemStorage"
         )
-        assert not hasattr(prod, "AWS_S3_CUSTOM_DOMAIN")
-
-    def test_la_csp_no_abre_las_imagenes_a_otro_origen(self, prod_limpio):
-        prod = prod_limpio()
-
         assert prod.CONTENT_SECURITY_POLICY["DIRECTIVES"]["img-src"] == ["'self'", "data:"]
 
     def test_conserva_el_endurecimiento_de_produccion(self, prod_limpio):
@@ -58,25 +40,6 @@ class TestMediaEnDisco:
         assert prod.SECURE_PROXY_SSL_HEADER == ("HTTP_X_FORWARDED_PROTO", "https")
         assert prod.SESSION_COOKIE_SECURE is True
         assert prod.CSRF_COOKIE_SECURE is True
-
-
-class TestElInterruptorDeMedia:
-    def test_sin_valor_sigue_siendo_r2_y_exige_sus_variables(self, monkeypatch, prod_limpio):
-        monkeypatch.setenv("ALLOWED_HOSTS", "ejemplo.com")
-        monkeypatch.delenv("MEDIA_STORAGE", raising=False)
-        for variable in VARIABLES_R2:
-            monkeypatch.delenv(variable, raising=False)
-
-        with pytest.raises(ImproperlyConfigured):
-            prod_limpio()
-
-    @pytest.mark.parametrize("valor", ["R2", "disk", "local", ""])
-    def test_un_valor_desconocido_no_arranca(self, monkeypatch, prod_limpio, valor):
-        monkeypatch.setenv("ALLOWED_HOSTS", "ejemplo.com")
-        monkeypatch.setenv("MEDIA_STORAGE", valor)
-
-        with pytest.raises(ImproperlyConfigured, match="MEDIA_STORAGE"):
-            prod_limpio()
 
 
 @pytest.fixture(scope="module")
@@ -105,7 +68,6 @@ class TestElCompose:
         entorno = compose[nombre]["environment"]
 
         assert entorno["DJANGO_SETTINGS_MODULE"] == "config.settings.prod"
-        assert entorno["MEDIA_STORAGE"] == "disco"
 
     @pytest.mark.parametrize("nombre", ["db", "redis", "web", "worker", "beat", "caddy"])
     def test_vuelve_sola_al_arrancar_docker(self, compose, nombre):
@@ -146,7 +108,7 @@ class TestLaImagen:
     def test_las_raices_del_pc_no_van_al_repositorio(self):
         gitignore = (BASE_DIR / ".gitignore").read_text(encoding="utf-8").splitlines()
 
-        assert "/despliegue/casa/certificados/" in gitignore
+        assert "/docker/certificados/" in gitignore
         assert "/respaldos/" in gitignore
 
     def test_caddy_se_fia_de_tailscale_y_no_lista_directorios(self):

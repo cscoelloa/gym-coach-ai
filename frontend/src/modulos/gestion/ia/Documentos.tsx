@@ -29,7 +29,7 @@ export function Documentos() {
       {almacenes.data.length === 0 ? (
         <>
           <Aviso tono="informacion">
-            No hay ningún almacén vectorial. El RAG solo lo soporta OpenAI (ADR-005): con Anthropic
+            No hay ningún almacén vectorial. El RAG solo lo soporta OpenAI: con Anthropic
             o Google las rutinas se generan igual, pero sin el contexto de los libros.
           </Aviso>
           <CrearAlmacen />
@@ -121,7 +121,7 @@ export function Documentos() {
       <p className="body-sm text-ink-muted">
         Lo que subas aquí es lo que la IA puede citar al generar una rutina. El{" "}
         <a href="/admin/aiassist/knowledgedocument/">admin de Django</a> sigue estando como red de
-        seguridad (ADR-048), pero ya no hace falta pasar por él.
+        seguridad, pero ya no hace falta pasar por él.
       </p>
     </div>
   );

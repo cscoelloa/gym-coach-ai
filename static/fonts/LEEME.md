@@ -1,8 +1,8 @@
 # Fuentes
 
-Archivos binarios comiteados a propósito. La CSP declara `font-src: 'self'` (ADR-011), así que un
+Archivos binarios comiteados a propósito. La CSP declara `font-src: 'self'`, así que un
 enlace a Google Fonts quedaría bloqueado en producción sin dejar más rastro que una tipografía que
-no es la que se pidió. Ver ADR-061.
+no es la que se pidió.
 
 | Archivo | Familia | Licencia |
 |---|---|---|

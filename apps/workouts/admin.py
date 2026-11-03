@@ -43,7 +43,7 @@ class ExerciseAdmin(admin.ModelAdmin):
             "fields": ("preview", "image", "animation", "attribution"),
             "description": (
                 "La atribución es un requisito de licencia del material visual y no debe "
-                "modificarse ni ocultarse. Ver .docs/01-decisions.md (ADR-007)."
+                "modificarse ni ocultarse. Ver NOTICE.md."
             ),
         }),
         ("Instrucciones", {"fields": ("instruction_steps",), "classes": ("collapse",)}),

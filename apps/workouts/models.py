@@ -81,7 +81,7 @@ class Exercise(models.Model):
         blank=True,
         help_text=(
             "Requisito de licencia del material visual: debe mostrarse junto a la imagen y no "
-            "puede alterarse. Ver ADR-007."
+            "puede alterarse. Ver NOTICE.md."
         ),
     )
     is_cardio = models.BooleanField("es cardio", default=False, db_index=True)

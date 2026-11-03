@@ -33,4 +33,4 @@ Thumbs.db
 .DS_Store
 
 /respaldos/
-/despliegue/casa/certificados/
+/docker/certificados/

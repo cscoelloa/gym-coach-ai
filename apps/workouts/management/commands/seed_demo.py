@@ -78,7 +78,7 @@ class Command(BaseCommand):
         if not Exercise.objects.exists():
             raise CommandError(
                 "El catálogo está vacío. Ejecuta primero `import_catalog`. "
-                "Ver .docs/05-runbook.md"
+                "Ver el README"
             )
 
         rng = random.Random(20260914)  # noqa: S311  # nosec B311

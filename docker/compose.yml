@@ -2,14 +2,13 @@ name: gym-casa
 
 x-aplicacion: &aplicacion
   build:
-    context: ../..
+    context: ..
     dockerfile: Dockerfile
   image: gym-casa:latest
   env_file: .env
   environment:
     DJANGO_SETTINGS_MODULE: config.settings.prod
-    MEDIA_STORAGE: disco
-    DATABASE_URL: postgres://gym:${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en despliegue/casa/.env}@db:5432/gym
+    DATABASE_URL: postgres://gym:${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en docker/.env}@db:5432/gym
     REDIS_URL: redis://redis:6379/0
   volumes:
     - media:/app/media
@@ -26,7 +25,7 @@ services:
     environment:
       POSTGRES_DB: gym
       POSTGRES_USER: gym
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en despliegue/casa/.env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en docker/.env}
     volumes:
       - datos:/var/lib/postgresql/data
     healthcheck:
@@ -85,7 +84,7 @@ services:
     command: ["true"]
     volumes:
       - media:/app/media
-      - ../../vendor/exercises-dataset:/datos:ro
+      - ../vendor/exercises-dataset:/datos:ro
 
   caddy:
     image: caddy:2-alpine

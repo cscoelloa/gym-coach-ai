@@ -36,8 +36,6 @@ Consecuencias para este proyecto:
 El material visual está desacoplado en dos campos del modelo (`image` y `animation`), así que
 sustituirlo por otro conjunto sería volver a importar, no reescribir la aplicación.
 
-Contexto completo de la decisión: `.docs/01-decisions.md`, ADR-007.
-
 ## Mapa corporal
 
 Las siluetas del mapa muscular (`apps/workouts/bodymap/`) proceden de

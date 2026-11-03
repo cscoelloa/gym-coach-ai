@@ -28,7 +28,7 @@ def get_provider(config: AIProviderConfig | None = None) -> LLMProvider:
         raise ProviderError(
             f"La API key de «{config}» no se puede descifrar con las claves actuales de "
             "FIELD_ENCRYPTION_KEYS. Vuelve a pegarla en /admin/ o restaura la clave de cifrado. "
-            "Ver .docs/05-runbook.md"
+            "Ver el README"
         )
 
     return provider_class(config)

@@ -104,7 +104,7 @@ class Command(BaseCommand):
         if not data_file.exists():
             raise CommandError(
                 f"No se encontró {data_file}. ¿Está clonado el dataset? "
-                "Ver .docs/05-runbook.md"
+                "Ver el README"
             )
 
         records = json.loads(data_file.read_text(encoding="utf-8"))

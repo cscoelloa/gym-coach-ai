@@ -1,3 +1,0 @@
-[build]
-builder = "RAILPACK"
-buildCommand = "sh scripts/build-frontend.sh"

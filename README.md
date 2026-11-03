@@ -120,7 +120,9 @@ una y cómo generarla.
 | `CSRF_TRUSTED_ORIGINS` | en producción | El mismo origen, con `https://` |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | no | Los avisos push. Las tres o ninguna; sin ellas el aviso se apaga y todo lo demás funciona |
 | `EMAIL_HOST` y compañía | no | El correo saliente. Sin él, los correos salen en la consola |
-| `MEDIA_STORAGE` | no | Dónde vive `media/` en producción: `r2` (Cloudflare R2, por defecto) o `disco` |
+
+Las claves de los avisos push las genera `sh scripts/casa.sh avisos <tu-correo>`. `VAPID_SUBJECT`
+tiene que ser un correo real: Apple rechaza los de ejemplo.
 
 ### La IA
 
@@ -135,7 +137,7 @@ En la misma pantalla están los prompts, las reglas de programación por objetiv
 del RAG.
 
 > El RAG necesita una clave de **OpenAI aunque el proveedor activo sea otro**: los almacenes
-> vectoriales viven ahí. Detalle en [`.docs/03-ai-config.md`](.docs/03-ai-config.md).
+> vectoriales viven ahí.
 
 ## Tests y calidad
 
@@ -153,11 +155,9 @@ cada semana aunque nadie toque el código, porque las vulnerabilidades se public
 
 ## Despliegue
 
-Hay dos caminos documentados, y la configuración de los dos está en el repo.
-
-**En tu propio PC, para uso personal** ([`despliegue/casa/`](despliegue/casa/), ADR-070). Docker
-Compose levanta PostgreSQL, Redis, la web, el worker, beat y Caddy, solo en `127.0.0.1`. El teléfono
-entra por **Tailscale Serve** con HTTPS válido, sin abrir ningún puerto a internet. Cuesta $0.
+La app corre en tu propio PC con Docker ([`docker/`](docker/)). Docker Compose levanta PostgreSQL,
+Redis, la web, el worker, beat y Caddy, solo en `127.0.0.1`. El teléfono entra por **Tailscale
+Serve** con HTTPS válido, sin abrir ningún puerto a internet. Cuesta $0.
 
 ```bash
 sh scripts/casa.sh preparar <tu-pc>.<tu-tailnet>.ts.net [tu-correo]   # genera el .env con secretos
@@ -167,13 +167,18 @@ sh scripts/casa.sh admin                # crea tu cuenta
 tailscale serve --bg http://127.0.0.1:8080
 ```
 
-También incluye `respaldo`, `restaurar` y `certificado`, este último para los antivirus que
-inspeccionan el HTTPS.
+Antes, una vez:
 
-**En una PaaS** (Railway: `railway.toml`, `railpack.json`, `Procfile`). Tres procesos (web, worker
-y beat), con PostgreSQL y Redis gestionados y `media/` en Cloudflare R2.
+1. Instala Tailscale en el PC y en el teléfono, con la misma cuenta.
+2. En la consola de Tailscale, activa *MagicDNS* y *HTTPS Certificates* (DNS) y desactiva la
+   caducidad de la clave del PC (Machines → *Disable key expiry*).
+3. En el teléfono, abre `https://<tu-pc>.<tu-tailnet>.ts.net` e instala la app (en iPhone: Safari →
+   Compartir → *Añadir a pantalla de inicio*).
 
-Los dos caminos, paso a paso, están en [`.docs/05-runbook.md`](.docs/05-runbook.md).
+El día a día: `estado`, `logs`, `parar`, `respaldo`, `respaldo-media` y `restaurar`. Hay también
+`avisos <correo>` para el push y `certificado` para los antivirus que inspeccionan el HTTPS.
+Guarda una copia de `docker/.env` fuera del PC: sin `FIELD_ENCRYPTION_KEYS` no se descifran las
+claves de IA de un respaldo.
 
 ## Estructura
 
@@ -186,21 +191,8 @@ frontend/src/
 └── lib/              # infraestructura: PWA, tema, descanso, avisos push…
 assets/app.css        # el sistema de diseño: tokens, escala y utilidades
 templates/spa.html    # la única plantilla: la cáscara de la SPA
-despliegue/casa/      # Docker Compose, Caddy y plantilla del .env para el PC
-.docs/                # la documentación
+docker/              # Docker Compose, Caddy y plantilla del .env para el PC
 ```
-
-## Documentación
-
-| Archivo | Para qué |
-|---|---|
-| [`00-vision.md`](.docs/00-vision.md) | Qué es y para quién |
-| [`01-decisions.md`](.docs/01-decisions.md) | Cada decisión con su razón, en formato ADR |
-| [`02-architecture.md`](.docs/02-architecture.md) | Carpetas, modelo de datos y recorridos |
-| [`03-ai-config.md`](.docs/03-ai-config.md) | Proveedores, prompts y RAG |
-| [`05-runbook.md`](.docs/05-runbook.md) | Comandos, despliegue y diagnóstico |
-| [`06-security.md`](.docs/06-security.md) | Modelo de amenazas y controles |
-| [`07-reglas.md`](.docs/07-reglas.md) | Las reglas que se cumplen en todo cambio |
 
 ## Decisiones de diseño que conviene conocer
 

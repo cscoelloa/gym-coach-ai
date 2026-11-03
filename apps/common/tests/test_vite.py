@@ -136,7 +136,7 @@ class TestElNonceSoloExisteEnDesarrollo:
 
         assert "'nonce-" not in respuesta[self.CABECERA], (
             "hay un nonce en script-src sin un solo script inline que lo use: "
-            "la CSP está más floja de lo que dice ADR-047 y no se nota en nada"
+            "la CSP está más floja de lo que debería y no se nota en nada"
         )
 
     def test_en_desarrollo_sí(self, client, ana, settings):

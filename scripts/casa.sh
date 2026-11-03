@@ -5,12 +5,12 @@ cd "$(dirname "$0")/.."
 
 export MSYS_NO_PATHCONV=1
 
-ENTORNO=despliegue/casa/.env
+ENTORNO=docker/.env
 RESPALDOS=respaldos
 CONSERVAR=14
 
 compose() {
-  docker compose -f despliegue/casa/compose.yml --env-file "$ENTORNO" "$@"
+  docker compose -f docker/compose.yml --env-file "$ENTORNO" "$@"
 }
 
 exige_entorno() {
@@ -81,8 +81,8 @@ case "$orden" in
       echo "El certificado de pypi.org lo firma: $emisor"
       cn="$emisor"
     fi
-    mkdir -p despliegue/casa/certificados
-    destino="despliegue/casa/certificados/$(printf '%s' "$cn" | tr -c 'A-Za-z0-9._-' '_').crt"
+    mkdir -p docker/certificados
+    destino="docker/certificados/$(printf '%s' "$cn" | tr -c 'A-Za-z0-9._-' '_').crt"
     pem=$(CN_BUSCADO="$cn" powershell -NoProfile -Command '
       $c = Get-ChildItem Cert:\LocalMachine\Root, Cert:\CurrentUser\Root |
         Where-Object { $_.Subject -match ("CN=" + [regex]::Escape($env:CN_BUSCADO) + "(,|$)") } |
@@ -130,7 +130,7 @@ case "$orden" in
   catalogo)
     exige_entorno
     if [ ! -d vendor/exercises-dataset ]; then
-      echo "Falta vendor/exercises-dataset (ver .docs/05-runbook.md, «El catálogo»)." >&2
+      echo "Falta vendor/exercises-dataset (ver el README)." >&2
       exit 1
     fi
     compose run --rm herramientas python manage.py import_catalog --source /datos
@@ -191,9 +191,9 @@ case "$orden" in
 
   *)
     cat <<'USO'
-La aplicación en tu PC, detrás de Tailscale (ADR-070). Se ejecuta desde Git Bash.
+La aplicación en tu PC, detrás de Tailscale. Se ejecuta desde Git Bash.
 
-  sh scripts/casa.sh preparar <tu-pc>.<tailnet>.ts.net [correo]   crea despliegue/casa/.env
+  sh scripts/casa.sh preparar <tu-pc>.<tailnet>.ts.net [correo]   crea docker/.env
   sh scripts/casa.sh certificado [CN]  exporta la raíz de un antivirus que inspecciona HTTPS
   sh scripts/casa.sh avisos <correo>   activa el aviso push (añade las claves VAPID al .env)
   sh scripts/casa.sh subir             construye y arranca (también para actualizar)
@@ -204,7 +204,7 @@ La aplicación en tu PC, detrás de Tailscale (ADR-070). Se ejecuta desde Git Ba
   sh scripts/casa.sh respaldo-media    copia de las imágenes y documentos subidos
   sh scripts/casa.sh restaurar <respaldos/gym-….sql.gz>
 
-Los pasos de Tailscale y de Windows están en .docs/05-runbook.md, sección «En casa (Tailscale)».
+Los pasos de Tailscale y de Windows están en el README, sección «Despliegue».
 USO
     exit 2
     ;;
