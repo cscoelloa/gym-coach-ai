@@ -235,11 +235,3 @@ suya ([`NOTICE.md`](NOTICE.md)):
 - **El mapa corporal**, de [`vulovix/body-muscles`](https://github.com/vulovix/body-muscles), es
   Apache 2.0 y lleva su `LICENSE` y su `NOTICE` en `apps/workouts/bodymap/`.
 
-### Sobre el diseño de las pantallas
-
-Algunos patrones de interfaz están **inspirados en
-[openGym](https://github.com/DuarteSantos8/openGym)**: la tira de la semana, las filas de día, los
-tiles de cifras, el calendario de actividad y el modo foco. Son disposiciones funcionales y comunes
-en las aplicaciones de fitness. openGym es **AGPL v3**, así que conviene ser explícito: **no se ha
-copiado nada de su código, ni sus iconos, ni sus textos**. Todo está reimplementado desde cero, y
-el sistema de diseño propio («Aire», ADR-061) usa otra paleta. Razonado en el ADR-022.
