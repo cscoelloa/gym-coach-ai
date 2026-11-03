@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["...", "nodejs_22"]
+
+[phases.frontend]
+dependsOn = ["setup"]
+cmds = [
+  "sh scripts/build-frontend.sh",
+]
+
+[phases.build]
+dependsOn = ["install", "frontend"]

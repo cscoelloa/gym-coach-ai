@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forja · Pantallas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root, :root[data-theme="dark"] {
+  --surface-000: #14120f;
+  --surface-100: #1c1916;
+  --surface-200: #252119;
+  --surface-inset: #100e0c;
+  --line: #37312a;
+  --line-strong: #6b6155;
+  --ink: #f4efe6;
+  --ink-muted: #a89e8e;
+  --ink-subtle: #8a8071;
+  --ember: #f27a35;
+  --ember-hover: #ff8d4c;
+  --ember-soft: #2e1a0e;
+  --on-ember: #1a0e06;
+  --steel: #5fb0c4;
+  --steel-soft: #0f2830;
+  --success: #8cc06b;
+  --success-soft: #17240f;
+  --danger: #e2685f;
+  --danger-soft: #2b1210;
+  --warning: #e2b23f;
+  --warning-soft: #2a2009;
+  --track: #2e2820;
+  --focus: var(--steel);
+  --overlay: #000000cc;
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.65);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+  --z-sticky: 10;
+  --z-sheet: 40;
+  --z-toast: 60;
+  --font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+:root[data-theme="light"] {
+  --surface-000: #faf7f2;
+  --surface-100: #ffffff;
+  --surface-200: #f1ece3;
+  --surface-inset: #f3eee5;
+  --line: #ddd5c8;
+  --line-strong: #8c8272;
+  --ink: #1d1a15;
+  --ink-muted: #5d5648;
+  --ink-subtle: #726a5b;
+  --ember: #c4491a;
+  --ember-hover: #a63a12;
+  --ember-soft: #fbe9de;
+  --on-ember: #fff6f0;
+  --steel: #1d6a7e;
+  --steel-soft: #ddeef3;
+  --success: #3d7a2a;
+  --success-soft: #e6f2df;
+  --danger: #b32d22;
+  --danger-soft: #fbe4e1;
+  --warning: #8a6206;
+  --warning-soft: #f8eed3;
+  --track: #e6dfd2;
+  --focus: var(--steel);
+  --overlay: #1d1a15a6;
+  --shadow-raised: 0 1px 2px rgba(29, 26, 21, 0.08);
+  --shadow-pop: 0 12px 32px rgba(29, 26, 21, 0.14);
+}
+
+.display-lg { font-family: var(--font-sans); font-size: 40px; line-height: 40px; font-weight: 700; letter-spacing: -0.02em; }
+.display-md { font-family: var(--font-sans); font-size: 30px; line-height: 34px; font-weight: 700; letter-spacing: -0.015em; }
+.title-lg { font-family: var(--font-sans); font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+.title-md { font-family: var(--font-sans); font-size: 18px; line-height: 24px; font-weight: 600; }
+.title-sm { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 600; }
+.body { font-family: var(--font-sans); font-size: 15px; line-height: 22px; font-weight: 400; }
+.body-sm { font-family: var(--font-sans); font-size: 13px; line-height: 19px; font-weight: 400; }
+.label { font-family: var(--font-sans); font-size: 13px; line-height: 16px; font-weight: 600; }
+.caption { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 500; }
+.metric-xl { font-family: var(--font-mono); font-size: 34px; line-height: 36px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.metric-md { font-family: var(--font-mono); font-size: 20px; line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.metric-sm { font-family: var(--font-mono); font-size: 14px; line-height: 18px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.tag { font-family: var(--font-mono); font-size: 11px; line-height: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+
+/* Forja — hoja de estilo del sistema. Todas las clases usan el prefijo fj-.
+   Se carga después de tokens.css y no declara ningún valor crudo que exista como token. */
+
+.fj-root {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--surface-000);
+  -webkit-font-smoothing: antialiased;
+}
+
+.fj-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+:where(.fj-btn, .fj-chip, .fj-seg__item, .fj-setrow__check, .fj-field__input):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Button ---------- */
+.fj-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--space-12);
+  padding: 0 var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition: background-color 120ms linear, border-color 120ms linear, color 120ms linear;
+  text-decoration: none;
+}
+.fj-btn--sm { min-height: var(--space-10); padding: 0 var(--space-4); font-size: 13px; line-height: 16px; }
+.fj-btn--block { display: flex; width: 100%; }
+
+.fj-btn--primary { background: var(--ember); color: var(--on-ember); }
+.fj-btn--primary:hover { background: var(--ember-hover); }
+
+.fj-btn--secondary { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.fj-btn--secondary:hover { background: var(--surface-200); }
+
+.fj-btn--ghost { background: transparent; color: var(--ember); }
+.fj-btn--ghost:hover { background: var(--ember-soft); }
+
+.fj-btn--danger { background: transparent; color: var(--danger); border-color: var(--danger); }
+.fj-btn--danger:hover { background: var(--danger-soft); }
+
+.fj-btn[disabled], .fj-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+
+/* ---------- Chip ---------- */
+.fj-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--space-10);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms linear, color 120ms linear, border-color 120ms linear;
+}
+.fj-chip:hover { background: var(--surface-200); color: var(--ink); }
+.fj-chip[aria-pressed="true"], .fj-chip--on {
+  background: var(--ember-soft);
+  border-color: var(--ember);
+  color: var(--ember);
+}
+.fj-chip__count { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink-subtle); }
+.fj-chip[aria-pressed="true"] .fj-chip__count, .fj-chip--on .fj-chip__count { color: var(--ember); }
+
+/* ---------- Badge ---------- */
+.fj-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.fj-badge--record { background: var(--ember-soft); color: var(--ember); }
+.fj-badge--done { background: var(--success-soft); color: var(--success); }
+.fj-badge--warn { background: var(--warning-soft); color: var(--warning); }
+.fj-badge--down { background: var(--danger-soft); color: var(--danger); }
+.fj-badge--info { background: var(--steel-soft); color: var(--steel); }
+.fj-badge--neutral { background: var(--surface-200); color: var(--ink-muted); }
+
+/* ---------- Field ---------- */
+.fj-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.fj-field__label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fj-field__input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: var(--space-12);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-inset);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  transition: border-color 120ms linear;
+}
+.fj-field__input::placeholder { color: var(--ink-subtle); }
+.fj-field__input:hover { border-color: var(--ink-subtle); }
+.fj-field__input--num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+.fj-field__hint { font-family: var(--font-sans); font-size: 13px; line-height: 19px; color: var(--ink-muted); }
+.fj-field--error .fj-field__input { border-color: var(--danger); }
+.fj-field--error .fj-field__hint { color: var(--danger); }
+.fj-field__suffix { font-family: var(--font-mono); font-size: 14px; color: var(--ink-muted); }
+
+/* ---------- SegmentedControl ---------- */
+.fj-seg {
+  display: inline-flex;
+  padding: var(--space-1);
+  gap: var(--space-1);
+  background: var(--surface-200);
+  border-radius: var(--radius-md);
+}
+.fj-seg__item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  min-height: var(--space-10);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  color: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms linear, color 120ms linear;
+}
+.fj-seg__item:hover { color: var(--ink); }
+.fj-seg__item[aria-selected="true"] {
+  background: var(--surface-100);
+  color: var(--ink);
+  box-shadow: var(--shadow-raised);
+}
+
+/* ---------- ProgressBar ---------- */
+.fj-progress { display: flex; flex-direction: column; gap: var(--space-2); }
+.fj-progress__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fj-progress__value { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink-muted); font-weight: 500; }
+.fj-progress__track {
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--track);
+  overflow: hidden;
+}
+.fj-progress__fill { height: 100%; border-radius: var(--radius-pill); background: var(--steel); }
+.fj-progress--brand .fj-progress__fill { background: var(--ember); }
+.fj-progress--success .fj-progress__fill { background: var(--success); }
+.fj-progress--warning .fj-progress__fill { background: var(--warning); }
+
+/* ---------- StatTile ---------- */
+.fj-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--surface-100);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+}
+.fj-stat__label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--ink-subtle);
+}
+.fj-stat__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fj-stat__unit { font-size: 14px; line-height: 18px; font-weight: 500; color: var(--ink-muted); }
+.fj-stat__foot { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-1); }
+.fj-stat__note { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ink-muted); }
+
+/* ---------- SetRow ---------- */
+.fj-setrow {
+  display: grid;
+  grid-template-columns: var(--space-8) 1fr 1fr var(--space-12);
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--space-12);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-100);
+  border: 1px solid transparent;
+}
+.fj-setrow + .fj-setrow { margin-top: var(--space-1); }
+.fj-setrow__index {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--ink-subtle);
+}
+.fj-setrow__cell {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-2);
+  background: var(--surface-inset);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.fj-setrow__num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fj-setrow__unit { font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); }
+.fj-setrow__check {
+  appearance: none;
+  width: var(--space-10);
+  height: var(--space-10);
+  justify-self: end;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-subtle);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 120ms linear, border-color 120ms linear, color 120ms linear;
+}
+.fj-setrow__check:hover { border-color: var(--ink-subtle); color: var(--ink); }
+.fj-setrow--active { background: var(--ember-soft); border-color: var(--ember); }
+.fj-setrow--active .fj-setrow__index { color: var(--ember); }
+.fj-setrow--done .fj-setrow__check { background: var(--success); border-color: var(--success); color: var(--surface-000); }
+.fj-setrow--done .fj-setrow__num { color: var(--ink-muted); }
+.fj-setrow__tags { grid-column: 2 / -1; display: flex; gap: var(--space-2); }
+
+.fj-setrow-head {
+  display: grid;
+  grid-template-columns: var(--space-8) 1fr 1fr var(--space-12);
+  gap: var(--space-3);
+  padding: 0 var(--space-4) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-subtle);
+}
+.fj-setrow-head span:nth-child(2), .fj-setrow-head span:nth-child(3) { text-align: center; }
+
+/* ---------- ExerciseCard ---------- */
+.fj-exercise {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-4);
+  background: var(--surface-100);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 120ms linear;
+}
+.fj-exercise:hover { border-color: var(--line-strong); }
+.fj-exercise__glyph {
+  flex: none;
+  width: var(--space-12);
+  height: var(--space-12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--surface-200);
+  color: var(--ink-muted);
+}
+.fj-exercise__body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.fj-exercise__name {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fj-exercise__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--ink-muted);
+}
+.fj-exercise__dot { color: var(--line-strong); }
+.fj-exercise__last {
+  flex: none;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+/* ---------- RoutineCard ---------- */
+.fj-routine {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-sizing: border-box;
+  padding: var(--space-5);
+  background: var(--surface-100);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+}
+.fj-routine__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
+.fj-routine__title { display: flex; flex-direction: column; gap: var(--space-1); }
+.fj-routine__name { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 600; color: var(--ink); }
+.fj-routine__days { font-family: var(--font-sans); font-size: 13px; line-height: 19px; color: var(--ink-muted); }
+.fj-routine__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+.fj-routine__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--ink-muted);
+}
+.fj-routine__item b { color: var(--ink); font-weight: 400; }
+.fj-routine__item span { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.fj-routine__foot { display: flex; align-items: center; gap: var(--space-3); }
+
+/* ---------- RestTimer ---------- */
+.fj-timer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  box-sizing: border-box;
+  padding: var(--space-5);
+  background: var(--surface-100);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-pop);
+}
+.fj-timer__ring { flex: none; position: relative; width: 88px; height: 88px; }
+.fj-timer__ring svg { display: block; transform: rotate(-90deg); }
+.fj-timer__track { fill: none; stroke: var(--track); stroke-width: 8; }
+.fj-timer__arc { fill: none; stroke: var(--steel); stroke-width: 8; stroke-linecap: round; }
+.fj-timer__count {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fj-timer__body { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.fj-timer__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-subtle);
+}
+.fj-timer__next { font-family: var(--font-sans); font-size: 15px; line-height: 22px; color: var(--ink); }
+.fj-timer__actions { display: flex; gap: var(--space-2); margin-top: var(--space-1); }
+.fj-timer--over .fj-timer__arc { stroke: var(--warning); }
+.fj-timer--over .fj-timer__count { color: var(--warning); }
+
+/* ---------- EmptyState ---------- */
+.fj-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  box-sizing: border-box;
+  padding: var(--space-10) var(--space-6);
+  text-align: center;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-100);
+}
+.fj-empty__glyph { color: var(--ink-subtle); }
+.fj-empty__title { font-family: var(--font-sans); font-size: 18px; line-height: 24px; font-weight: 600; color: var(--ink); }
+.fj-empty__text { max-width: 36ch; font-family: var(--font-sans); font-size: 15px; line-height: 22px; color: var(--ink-muted); }
+.fj-empty__actions { display: flex; gap: var(--space-2); margin-top: var(--space-2); }
+
+
+*, *::before, *::after { box-sizing: border-box; }
+html { color-scheme: dark light; }
+body { margin: 0; background: var(--surface-000); color: var(--ink); font-family: var(--font-sans); }
+.page { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+.top { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 16px 0; background: var(--surface-000); border-bottom: 1px solid var(--line); margin-bottom: 32px; }
+.top h1 { margin: 0; font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em; }
+.top .sub { color: var(--ink-muted); font-size: 13px; font-weight: 400; margin-left: 8px; }
+.toggle { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface-200); border-radius: var(--radius-md); }
+.toggle button { appearance: none; border: 0; background: transparent; min-height: 32px; padding: 0 12px;
+  border-radius: var(--radius-sm); color: var(--ink-muted); font-family: var(--font-sans); font-size: 13px;
+  font-weight: 600; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--surface-100); color: var(--ink); box-shadow: var(--shadow-raised); }
+.toggle button:focus-visible, .nav a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+.nav a { padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill);
+  color: var(--ink-muted); text-decoration: none; font-size: 13px; font-weight: 600; }
+.nav a:hover { background: var(--surface-200); color: var(--ink); }
+.blk { margin-bottom: 40px; scroll-margin-top: 80px; }
+.blk__head { margin-bottom: 12px; }
+.blk__name { margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+.blk__desc { margin: 4px 0 0; max-width: 62ch; color: var(--ink-muted); font-size: 15px; line-height: 22px; }
+.blk__frame { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-000); }
+.sec-title { margin: 56px 0 20px; font-size: 30px; line-height: 34px; font-weight: 700; letter-spacing: -0.015em; }
+.grid-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(216px, 1fr)); gap: 12px; }
+.sw { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface-100);
+  border: 1px solid var(--line); border-radius: var(--radius-md); }
+.sw__chip { flex: none; width: 44px; height: 44px; border-radius: var(--radius-md); border: 1px solid var(--line); }
+.sw__n { font-size: 13px; font-weight: 600; }
+.sw__v { font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); }
+.sw__u { display: block; margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--ink-subtle); }
+.tp { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: center; padding: 16px 20px;
+  background: var(--surface-100); border: 1px solid var(--line); border-radius: var(--radius-md); margin-bottom: 8px; }
+.tp__n { font-size: 13px; font-weight: 600; }
+.tp__s { font-family: var(--font-mono); font-size: 12px; color: var(--ink-subtle); }
+.sp { display: flex; align-items: center; gap: 20px; padding: 12px 20px; background: var(--surface-100);
+  border: 1px solid var(--line); border-radius: var(--radius-md); margin-bottom: 8px; }
+.sp__n { width: 120px; font-size: 13px; font-weight: 600; }
+.sp__v { width: 60px; font-family: var(--font-mono); font-size: 14px; color: var(--ink-subtle); }
+.sp__b { height: 16px; border-radius: 2px; background: var(--ember); }
+.rad { display: flex; flex-wrap: wrap; gap: 16px; }
+.rad__c { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.rad__b { width: 120px; height: 72px; background: var(--steel); }
+.sh { display: flex; flex-wrap: wrap; gap: 24px; }
+.sh__c { width: 240px; padding: 24px; text-align: center; background: var(--surface-100);
+  border: 1px solid var(--line); border-radius: var(--radius-lg); }
+.screens { display: flex; flex-wrap: wrap; gap: 32px; }
+.screen { flex: 0 0 auto; }
+.screen__cap { margin: 0 0 12px; font-size: 15px; font-weight: 600; }
+@media (max-width: 720px) { .tp { grid-template-columns: 1fr; } .top { flex-direction: column; align-items: flex-start; } }
+
+#s-pantallainicio .pv { box-sizing: border-box; padding: var(--space-6); background: var(--surface-200); font-family: var(--font-sans); }
+#s-pantallainicio .pv * { box-sizing: border-box; }
+#s-pantallainicio .scr { width: 390px; height: 812px; margin: 0 auto; position: relative; display: flex; flex-direction: column; background: var(--surface-000); border: 1px solid var(--line); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-pop); }
+#s-pantallainicio .scr__bar { flex: none; height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-5); font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-muted); }
+#s-pantallainicio .scr__body { flex: 1 1 auto; min-height: 0; overflow: hidden; padding: var(--space-2) var(--space-4) var(--space-4); display: flex; flex-direction: column; gap: var(--space-5); }
+#s-pantallainicio .scr__nav { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-1); padding: var(--space-2) 0 var(--space-4); background: var(--surface-100); border-top: 1px solid var(--line); }
+#s-pantallainicio .scr__navitem { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); font-size: 11px; font-weight: 600; color: var(--ink-subtle); }
+#s-pantallainicio .scr__navitem--on { color: var(--ember); }
+#s-pantallainicio .hd__date { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-subtle); }
+#s-pantallainicio .hd__title { font-size: 30px; line-height: 34px; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); margin: var(--space-1) 0 0; }
+#s-pantallainicio .sec { font-size: 15px; line-height: 20px; font-weight: 600; color: var(--ink); margin: 0 0 var(--space-3); }
+#s-pantallainicio .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+#s-pantallaentrenamiento .pv { box-sizing: border-box; padding: var(--space-6); background: var(--surface-200); font-family: var(--font-sans); }
+#s-pantallaentrenamiento .pv * { box-sizing: border-box; }
+#s-pantallaentrenamiento .scr { width: 390px; height: 812px; margin: 0 auto; position: relative; display: flex; flex-direction: column; background: var(--surface-000); border: 1px solid var(--line); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-pop); }
+#s-pantallaentrenamiento .scr__bar { flex: none; height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-5); font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-muted); }
+#s-pantallaentrenamiento .hdr { flex: none; padding: var(--space-2) var(--space-4) var(--space-4); background: var(--surface-000); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: var(--space-3); }
+#s-pantallaentrenamiento .hdr__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
+#s-pantallaentrenamiento .hdr__name { font-size: 30px; line-height: 34px; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); margin: 0; }
+#s-pantallaentrenamiento .hdr__clock { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 20px; line-height: 24px; font-weight: 600; color: var(--ink-muted); }
+#s-pantallaentrenamiento .scr__body { flex: 1 1 auto; min-height: 0; overflow: hidden; padding: var(--space-4) var(--space-4) 200px; display: flex; flex-direction: column; gap: var(--space-5); }
+#s-pantallaentrenamiento .blk__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); margin: 0 var(--space-4) var(--space-3); }
+#s-pantallaentrenamiento .blk__name { font-size: 18px; line-height: 24px; font-weight: 600; color: var(--ink); }
+#s-pantallaentrenamiento .blk__scheme { font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--ink-muted); }
+#s-pantallaentrenamiento .scr__float { position: absolute; left: var(--space-4); right: var(--space-4); bottom: 88px; }
+#s-pantallaentrenamiento .scr__foot { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--space-3) var(--space-4) var(--space-5); background: var(--surface-100); border-top: 1px solid var(--line); }
+#s-pantallaejercicios .pv { box-sizing: border-box; padding: var(--space-6); background: var(--surface-200); font-family: var(--font-sans); }
+#s-pantallaejercicios .pv * { box-sizing: border-box; }
+#s-pantallaejercicios .scr { width: 390px; height: 812px; margin: 0 auto; position: relative; display: flex; flex-direction: column; background: var(--surface-000); border: 1px solid var(--line); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-pop); }
+#s-pantallaejercicios .scr__bar { flex: none; height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-5); font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-muted); }
+#s-pantallaejercicios .scr__body { flex: 1 1 auto; min-height: 0; overflow: hidden; padding: var(--space-2) var(--space-4) var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); }
+#s-pantallaejercicios .scr__nav { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-1); padding: var(--space-2) 0 var(--space-4); background: var(--surface-100); border-top: 1px solid var(--line); }
+#s-pantallaejercicios .scr__navitem { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); font-size: 11px; font-weight: 600; color: var(--ink-subtle); }
+#s-pantallaejercicios .scr__navitem--on { color: var(--ember); }
+#s-pantallaejercicios .hd__title { font-size: 30px; line-height: 34px; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); margin: 0; }
+#s-pantallaejercicios .hd__row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+#s-pantallaejercicios .search { position: relative; display: flex; align-items: center; }
+#s-pantallaejercicios .search svg { position: absolute; left: var(--space-4); color: var(--ink-subtle); }
+#s-pantallaejercicios .search input { padding-left: 44px; }
+#s-pantallaejercicios .filters { display: flex; flex-direction: column; gap: var(--space-2); }
+#s-pantallaejercicios .filters__row { display: flex; gap: var(--space-2); overflow: hidden; }
+#s-pantallaejercicios .list { display: flex; flex-direction: column; gap: var(--space-3); overflow: hidden; }
+#s-pantallaejercicios .count { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-subtle); }
+#s-pantallaeditorrutina .pv { box-sizing: border-box; padding: var(--space-6); background: var(--surface-200); font-family: var(--font-sans); }
+#s-pantallaeditorrutina .pv * { box-sizing: border-box; }
+#s-pantallaeditorrutina .scr { width: 390px; height: 812px; margin: 0 auto; position: relative; display: flex; flex-direction: column; background: var(--surface-000); border: 1px solid var(--line); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-pop); }
+#s-pantallaeditorrutina .scr__bar { flex: none; height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-5); font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-muted); }
+#s-pantallaeditorrutina .top { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) var(--space-4) var(--space-4); border-bottom: 1px solid var(--line); }
+#s-pantallaeditorrutina .top__title { font-size: 18px; line-height: 24px; font-weight: 600; color: var(--ink); }
+#s-pantallaeditorrutina .scr__body { flex: 1 1 auto; min-height: 0; overflow: hidden; padding: var(--space-5) var(--space-4) 96px; display: flex; flex-direction: column; gap: var(--space-5); }
+#s-pantallaeditorrutina .lbl { font-size: 13px; line-height: 16px; font-weight: 600; color: var(--ink); margin: 0 0 var(--space-2); }
+#s-pantallaeditorrutina .days { display: flex; gap: var(--space-2); }
+#s-pantallaeditorrutina .days .fj-chip { padding: 0 var(--space-3); }
+#s-pantallaeditorrutina .ex { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--surface-100); border: 1px solid var(--line); border-radius: var(--radius-md); }
+#s-pantallaeditorrutina .ex__grip { flex: none; color: var(--ink-subtle); }
+#s-pantallaeditorrutina .ex__name { flex: 1 1 auto; min-width: 0; font-size: 15px; line-height: 20px; font-weight: 600; color: var(--ink); }
+#s-pantallaeditorrutina .ex__num { flex: none; width: 56px; }
+#s-pantallaeditorrutina .ex__x { flex: none; font-family: var(--font-mono); font-size: 14px; color: var(--ink-subtle); }
+#s-pantallaeditorrutina .exlist { display: flex; flex-direction: column; gap: var(--space-2); }
+#s-pantallaeditorrutina .exhead { display: flex; justify-content: flex-end; gap: var(--space-3); padding-right: var(--space-4); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-subtle); }
+#s-pantallaeditorrutina .exhead span { width: 56px; text-align: center; }
+#s-pantallaeditorrutina .scr__foot { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--space-3) var(--space-4) var(--space-5); background: var(--surface-100); border-top: 1px solid var(--line); }
+</style>
+</head>
+<body class="fj-root">
+<div class="page">
+  <div class="top">
+    <h1>Forja · Pantallas<span class="sub">App de entrenamiento — 390 × 812</span></h1>
+    <div class="toggle" role="group" aria-label="Tema">
+      <button type="button" data-theme="dark" aria-pressed="true">Oscuro</button>
+      <button type="button" data-theme="light" aria-pressed="false">Claro</button>
+    </div>
+  </div>
+  <nav class="nav"><a href="#s-pantallainicio">Inicio</a><a href="#s-pantallaentrenamiento">Entrenamiento activo</a><a href="#s-pantallaejercicios">Ejercicios</a><a href="#s-pantallaeditorrutina">Editor de rutina</a></nav>
+<section class="blk" id="s-pantallainicio">
+  <div class="blk__head">
+    <h2 class="blk__name">Inicio</h2>
+    <p class="blk__desc">Pantalla de arranque de la app: dónde va el usuario cuando abre sin nada en curso. Es una composición, no un componente exportable.</p>
+  </div>
+  <div class="blk__frame"><div class="pv fj-root">
+  <div class="scr">
+    <div class="scr__bar"><span>9:41</span><span>Forja</span></div>
+    <div class="scr__body">
+      <div>
+        <span class="hd__date">Miércoles 16 de septiembre</span>
+        <h1 class="hd__title">Tu semana</h1>
+      </div>
+
+      <div class="fj-seg" role="tablist" aria-label="Vista de inicio">
+        <button class="fj-seg__item" type="button" role="tab" aria-selected="false">Hoy</button>
+        <button class="fj-seg__item" type="button" role="tab" aria-selected="true">Semana</button>
+        <button class="fj-seg__item" type="button" role="tab" aria-selected="false">Historial</button>
+      </div>
+
+      <div class="grid2">
+        <div class="fj-stat">
+          <span class="fj-stat__label">Volumen total</span>
+          <span class="fj-stat__value">12 480<span class="fj-stat__unit">kg</span></span>
+          <div class="fj-stat__foot"><span class="fj-badge fj-badge--done">+6 %</span></div>
+        </div>
+        <div class="fj-stat">
+          <span class="fj-stat__label">Series</span>
+          <span class="fj-stat__value">64</span>
+          <div class="fj-stat__foot"><span class="fj-badge fj-badge--down">−4 %</span></div>
+        </div>
+        <div class="fj-stat">
+          <span class="fj-stat__label">Sesiones</span>
+          <span class="fj-stat__value">3<span class="fj-stat__unit">de 4</span></span>
+          <div class="fj-stat__foot"><span class="fj-stat__note">Falta Pierna</span></div>
+        </div>
+        <div class="fj-stat">
+          <span class="fj-stat__label">Cardio</span>
+          <span class="fj-stat__value">42<span class="fj-stat__unit">min</span></span>
+          <div class="fj-stat__foot"><span class="fj-badge fj-badge--info">cinta</span></div>
+        </div>
+      </div>
+
+      <div class="fj-progress">
+        <div class="fj-progress__head"><span>Volumen de la semana</span><span class="fj-progress__value">12 480 / 14 000 kg</span></div>
+        <div class="fj-progress__track" role="progressbar" aria-valuenow="12480" aria-valuemin="0" aria-valuemax="14000" aria-label="Volumen de la semana">
+          <div class="fj-progress__fill" style="width: 89%"></div>
+        </div>
+      </div>
+
+      <div>
+        <p class="sec">Toca hoy</p>
+        <article class="fj-routine">
+          <div class="fj-routine__top">
+            <div class="fj-routine__title">
+              <span class="fj-routine__name">Empuje A</span>
+              <span class="fj-routine__days">Lun · Jue · 12 series</span>
+            </div>
+            <span class="fj-badge fj-badge--warn">sin terminar</span>
+          </div>
+          <div class="fj-routine__list">
+            <div class="fj-routine__item"><b>Press de banca</b><span>4 × 8</span></div>
+            <div class="fj-routine__item"><b>Press militar</b><span>4 × 10</span></div>
+            <div class="fj-routine__item"><b>+2 ejercicios</b><span></span></div>
+          </div>
+          <div class="fj-routine__foot">
+            <button class="fj-btn fj-btn--primary fj-btn--sm" type="button">Continuar</button>
+            <button class="fj-btn fj-btn--ghost fj-btn--sm" type="button">Editar</button>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <nav class="scr__nav">
+      <span class="scr__navitem scr__navitem--on">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>
+        Inicio
+      </span>
+      <span class="scr__navitem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg>
+        Ejercicios
+      </span>
+      <span class="scr__navitem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/></svg>
+        Rutinas
+      </span>
+      <span class="scr__navitem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18 9 12l4 4 7-8"/></svg>
+        Progreso
+      </span>
+    </nav>
+  </div>
+</div></div>
+</section>
+<section class="blk" id="s-pantallaentrenamiento">
+  <div class="blk__head">
+    <h2 class="blk__name">Entrenamiento activo</h2>
+    <p class="blk__desc">La pantalla donde se pasa el tiempo real de uso: el usuario está de pie, con una mano, entre serie y serie. Es una composición, no un componente exportable.</p>
+  </div>
+  <div class="blk__frame"><div class="pv fj-root">
+  <div class="scr">
+    <div class="scr__bar"><span>9:41</span><span>Forja</span></div>
+
+    <header class="hdr">
+      <div class="hdr__top">
+        <h1 class="hdr__name">Empuje A</h1>
+        <span class="hdr__clock">42:18</span>
+      </div>
+      <div class="fj-progress fj-progress--brand">
+        <div class="fj-progress__head"><span>Series de hoy</span><span class="fj-progress__value">9 / 16</span></div>
+        <div class="fj-progress__track" role="progressbar" aria-valuenow="9" aria-valuemin="0" aria-valuemax="16" aria-label="Series de hoy">
+          <div class="fj-progress__fill" style="width: 56.25%"></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="scr__body">
+      <section>
+        <div class="blk__head"><span class="blk__name">Press de banca</span><span class="blk__scheme">4 × 8</span></div>
+        <div class="fj-setrow-head"><span>#</span><span>Carga</span><span>Reps</span><span></span></div>
+
+        <div class="fj-setrow fj-setrow--done">
+          <span class="fj-setrow__index">1</span>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">80</span><span class="fj-setrow__unit">kg</span></div>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">8</span><span class="fj-setrow__unit">reps</span></div>
+          <button class="fj-setrow__check" type="button" aria-pressed="true" aria-label="Serie 1 completada"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        </div>
+
+        <div class="fj-setrow fj-setrow--done">
+          <span class="fj-setrow__index">2</span>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">82.5</span><span class="fj-setrow__unit">kg</span></div>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">8</span><span class="fj-setrow__unit">reps</span></div>
+          <button class="fj-setrow__check" type="button" aria-pressed="true" aria-label="Serie 2 completada"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <div class="fj-setrow__tags"><span class="fj-badge fj-badge--record">récord</span></div>
+        </div>
+
+        <div class="fj-setrow fj-setrow--active">
+          <span class="fj-setrow__index">3</span>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">82.5</span><span class="fj-setrow__unit">kg</span></div>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">8</span><span class="fj-setrow__unit">reps</span></div>
+          <button class="fj-setrow__check" type="button" aria-pressed="false" aria-label="Marcar serie 3 como completada"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        </div>
+
+        <div class="fj-setrow">
+          <span class="fj-setrow__index">4</span>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">82.5</span><span class="fj-setrow__unit">kg</span></div>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">8</span><span class="fj-setrow__unit">reps</span></div>
+          <button class="fj-setrow__check" type="button" aria-pressed="false" aria-label="Marcar serie 4 como completada"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        </div>
+
+        <div style="padding: var(--space-3) var(--space-4) 0;">
+          <button class="fj-btn fj-btn--ghost fj-btn--sm" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Añadir serie
+          </button>
+        </div>
+      </section>
+
+      <section>
+        <div class="blk__head"><span class="blk__name">Press militar</span><span class="blk__scheme">4 × 10</span></div>
+        <div class="fj-setrow-head"><span>#</span><span>Carga</span><span>Reps</span><span></span></div>
+        <div class="fj-setrow">
+          <span class="fj-setrow__index">1</span>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">45</span><span class="fj-setrow__unit">kg</span></div>
+          <div class="fj-setrow__cell"><span class="fj-setrow__num">10</span><span class="fj-setrow__unit">reps</span></div>
+          <button class="fj-setrow__check" type="button" aria-pressed="false" aria-label="Marcar serie 1 como completada"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        </div>
+      </section>
+    </div>
+
+    <div class="scr__float">
+      <div class="fj-timer">
+        <div class="fj-timer__ring">
+          <svg width="88" height="88" viewBox="0 0 88 88" aria-hidden="true">
+            <circle class="fj-timer__track" cx="44" cy="44" r="36"></circle>
+            <circle class="fj-timer__arc" cx="44" cy="44" r="36" stroke-dasharray="226.19" stroke-dashoffset="70.37"></circle>
+          </svg>
+          <span class="fj-timer__count" role="timer">1:02</span>
+        </div>
+        <div class="fj-timer__body">
+          <span class="fj-timer__label">Descanso</span>
+          <span class="fj-timer__next">Serie 3 · 82.5 kg × 8</span>
+          <div class="fj-timer__actions">
+            <button class="fj-btn fj-btn--secondary fj-btn--sm" type="button">+30 s</button>
+            <button class="fj-btn fj-btn--secondary fj-btn--sm" type="button">Saltar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scr__foot">
+      <button class="fj-btn fj-btn--primary fj-btn--block" type="button">Terminar entrenamiento</button>
+    </div>
+  </div>
+</div></div>
+</section>
+<section class="blk" id="s-pantallaejercicios">
+  <div class="blk__head">
+    <h2 class="blk__name">Ejercicios</h2>
+    <p class="blk__desc">El catálogo: de dónde salen los ejercicios que se añaden a una rutina o a una sesión suelta. Es una composición, no un componente exportable.</p>
+  </div>
+  <div class="blk__frame"><div class="pv fj-root">
+  <div class="scr">
+    <div class="scr__bar"><span>9:41</span><span>Forja</span></div>
+    <div class="scr__body">
+      <div class="hd__row">
+        <h1 class="hd__title">Ejercicios</h1>
+        <button class="fj-btn fj-btn--secondary fj-btn--sm" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Nuevo
+        </button>
+      </div>
+
+      <div class="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="fj-field__input" type="search" placeholder="Buscar ejercicio" aria-label="Buscar ejercicio" />
+      </div>
+
+      <div class="filters">
+        <div class="filters__row">
+          <button class="fj-chip" type="button" aria-pressed="false">Todos</button>
+          <button class="fj-chip" type="button" aria-pressed="true">Pecho <span class="fj-chip__count">22</span></button>
+          <button class="fj-chip" type="button" aria-pressed="false">Espalda <span class="fj-chip__count">27</span></button>
+          <button class="fj-chip" type="button" aria-pressed="false">Pierna</button>
+        </div>
+        <div class="filters__row">
+          <button class="fj-chip" type="button" aria-pressed="true">Barra</button>
+          <button class="fj-chip" type="button" aria-pressed="false">Mancuerna</button>
+          <button class="fj-chip" type="button" aria-pressed="false">Polea</button>
+          <button class="fj-chip" type="button" aria-pressed="false">Máquina</button>
+        </div>
+      </div>
+
+      <span class="count">8 ejercicios</span>
+
+      <div class="list">
+        <button class="fj-exercise" type="button">
+          <span class="fj-exercise__glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg></span>
+          <span class="fj-exercise__body">
+            <span class="fj-exercise__name">Press de banca</span>
+            <span class="fj-exercise__meta">Pecho <span class="fj-exercise__dot">/</span> Barra</span>
+          </span>
+          <span class="fj-exercise__last">82.5 kg × 8</span>
+        </button>
+
+        <button class="fj-exercise" type="button">
+          <span class="fj-exercise__glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg></span>
+          <span class="fj-exercise__body">
+            <span class="fj-exercise__name">Press inclinado</span>
+            <span class="fj-exercise__meta">Pecho <span class="fj-exercise__dot">/</span> Barra</span>
+          </span>
+          <span class="fj-exercise__last">65 kg × 10</span>
+        </button>
+
+        <button class="fj-exercise" type="button">
+          <span class="fj-exercise__glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6v12M20 6v12M8 9v6M16 9v6M8 12h8"/></svg></span>
+          <span class="fj-exercise__body">
+            <span class="fj-exercise__name">Press cerrado</span>
+            <span class="fj-exercise__meta">Pecho <span class="fj-exercise__dot">/</span> Barra</span>
+          </span>
+          <span class="fj-exercise__last">60 kg × 8</span>
+        </button>
+
+        <button class="fj-exercise" type="button">
+          <span class="fj-exercise__glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v7M7 20l5-9 5 9"/></svg></span>
+          <span class="fj-exercise__body">
+            <span class="fj-exercise__name">Pullover con barra</span>
+            <span class="fj-exercise__meta">Pecho <span class="fj-exercise__dot">/</span> Barra</span>
+          </span>
+        </button>
+
+        <button class="fj-exercise" type="button">
+          <span class="fj-exercise__glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg></span>
+          <span class="fj-exercise__body">
+            <span class="fj-exercise__name">Press declinado</span>
+            <span class="fj-exercise__meta">Pecho <span class="fj-exercise__dot">/</span> Barra</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="scr__nav">
+      <span class="scr__navitem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>
+        Inicio
+      </span>
+      <span class="scr__navitem scr__navitem--on">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg>
+        Ejercicios
+      </span>
+      <span class="scr__navitem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/></svg>
+        Rutinas
+      </span>
+      <span class="scr__navitem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18 9 12l4 4 7-8"/></svg>
+        Progreso
+      </span>
+    </nav>
+  </div>
+</div></div>
+</section>
+<section class="blk" id="s-pantallaeditorrutina">
+  <div class="blk__head">
+    <h2 class="blk__name">Editor de rutina</h2>
+    <p class="blk__desc">Creación y edición de una rutina: nombre, días, ejercicios y su esquema de series. Es una composición, no un componente exportable.</p>
+  </div>
+  <div class="blk__frame"><div class="pv fj-root">
+  <div class="scr">
+    <div class="scr__bar"><span>9:41</span><span>Forja</span></div>
+
+    <div class="top">
+      <button class="fj-btn fj-btn--ghost fj-btn--sm" type="button">Cancelar</button>
+      <span class="top__title">Nueva rutina</span>
+      <button class="fj-btn fj-btn--ghost fj-btn--sm" type="button">Guardar</button>
+    </div>
+
+    <div class="scr__body">
+      <div class="fj-field">
+        <label class="fj-field__label" for="ed-name">Nombre de la rutina</label>
+        <input class="fj-field__input" id="ed-name" type="text" value="Empuje A" />
+        <span class="fj-field__hint">Se muestra en Inicio y en el historial.</span>
+      </div>
+
+      <div>
+        <p class="lbl">Días</p>
+        <div class="days">
+          <button class="fj-chip" type="button" aria-pressed="true">Lun</button>
+          <button class="fj-chip" type="button" aria-pressed="false">Mar</button>
+          <button class="fj-chip" type="button" aria-pressed="false">Mié</button>
+          <button class="fj-chip" type="button" aria-pressed="true">Jue</button>
+          <button class="fj-chip" type="button" aria-pressed="false">Vie</button>
+        </div>
+      </div>
+
+      <div>
+        <p class="lbl">Ejercicios</p>
+        <div class="exhead"><span>Series</span><span>Reps</span></div>
+        <div class="exlist">
+          <div class="ex">
+            <span class="ex__grip" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 8h.01M8 12h.01M8 16h.01M16 8h.01M16 12h.01M16 16h.01"/></svg></span>
+            <span class="ex__name">Press de banca</span>
+            <span class="ex__num"><input class="fj-field__input fj-field__input--num" type="text" inputmode="numeric" value="4" aria-label="Series de Press de banca" /></span>
+            <span class="ex__x">×</span>
+            <span class="ex__num"><input class="fj-field__input fj-field__input--num" type="text" inputmode="numeric" value="8" aria-label="Repeticiones de Press de banca" /></span>
+          </div>
+          <div class="ex">
+            <span class="ex__grip" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 8h.01M8 12h.01M8 16h.01M16 8h.01M16 12h.01M16 16h.01"/></svg></span>
+            <span class="ex__name">Press militar</span>
+            <span class="ex__num"><input class="fj-field__input fj-field__input--num" type="text" inputmode="numeric" value="4" aria-label="Series de Press militar" /></span>
+            <span class="ex__x">×</span>
+            <span class="ex__num"><input class="fj-field__input fj-field__input--num" type="text" inputmode="numeric" value="10" aria-label="Repeticiones de Press militar" /></span>
+          </div>
+          <div class="ex">
+            <span class="ex__grip" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 8h.01M8 12h.01M8 16h.01M16 8h.01M16 12h.01M16 16h.01"/></svg></span>
+            <span class="ex__name">Fondos en paralelas</span>
+            <span class="ex__num"><input class="fj-field__input fj-field__input--num" type="text" inputmode="numeric" value="3" aria-label="Series de Fondos en paralelas" /></span>
+            <span class="ex__x">×</span>
+            <span class="ex__num"><input class="fj-field__input fj-field__input--num" type="text" inputmode="numeric" value="12" aria-label="Repeticiones de Fondos en paralelas" /></span>
+          </div>
+        </div>
+        <div style="padding-top: var(--space-3);">
+          <button class="fj-btn fj-btn--ghost fj-btn--sm" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Añadir ejercicio
+          </button>
+        </div>
+      </div>
+
+      <div class="fj-field">
+        <label class="fj-field__label" for="ed-rest">Descanso por defecto</label>
+        <input class="fj-field__input" id="ed-rest" type="text" value="90 s" />
+        <span class="fj-field__hint">Cada ejercicio puede sobrescribirlo.</span>
+      </div>
+    </div>
+
+    <div class="scr__foot">
+      <button class="fj-btn fj-btn--primary fj-btn--block" type="button">Guardar rutina</button>
+    </div>
+  </div>
+</div></div>
+</section>
+</div>
+<script>
+
+(function () {
+  var root = document.documentElement;
+  var btns = document.querySelectorAll('.toggle button');
+  function set(theme) {
+    root.setAttribute('data-theme', theme);
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.theme === theme)); });
+    try { localStorage.setItem('forja-theme', theme); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('forja-theme'); } catch (e) {}
+  set(saved === 'light' || saved === 'dark' ? saved : 'dark');
+  btns.forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.theme); }); });
+})();
+
+
+
+
+  document.getElementById('s-pantallaejercicios').querySelectorAll('.fj-chip').forEach(function (el) {
+    el.addEventListener('click', function () {
+      el.setAttribute('aria-pressed', el.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    });
+  });
+
+
+  document.getElementById('s-pantallaeditorrutina').querySelectorAll('.days .fj-chip').forEach(function (el) {
+    el.addEventListener('click', function () {
+      el.setAttribute('aria-pressed', el.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    });
+  });
+
+</script>
+</body>
+</html>

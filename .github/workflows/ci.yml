@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: gym
+          POSTGRES_USER: gym
+          POSTGRES_PASSWORD: gym
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U gym"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      SECRET_KEY: ci-3kQx7vPm2Ld9Ns4Rb8Tz6Yw1Hj5Gf0Ce-clave-de-usar-y-tirar
+      DEBUG: "True"
+      ALLOWED_HOSTS: localhost,127.0.0.1
+      DATABASE_URL: postgres://gym:gym@localhost:5432/gym
+      REDIS_URL: redis://127.0.0.1:6379/0
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: pip install -r requirements-dev.txt
+
+      - name: Construir el frontend
+        run: sh scripts/build-frontend.sh
+
+      - name: Generar clave de cifrado de campos
+        run: |
+          echo "FIELD_ENCRYPTION_KEYS=$(python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())')" >> $GITHUB_ENV
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Comprobaciones de Django
+        run: python manage.py check
+
+      - name: Comprobaciones de despliegue
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.prod
+          ALLOWED_HOSTS: ejemplo.com
+          EMAIL_HOST: smtp.ejemplo.com
+          EMAIL_HOST_USER: ci
+          EMAIL_HOST_PASSWORD: ci
+          R2_ACCESS_KEY_ID: ci
+          R2_SECRET_ACCESS_KEY: ci
+          R2_BUCKET_NAME: ci-bucket
+          R2_ENDPOINT_URL: https://ejemplo.r2.cloudflarestorage.com
+          R2_PUBLIC_DOMAIN: pub-ejemplo.r2.dev
+        run: python manage.py check --deploy --fail-level WARNING
+
+      - name: Los estáticos se recolectan con los settings de producción
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.prod
+          ALLOWED_HOSTS: ejemplo.com
+          EMAIL_HOST: smtp.ejemplo.com
+          EMAIL_HOST_USER: ci
+          EMAIL_HOST_PASSWORD: ci
+          R2_ACCESS_KEY_ID: ci
+          R2_SECRET_ACCESS_KEY: ci
+          R2_BUCKET_NAME: ci-bucket
+          R2_ENDPOINT_URL: https://ejemplo.r2.cloudflarestorage.com
+          R2_PUBLIC_DOMAIN: pub-ejemplo.r2.dev
+        run: python manage.py collectstatic --noinput
+
+      - name: Tests
+        run: pytest -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm --prefix frontend ci
+
+      - name: Tipos
+        run: npm --prefix frontend run lint
+
+      - name: Tests de componente
+        run: npm --prefix frontend run test
+
+      - name: El bundle se construye
+        run: npm --prefix frontend run build
+
+  seguridad:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements-dev.txt
+
+      - name: Análisis estático
+        run: bandit -q -c pyproject.toml -r apps config
+
+      - name: Vulnerabilidades en dependencias
+        run: pip-audit --strict

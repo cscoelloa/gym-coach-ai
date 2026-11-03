@@ -1,0 +1,57 @@
+name: Promover dev a main
+
+on:
+  push:
+    branches: [dev]
+
+concurrency:
+  group: promover-dev
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  promover:
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ¿Hay algo que promover?
+        id: diferencia
+        run: |
+          adelantados=$(gh api "repos/$GH_REPO/compare/main...$GITHUB_SHA" --jq .ahead_by)
+          echo "adelantados=$adelantados" >> "$GITHUB_OUTPUT"
+          if [ "$adelantados" = "0" ]; then
+            echo "::notice::main ya contiene $GITHUB_SHA; no hay nada que promover."
+          fi
+
+      - name: Abrir el PR de dev a main si no lo hay
+        if: steps.diferencia.outputs.adelantados != '0'
+        run: |
+          pr=$(gh pr list --base main --head dev --state open --json number --jq '.[0].number')
+          if [ -n "$pr" ]; then
+            echo "Se reutiliza el PR #$pr."
+            exit 0
+          fi
+          gh pr create --base main --head dev \
+            --title "Promoción de dev a main" \
+            --body "Abierto por el workflow «Promover dev a main» después de pasar el CI. Se fusiona solo; si falla, el motivo está en la ejecución del workflow." \
+          || {
+            echo "::error::No se pudo abrir el PR. Si dice «GitHub Actions is not permitted to create or approve pull requests», activa esa opción en Settings → Actions → General → Workflow permissions."
+            exit 1
+          }
+
+      - name: Fusionar, solo si dev sigue en el commit que ha pasado el CI
+        if: steps.diferencia.outputs.adelantados != '0'
+        run: gh pr merge dev --merge --match-head-commit "$GITHUB_SHA"

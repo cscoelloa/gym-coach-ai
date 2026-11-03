@@ -1,0 +1,104 @@
+name: gym-casa
+
+x-aplicacion: &aplicacion
+  build:
+    context: ../..
+    dockerfile: Dockerfile
+  image: gym-casa:latest
+  env_file: .env
+  environment:
+    DJANGO_SETTINGS_MODULE: config.settings.prod
+    MEDIA_STORAGE: disco
+    DATABASE_URL: postgres://gym:${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en despliegue/casa/.env}@db:5432/gym
+    REDIS_URL: redis://redis:6379/0
+  volumes:
+    - media:/app/media
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: gym
+      POSTGRES_USER: gym
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en despliegue/casa/.env}
+    volumes:
+      - datos:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gym -d gym"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  web:
+    <<: *aplicacion
+    command: ["sh", "scripts/start-web.sh"]
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import os, urllib.request as u;
+          h = os.environ["ALLOWED_HOSTS"].split(",")[0].strip();
+          u.urlopen(u.Request("http://127.0.0.1:8000/entrar/",
+          headers={"Host": h, "X-Forwarded-Proto": "https"}), timeout=5)
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  worker:
+    <<: *aplicacion
+    command: ["celery", "-A", "config", "worker", "-l", "info", "--concurrency=2"]
+    depends_on:
+      web:
+        condition: service_healthy
+
+  beat:
+    <<: *aplicacion
+    command: ["celery", "-A", "config", "beat", "-l", "info"]
+    volumes: []
+    depends_on:
+      web:
+        condition: service_healthy
+
+  herramientas:
+    <<: *aplicacion
+    profiles: ["herramientas"]
+    restart: "no"
+    command: ["true"]
+    volumes:
+      - media:/app/media
+      - ../../vendor/exercises-dataset:/datos:ro
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "127.0.0.1:${PUERTO_LOCAL:-8080}:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - media:/srv/media:ro
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  datos:
+  media:

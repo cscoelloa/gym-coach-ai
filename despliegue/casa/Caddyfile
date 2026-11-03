@@ -1,0 +1,24 @@
+{
+	admin off
+	auto_https off
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+:80 {
+	encode zstd gzip
+
+	handle_path /media/* {
+		root * /srv/media
+		header {
+			X-Content-Type-Options nosniff
+			Cache-Control "public, max-age=604800"
+		}
+		file_server
+	}
+
+	handle {
+		reverse_proxy web:8000
+	}
+}
