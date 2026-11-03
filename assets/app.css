@@ -1217,15 +1217,18 @@
 
 @layer components {
   .app-panel {
-    position: fixed; inset: auto 0 0; margin: 0 auto; width: 100%; max-width: 42rem; max-height: 92dvh;
+    --vv-fondo: calc(100% - var(--vv-arriba, 0px) - var(--vv-alto, 100%));
+    position: fixed; inset: auto 0 var(--vv-fondo); margin: 0 auto; width: 100%; max-width: 42rem;
+    max-height: calc(var(--vv-alto, 100dvh) * .92);
     padding: 0; border: 0; border-radius: 2rem 2rem 0 0;
     color: var(--ink); background: var(--surface-000); box-shadow: var(--shadow-pop);
-    overflow-y: auto; overscroll-behavior: contain;
+    overflow: hidden;
   }
+  .app-panel[open] { display: flex; flex-direction: column; }
   .app-panel::backdrop { background: var(--overlay); }
   .panel-head {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    position: sticky; top: 0; z-index: 2; padding: 1.25rem 1.25rem .75rem;
+    display: flex; flex: none; align-items: center; justify-content: space-between; gap: 1rem;
+    position: relative; padding: 1.25rem 1.25rem .75rem;
     background: var(--surface-000);
   }
   .panel-head::before {
@@ -1235,14 +1238,20 @@
   .panel-head h2 { min-width: 0; overflow-wrap: anywhere; font-size: 1.25rem; line-height: 1.6rem; }
   .panel-head h2:focus-visible { outline: none; }
   .panel-head button { flex-shrink: 0; }
-  .panel-body { padding: .25rem 1.25rem 1.25rem; padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+  .panel-body {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+    padding: .25rem 1.25rem 1.25rem; padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
   .app-panel .form-actions > * { flex: 1 1 0; min-width: fit-content; }
   .app-panel .compact-list { background: var(--surface-100); }
   .app-panel .compact-row { min-height: 3.5rem; }
   .card .card { box-shadow: none; background: var(--surface-200); background-image: none; }
   .pill { max-width: 65%; white-space: normal; overflow-wrap: anywhere; text-align: left; }
   @media (min-width: 48rem) {
-    .app-panel { inset: 0; margin: auto; max-height: 85dvh; border-radius: 1.5rem; }
+    .app-panel {
+      inset: var(--vv-arriba, 0px) 0 var(--vv-fondo); margin: auto;
+      max-height: calc(var(--vv-alto, 100dvh) * .85); border-radius: 1.5rem;
+    }
     .panel-head::before { display: none; }
   }
   @media (prefers-reduced-motion: no-preference) {

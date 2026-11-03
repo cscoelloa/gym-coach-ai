@@ -18,13 +18,25 @@ export function Panel({
     const dialogo = ref.current!;
     const previo = document.activeElement as HTMLElement | null;
     const overflow = document.body.style.overflow;
+    const visible = window.visualViewport;
+    const ajustar = () => {
+      if (!visible) return;
+      dialogo.style.setProperty("--vv-arriba", `${visible.offsetTop}px`);
+      dialogo.style.setProperty("--vv-alto", `${visible.height}px`);
+    };
+    const tactil = window.matchMedia?.("(pointer: coarse)")?.matches === true;
+    ajustar();
+    visible?.addEventListener("resize", ajustar);
+    visible?.addEventListener("scroll", ajustar);
     dialogo.showModal();
     (
-      dialogo.querySelector<HTMLElement>("[data-autofocus]") ??
+      (tactil ? null : dialogo.querySelector<HTMLElement>("[data-autofocus]")) ??
       dialogo.querySelector<HTMLElement>(".panel-head h2")
     )?.focus();
     document.body.style.overflow = "hidden";
     return () => {
+      visible?.removeEventListener("resize", ajustar);
+      visible?.removeEventListener("scroll", ajustar);
       dialogo.close();
       document.body.style.overflow = overflow;
       if (previo?.isConnected) previo.focus();

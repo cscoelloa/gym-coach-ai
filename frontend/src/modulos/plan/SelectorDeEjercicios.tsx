@@ -40,23 +40,27 @@ export function SelectorDeEjercicios({ onElegir }: { onElegir: (ejercicio: Ejerc
       <label className="sr-only" htmlFor="buscar-en-rutina">
         Buscar ejercicio
       </label>
-      <div className="relative">
-        <Icono
-          nombre="lupa"
-          className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-ink-subtle"
-        />
-        <input
-          id="buscar-en-rutina"
-          className="pl-11"
-          type="search"
-          data-autofocus
-          value={texto}
-          onChange={(evento) => setTexto(evento.target.value)}
-          placeholder="Nombre del ejercicio…"
-        />
+      <div className="sticky -top-1 z-[1] -mt-1 bg-surface-000 pt-1 pb-3">
+        <div className="relative">
+          <Icono
+            nombre="lupa"
+            className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-ink-subtle"
+          />
+          <input
+            id="buscar-en-rutina"
+            className="pl-11"
+            type="search"
+            data-autofocus
+            value={texto}
+            onChange={(evento) => setTexto(evento.target.value)}
+            placeholder="Buscar un movimiento…"
+            autoComplete="off"
+            enterKeyHint="search"
+          />
+        </div>
       </div>
 
-      <details className="my-3 rounded-xl bg-surface-100 p-3">
+      <details className="mb-3 rounded-xl bg-surface-100 p-3">
         <summary className="body-sm cursor-pointer py-1 font-medium text-primary">
           Filtros · músculo y equipamiento
         </summary>
