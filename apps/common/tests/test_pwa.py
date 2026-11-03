@@ -209,7 +209,6 @@ class TestLosColoresDeLaMarcaSonTokens:
         [
             "static/js/theme.js",
             "templates/spa.html",
-            "scripts/generar_iconos.py",
             "frontend/src/ds/grafica/tema.ts",
             "apps/common/pwa.py",
             "apps/common/sw.js",

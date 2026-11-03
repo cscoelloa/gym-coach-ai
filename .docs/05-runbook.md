@@ -207,13 +207,9 @@ regenerarlas: **`static/fonts/LEEME.md`**.
 
 ### Los iconos de la PWA
 
-```bash
-python scripts/generar_iconos.py
-```
-
-Se dibujan sin tipografía, con la geometría del icono «Entrenar», y se comitean en `static/pwa/`.
-Al cambiar `--primary-fill` o `--primary-hover` hay que copiar el valor nuevo al script y
-regenerarlos.
+Son archivos comiteados en `static/pwa/`, dibujados con la geometría del icono «Entrenar» y los
+colores `--primary-fill` y `--primary-hover` de `assets/app.css`. Si cambian esos colores, hay que
+rehacer los iconos con cualquier editor gráfico y sustituirlos con los mismos nombres y tamaños.
 
 ## La PWA (ADR-063)
 
@@ -561,21 +557,6 @@ cuando a otro sitio.
   `curl -H "Host: <tu-host>" -H "X-Forwarded-Proto: https" http://127.0.0.1:8080/entrar/`.
 
 ## Despliegue (Railway)
-
-### La rama `deploy`
-
-Una rama con **solo lo que se despliega**: sin documentación ni bitácoras, sin tests y sin
-configuración de herramientas. Se regenera desde la rama en la que se esté —o la que se le pase—
-y se publica con fuerza, porque se rehace cada vez:
-
-```bash
-sh scripts/crear-rama-deploy.sh              # desde la rama actual
-sh scripts/crear-rama-deploy.sh rediseno-aire
-git push --force-with-lease origin deploy
-```
-
-Lo que se quita está en la lista `EXCLUIR` del script. Si algo nuevo no debe desplegarse, se añade
-ahí. El script se niega a commitear si la rama saldría sin algún archivo de `IMPRESCINDIBLES`.
 
 Tres servicios desde el **mismo repositorio**, cada uno con su comando de arranque del `Procfile`:
 
