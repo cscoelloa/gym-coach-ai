@@ -113,6 +113,7 @@ export function Entrenamientos() {
 
               <Paginacion
                 pagina={pagina}
+                total={data.total_pages}
                 hayAnterior={Boolean(data.previous)}
                 haySiguiente={Boolean(data.next)}
                 onCambio={setPagina}

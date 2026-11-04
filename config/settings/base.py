@@ -141,7 +141,7 @@ REST_FRAMEWORK = {
         "metrics": "60/hour",
         "avisos": "30/hour",
     },
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_PAGINATION_CLASS": "apps.api.paginacion.Paginacion",
     "PAGE_SIZE": 25,
 }
 

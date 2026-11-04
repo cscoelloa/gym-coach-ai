@@ -6,7 +6,6 @@ from django.db.models import Case, Count, Exists, IntegerField, OuterRef, Q, Whe
 from django.utils import timezone
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -43,6 +42,7 @@ from .gestion_serializers import (
     ProveedorSerializer,
     UsuarioSerializer,
 )
+from .paginacion import Paginacion
 
 logger = logging.getLogger(__name__)
 
@@ -258,7 +258,7 @@ class DocumentoViewSet(
 
 class GeneracionViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, VistaDeGestion):
     serializer_class = GeneracionListaSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = Paginacion
 
     def get_serializer_class(self):
         return (

@@ -5,6 +5,7 @@ import { BodyMap } from "@/ds/BodyMap";
 import { Button } from "@/ds/Button";
 import { GrupoDeChips } from "@/ds/GrupoDeChips";
 import { Icono } from "@/ds/Icono";
+import { Paginacion } from "@/ds/Paginacion";
 import {
   SIN_FILTROS,
   useFacetas,
@@ -151,23 +152,14 @@ export function SelectorDeEjercicios({ onElegir }: { onElegir: (ejercicio: Ejerc
               Ningún ejercicio con esos filtros. Prueba otra búsqueda o quita los filtros.
             </p>
           )}
-          <div className="mt-4 flex items-center justify-between gap-2">
-            <Button
-              tamano="sm"
-              disabled={pagina === 1 || listado.isFetching}
-              onClick={() => setPagina((p) => p - 1)}
-            >
-              Anterior
-            </Button>
-            <span className="caption num text-ink-muted">Página {pagina}</span>
-            <Button
-              tamano="sm"
-              disabled={!listado.data?.next || listado.isFetching}
-              onClick={() => setPagina((p) => p + 1)}
-            >
-              Siguiente
-            </Button>
-          </div>
+          <Paginacion
+            pagina={pagina}
+            total={listado.data?.total_pages}
+            hayAnterior={pagina > 1}
+            haySiguiente={Boolean(listado.data?.next)}
+            ocupado={listado.isFetching}
+            onCambio={setPagina}
+          />
         </>
       )}
     </div>

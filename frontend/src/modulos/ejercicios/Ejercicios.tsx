@@ -197,6 +197,7 @@ export function Ejercicios() {
 
       <Paginacion
         pagina={pagina}
+        total={listado.data?.total_pages}
         hayAnterior={Boolean(listado.data?.previous)}
         haySiguiente={Boolean(listado.data?.next)}
         onCambio={irAPagina}

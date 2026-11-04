@@ -12,6 +12,7 @@ import { Entrenamientos } from "./Entrenamientos";
 
 const HISTORIAL: Paginado<SesionEnHistorial> = {
   count: 2,
+  total_pages: 1,
   next: null,
   previous: null,
   results: [

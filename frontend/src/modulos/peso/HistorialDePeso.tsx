@@ -80,6 +80,7 @@ export function HistorialDePeso() {
 
       <Paginacion
         pagina={pagina}
+        total={registros.data.total_pages}
         hayAnterior={Boolean(registros.data.previous)}
         haySiguiente={Boolean(registros.data.next)}
         onCambio={setPagina}

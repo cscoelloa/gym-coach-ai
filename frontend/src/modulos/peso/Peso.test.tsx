@@ -145,6 +145,7 @@ describe("Peso", () => {
         paginas.push(pagina);
         return HttpResponse.json({
           count: 30,
+          total_pages: 2,
           next: pagina ? null : "/api/peso/?page=2",
           previous: pagina ? "/api/peso/" : null,
           results: [registro({ id: pagina ? 2 : 1, weight_kg: pagina ? "79.00" : "80.00" })],
@@ -155,6 +156,9 @@ describe("Peso", () => {
 
     await userEvent.click(await screen.findByRole("tab", { name: /Historial/ }));
     expect(await screen.findByText("80.00 kg")).toBeVisible();
+    expect(screen.getByRole("navigation", { name: "Paginación" })).toHaveTextContent(
+      "Página 1 de 2",
+    );
 
     await userEvent.click(
       within(screen.getByRole("navigation", { name: "Paginación" })).getByRole("button", {
@@ -163,6 +167,9 @@ describe("Peso", () => {
     );
 
     expect(await screen.findByText("79.00 kg")).toBeVisible();
+    expect(screen.getByRole("navigation", { name: "Paginación" })).toHaveTextContent(
+      "Página 2 de 2",
+    );
     expect(paginas).toContain("2");
   });
 
