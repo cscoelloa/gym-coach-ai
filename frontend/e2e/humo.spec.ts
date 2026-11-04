@@ -167,7 +167,7 @@ test("entrenar: empezar una rutina, registrar una serie y cerrar", async ({ page
   await expect(page).toHaveURL(/\/rutinas\/\d+\/?$/);
   await page.getByRole("button", { name: "Entrenar", exact: true }).click();
 
-  await expect(page).toHaveURL(/\/entrenamientos\/\d+\/?$/);
+  await expect(page).toHaveURL(/\/entrenamientos\/\d+\/?(\?ejercicio=\d+)?$/);
   await expect(page.getByRole("link", { name: "Salir del entrenamiento" })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Principal" })).toHaveCount(0);
   await expect(page.locator("button.account-trigger")).toHaveCount(0);
@@ -326,7 +326,7 @@ test("el perfil se edita y recuerda qué se manda a la IA", async ({ page }) => 
   await expect(page.getByLabel("Días por semana")).toHaveValue(nuevo);
 
   await page.goto("/perfil/eliminar/");
-  const borrar = page.getByRole("button", { name: "Eliminar mi cuenta definitivamente" });
+  const borrar = page.getByRole("button", { name: "Sí, eliminar mi cuenta" });
   await expect(borrar).toBeDisabled();
   await page.getByLabel(/para confirmar/).fill("e2e");
   await expect(borrar).toBeEnabled();

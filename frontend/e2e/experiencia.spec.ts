@@ -6,7 +6,7 @@ test("borrador: atrás, Cuenta y recarga protegen cambios; los paneles restauran
   await page.getByLabel("Nombre").fill("Borrador sin guardar");
   const avisoDeCambios = page.getByRole("dialog", { name: "Cambios sin guardar" });
   await page.goBack();
-  await expect(avisoDeCambios.getByRole("button", { name: "Seguir editando" })).toBeFocused();
+  await expect(avisoDeCambios.getByRole("heading", { name: "Cambios sin guardar" })).toBeFocused();
   await avisoDeCambios.getByRole("button", { name: "Seguir editando" }).click();
   await expect(avisoDeCambios).toHaveCount(0);
   await expect(page.getByLabel("Nombre")).toHaveValue("Borrador sin guardar");
@@ -32,7 +32,12 @@ test("borrador: atrás, Cuenta y recarga protegen cambios; los paneles restauran
   await expect(panel).toHaveCount(0);
   await expect(page.locator("button.account-trigger:visible")).toBeFocused();
   await page.getByRole("button", { name: /Añadir ejercicio/ }).click();
-  await expect(page.getByLabel("Buscar ejercicio")).toBeFocused();
+  const tactil = await page.evaluate(() => matchMedia("(pointer: coarse)").matches);
+  await expect(
+    tactil
+      ? page.getByRole("dialog", { name: "Añadir ejercicio" }).getByRole("heading", { name: "Añadir ejercicio" })
+      : page.getByLabel("Buscar ejercicio"),
+  ).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: /Añadir ejercicio/ })).toBeFocused();
   const recarga = page.waitForEvent("dialog");

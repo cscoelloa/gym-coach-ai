@@ -98,7 +98,7 @@ export function Ejercicios() {
       </section>
 
       <details className="filter-deck" aria-label="Filtros del catálogo">
-        <summary className="cursor-pointer py-2 font-semibold">Filtros · músculo, zona y equipamiento</summary>
+        <summary className="cursor-pointer py-2.5 font-semibold">Filtros · músculo, zona y equipamiento</summary>
         <div className="mb-3 flex items-center justify-between gap-3">
           <div>
             

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 
 import { useSinLeer } from "@/api/notificaciones";
 import { type UsuarioDeSesion } from "@/api/sesion";
@@ -11,9 +11,11 @@ import { AvisoDeConexion } from "./AvisoDeConexion";
 import { Cuenta } from "./Cuenta";
 import { DescansoEnCurso } from "./DescansoEnCurso";
 import { EnlaceDeDestino } from "./EnlaceDeDestino";
+import { GestoDeVolver } from "./GestoDeVolver";
 import { Icono } from "./Icono";
 import { Marca } from "./Marca";
-import { DESTINOS, esDestino, padreDe, type Destino } from "./navegacion";
+import { DESTINOS, esDestino, type Destino } from "./navegacion";
+import { useVolver } from "./useVolver";
 
 type Contexto = "app" | "gestion";
 
@@ -40,19 +42,12 @@ function Campana({ className = "" }: { className?: string }) {
 }
 
 function Atras() {
-  const { pathname, key } = useLocation();
-  const navegar = useNavigate();
-  const padre = padreDe(pathname);
-  const conHistorial = key !== "default";
+  const { etiqueta, volver } = useVolver();
 
   return (
-    <button
-      type="button"
-      className="btn-back"
-      onClick={() => (conHistorial ? navegar(-1) : navegar(padre.url, { replace: true }))}
-    >
+    <button type="button" className="btn-back" onClick={volver}>
       <Icono nombre="chevronIzquierda" className="size-6 shrink-0" />
-      <span className="truncate">{conHistorial ? "Atrás" : padre.etiqueta}</span>
+      <span className="truncate">{etiqueta}</span>
     </button>
   );
 }
@@ -191,6 +186,8 @@ export function AppShell({
   children: ReactNode;
   contexto?: Contexto;
 }) {
+  const { pathname } = useLocation();
+
   return (
     <ProveedorDeMarco>
       <BarraLateral usuario={usuario} />
@@ -204,6 +201,7 @@ export function AppShell({
       </div>
 
       {contexto === "app" && <BarraDePestanas />}
+      {!esDestino(pathname) && <GestoDeVolver />}
       <AvisoDeActualizacion />
     </ProveedorDeMarco>
   );

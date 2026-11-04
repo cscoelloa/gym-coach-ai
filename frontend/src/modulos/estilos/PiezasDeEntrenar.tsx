@@ -55,7 +55,7 @@ export function PiezasDeEntrenar() {
         titulo="Stepper"
         nota="Los botones miden 44 px porque se pulsan con el pulgar sudado entre series. El campo sigue en medio y se puede escribir: subir de 60 a 100 kg a golpes de «+» son cuarenta pulsaciones."
       >
-        <Card className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Card className="grid grid-cols-1 gap-3 min-[22.5rem]:grid-cols-2 sm:grid-cols-4">
           <Stepper etiqueta="kg" valor={kg} onCambio={setKg} paso={2.5} decimal />
           <Stepper etiqueta="Reps" valor={reps} onCambio={setReps} minimo={1} />
           <div>
@@ -75,7 +75,7 @@ export function PiezasDeEntrenar() {
           barra de registrar:
         </p>
         <Card className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 min-[25rem]:grid-cols-2">
             <Stepper etiqueta="kg" valor={kg} onCambio={setKg} paso={2.5} decimal tamano="lg" />
             <Stepper etiqueta="Reps" valor={reps} onCambio={setReps} minimo={1} tamano="lg" />
           </div>

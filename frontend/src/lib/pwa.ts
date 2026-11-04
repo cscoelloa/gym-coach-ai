@@ -17,7 +17,7 @@ function hayVersionNueva(trabajador: ServiceWorker | null) {
   cambiar({ disponible: true });
 }
 
-const CADA = 30 * 60 * 1000;
+const CADA = 60 * 1000;
 
 export function registrarServiceWorker() {
   if (!import.meta.env.PROD || !("serviceWorker" in navigator)) return;

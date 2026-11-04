@@ -60,11 +60,11 @@ export function SelectorDeEjercicios({ onElegir }: { onElegir: (ejercicio: Ejerc
         </div>
       </div>
 
-      <details className="mb-3 rounded-xl bg-surface-100 p-3">
-        <summary className="body-sm cursor-pointer py-1 font-medium text-primary">
+      <details className="mb-3 rounded-xl bg-surface-100 px-3 py-1">
+        <summary className="body-sm cursor-pointer py-2.5 font-medium text-primary">
           Filtros · músculo y equipamiento
         </summary>
-        <div className="mt-3 space-y-4">
+        <div className="mt-1 space-y-4 pb-3">
           <BodyMap
             niveles={{}}
             activo={filtros.muscle}

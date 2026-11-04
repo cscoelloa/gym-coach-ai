@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { ErrorDeApi } from "@/api/cliente";
 import { Aviso } from "@/ds/Aviso";
 import { AvisoPasajero } from "@/ds/AvisoPasajero";
+import { BarraDeAcciones } from "@/ds/BarraDeAcciones";
 import { Button, EnlaceBoton } from "@/ds/Button";
 import { Cabecera } from "@/ds/Cabecera";
 import { Campo } from "@/ds/Campo";
@@ -64,7 +65,7 @@ function Editor({ rutina }: { rutina?: Rutina }) {
             errores={campos["name"]}
           />
           <details open={borrador.description ? true : undefined}>
-            <summary className="body-sm cursor-pointer py-2 text-primary">
+            <summary className="body-sm cursor-pointer py-2.5 text-primary">
               Descripción opcional
             </summary>
             <Campo
@@ -98,7 +99,7 @@ function Editor({ rutina }: { rutina?: Rutina }) {
           Rutina guardada. Ya puedes asignarla a tu semana o entrenar.
         </AvisoPasajero>
 
-        <div className="editor-actions">
+        <BarraDeAcciones>
           <span className="caption text-ink-muted" role="status">
             {e.guardar.isPending
               ? "Guardando…"
@@ -118,7 +119,7 @@ function Editor({ rutina }: { rutina?: Rutina }) {
           <EnlaceBoton a="/plan/" variante="ghost">
             {e.pendiente || !e.rutinaId ? "Cancelar" : "Volver al plan"}
           </EnlaceBoton>
-        </div>
+        </BarraDeAcciones>
 
         {e.rutinaId && (
           <div className="card flex flex-wrap items-center gap-3">

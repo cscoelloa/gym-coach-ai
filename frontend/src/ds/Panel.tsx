@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, type ReactNode } from "react";
 
 import { Icono } from "./Icono";
+import { useArrastreParaCerrar } from "./useArrastreParaCerrar";
 
 export function Panel({
   titulo,
@@ -13,6 +14,7 @@ export function Panel({
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const id = useId();
+  useArrastreParaCerrar(ref, onCerrar);
 
   useEffect(() => {
     const dialogo = ref.current!;

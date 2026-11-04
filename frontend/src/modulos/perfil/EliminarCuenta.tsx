@@ -88,7 +88,7 @@ export function EliminarCuenta() {
               })
             }
           >
-            {borrar.isPending ? "Eliminando…" : "Eliminar mi cuenta definitivamente"}
+            {borrar.isPending ? "Eliminando…" : "Sí, eliminar mi cuenta"}
           </Button>
           <Button variante="secondary" onClick={() => navegar("/perfil/")}>
             Cancelar

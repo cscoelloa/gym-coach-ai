@@ -8,11 +8,11 @@ export function ListaDelBorrador({ e }: { e: ControlDelEditor }) {
 
   return (
     <section aria-label="Ejercicios de la rutina">
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <h2 className="title-lg">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <h2 className="title-lg whitespace-nowrap">
           Ejercicios <span className="num text-ink-subtle">{borrador.exercises.length}</span>
         </h2>
-        <Button tamano="sm" onClick={() => e.setHoja("buscar")}>
+        <Button tamano="sm" className="whitespace-nowrap" onClick={() => e.setHoja("buscar")}>
           <Icono nombre="mas" className="size-4" />
           Añadir ejercicio
         </Button>
@@ -54,7 +54,7 @@ export function ListaDelBorrador({ e }: { e: ControlDelEditor }) {
                 <div className="flex shrink-0 flex-col">
                   <button
                     type="button"
-                    className="order-button size-9"
+                    className="order-button h-10 w-11"
                     aria-label={`Subir ${fila.exercise_detail.name}`}
                     disabled={indice === 0}
                     onClick={() => e.mover(indice, -1)}
@@ -63,7 +63,7 @@ export function ListaDelBorrador({ e }: { e: ControlDelEditor }) {
                   </button>
                   <button
                     type="button"
-                    className="order-button size-9"
+                    className="order-button h-10 w-11"
                     aria-label={`Bajar ${fila.exercise_detail.name}`}
                     disabled={indice === borrador.exercises.length - 1}
                     onClick={() => e.mover(indice, 1)}

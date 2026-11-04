@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { Badge } from "@/ds/Badge";
+import { BarraDeAcciones } from "@/ds/BarraDeAcciones";
 import { Button, EnlaceBoton } from "@/ds/Button";
 import { Card, PageHeader } from "@/ds/Card";
 import { EmptyState } from "@/ds/EmptyState";
@@ -93,7 +94,7 @@ export function Metricas() {
             ))}
           </div>
 
-          <div className="editor-actions mt-6">
+          <BarraDeAcciones>
             <Button
               variante="primary"
               disabled={guardar.isPending}
@@ -105,11 +106,11 @@ export function Metricas() {
             >
               {guardar.isPending ? "Guardando…" : "Guardar mi panel"}
             </Button>
-            <span className="body-sm text-ink-muted">
+            <span className="caption text-ink-muted" role="status">
               <span className="num">{marcadas.size}</span> de{" "}
               <span className="num">{data.length}</span> seleccionadas
             </span>
-          </div>
+          </BarraDeAcciones>
         </>
       )}
     </>

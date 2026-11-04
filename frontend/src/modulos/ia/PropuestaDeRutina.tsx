@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { ErrorDeApi } from "@/api/cliente";
 import { Aviso } from "@/ds/Aviso";
 import { Badge } from "@/ds/Badge";
+import { BarraDeAcciones } from "@/ds/BarraDeAcciones";
 import { Button, EnlaceBoton } from "@/ds/Button";
 import { Card, PageHeader, Pill } from "@/ds/Card";
 import { EmptyState } from "@/ds/EmptyState";
@@ -161,7 +162,7 @@ export function PropuestaDeRutina() {
       </Card>
 
       {!data.ya_aplicada && (
-        <div className="editor-actions mt-6">
+        <BarraDeAcciones>
           <span className="caption text-ink-muted" role="status">
             Nada se guarda hasta que lo aceptes.
           </span>
@@ -185,7 +186,7 @@ export function PropuestaDeRutina() {
           >
             Descartar
           </Button>
-        </div>
+        </BarraDeAcciones>
       )}
     </>
   );

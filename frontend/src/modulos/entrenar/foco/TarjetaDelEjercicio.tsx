@@ -46,7 +46,7 @@ export function TarjetaDelEjercicio({
             )}
             <button
               type="button"
-              className="pill pill-active hover:no-underline"
+              className="pill pill-active toque-amplio hover:no-underline"
               onClick={onComoSeHace}
             >
               Cómo se hace

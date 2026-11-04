@@ -247,7 +247,7 @@ describe("EliminarCuenta", () => {
     montarBorrado();
 
     const boton = await screen.findByRole("button", {
-      name: "Eliminar mi cuenta definitivamente",
+      name: "Sí, eliminar mi cuenta",
     });
     expect(boton).toBeDisabled();
 
@@ -268,7 +268,7 @@ describe("EliminarCuenta", () => {
 
     await userEvent.type(await screen.findByLabelText(/Escribe «ana»/), "ana");
     await userEvent.click(
-      screen.getByRole("button", { name: "Eliminar mi cuenta definitivamente" }),
+      screen.getByRole("button", { name: "Sí, eliminar mi cuenta" }),
     );
 
     await waitFor(() => expect(salirDeLaSpa).toHaveBeenCalledWith("/entrar/"));
