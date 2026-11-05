@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { AvisoDeActualizacion } from "@/ds/AvisoDeActualizacion";
 
-import { _anunciar, _reiniciar, borrarCachesDeLaApp } from "./pwa";
+import { _anunciar, _reiniciar, borrarCachesDeLaApp, retenerActualizacion } from "./pwa";
 
 afterEach(() => {
   act(() => _reiniciar());
@@ -22,8 +22,18 @@ describe("El aviso de versión nueva", () => {
     expect(screen.queryByText(/versión nueva/)).not.toBeInTheDocument();
   });
 
-  it("aparece al anunciarla, y no aplica nada hasta que se pulsa", async () => {
+  it("si no hay nada en marcha, se aplica sola", () => {
     const enEspera = { postMessage: vi.fn() } as unknown as ServiceWorker;
+    montarAviso();
+
+    act(() => _anunciar(enEspera));
+
+    expect(enEspera.postMessage).toHaveBeenCalledWith({ tipo: "SALTAR_ESPERA" });
+  });
+
+  it("mientras se edita o se entrena, espera y solo aplica al pulsar o al terminar", async () => {
+    const enEspera = { postMessage: vi.fn() } as unknown as ServiceWorker;
+    const liberar = retenerActualizacion();
     montarAviso();
 
     act(() => _anunciar(enEspera));
@@ -32,7 +42,19 @@ describe("El aviso de versión nueva", () => {
     expect(enEspera.postMessage).not.toHaveBeenCalled();
 
     await userEvent.click(screen.getByRole("button", { name: "Actualizar" }));
+    expect(enEspera.postMessage).toHaveBeenCalledWith({ tipo: "SALTAR_ESPERA" });
 
+    act(() => liberar());
+  });
+
+  it("al terminar la edición aplica la que estaba esperando", () => {
+    const enEspera = { postMessage: vi.fn() } as unknown as ServiceWorker;
+    const liberar = retenerActualizacion();
+
+    act(() => _anunciar(enEspera));
+    expect(enEspera.postMessage).not.toHaveBeenCalled();
+
+    act(() => liberar());
     expect(enEspera.postMessage).toHaveBeenCalledWith({ tipo: "SALTAR_ESPERA" });
   });
 });

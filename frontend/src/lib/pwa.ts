@@ -6,15 +6,34 @@ let estado: Estado = { disponible: false };
 const oyentes = new Set<() => void>();
 let enEspera: ServiceWorker | null = null;
 let pidioActualizar = false;
+let retenciones = 0;
 
 function cambiar(siguiente: Estado) {
   estado = siguiente;
   for (const oyente of oyentes) oyente();
 }
 
+function intentarAuto() {
+  if (!enEspera || retenciones > 0 || pidioActualizar) return;
+  pidioActualizar = true;
+  enEspera.postMessage({ tipo: "SALTAR_ESPERA" });
+}
+
 function hayVersionNueva(trabajador: ServiceWorker | null) {
   enEspera = trabajador;
   cambiar({ disponible: true });
+  intentarAuto();
+}
+
+export function retenerActualizacion() {
+  retenciones += 1;
+  let liberado = false;
+  return () => {
+    if (liberado) return;
+    liberado = true;
+    retenciones -= 1;
+    intentarAuto();
+  };
 }
 
 const CADA = 60 * 1000;
@@ -28,7 +47,8 @@ export function registrarServiceWorker() {
     if (pidioActualizar) {
       window.location.reload();
     } else if (controladaAlEmpezar) {
-      hayVersionNueva(null);
+      if (retenciones === 0) window.location.reload();
+      else cambiar({ disponible: true });
     }
   });
 
@@ -91,6 +111,7 @@ export async function borrarCachesDeLaApp() {
 export function _reiniciar() {
   enEspera = null;
   pidioActualizar = false;
+  retenciones = 0;
   cambiar({ disponible: false });
 }
 

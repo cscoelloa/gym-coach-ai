@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
 import { Cargando, ErrorDePantalla } from "@/ds/estados";
 import { Icono } from "@/ds/Icono";
+import { retenerActualizacion } from "@/lib/pwa";
 
 import { AvanceDelEntreno } from "./AvanceDelEntreno";
 import { BarraDeRegistrar } from "./BarraDeRegistrar";
@@ -20,6 +21,8 @@ export function Entrenar() {
   const sesionId = Number(id);
   const e = useEntrenar(sesionId);
   const [mirando, setMirando] = useState(false);
+
+  useEffect(() => retenerActualizacion(), []);
 
   if (e.foco.isPending) return <Cargando />;
   if (e.foco.error || !e.datos) return <ErrorDePantalla onReintentar={e.foco.refetch} />;

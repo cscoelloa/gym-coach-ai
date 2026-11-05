@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { useBlocker } from "react-router";
 import { Confirmacion } from "@/ds/Confirmacion";
+import { retenerActualizacion } from "@/lib/pwa";
 
 const TITULO = "Cambios sin guardar";
 const MENSAJE = "Si sales ahora se descartan los cambios que todavía no has guardado.";
@@ -55,11 +56,16 @@ export function useCambiosPendientes(pendiente: boolean) {
   const contexto = useConfirmarSalida();
   useEffect(() => {
     contexto.marcar(pendiente);
+    const liberar = pendiente ? retenerActualizacion() : null;
     const antesDeSalir = (e: BeforeUnloadEvent) => {
       if (pendiente) { e.preventDefault(); e.returnValue = ""; }
     };
     window.addEventListener("beforeunload", antesDeSalir);
-    return () => { contexto.limpiar(); window.removeEventListener("beforeunload", antesDeSalir); };
+    return () => {
+      contexto.limpiar();
+      liberar?.();
+      window.removeEventListener("beforeunload", antesDeSalir);
+    };
   }, [pendiente, contexto]);
   const bloqueo = useBlocker(({ currentLocation, nextLocation }) =>
     pendiente && currentLocation.pathname !== nextLocation.pathname,
