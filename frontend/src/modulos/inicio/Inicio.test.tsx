@@ -42,13 +42,13 @@ function responder(datos: Partial<DatosDeInicio> = {}) {
 beforeEach(() => responder());
 
 describe("Inicio", () => {
-  it("la constancia va primero", async () => {
+  it("lo de hoy va primero, y la constancia antes que el peso", async () => {
     montar(<Inicio />);
 
     const titulos = (await screen.findAllByRole("heading", { level: 2 })).map(
       (h) => h.textContent,
     );
-    expect(titulos[0]).toBe("Constancia");
+    expect(titulos[0]).toBe("Lo de hoy");
     expect(titulos.indexOf("Constancia")).toBeLessThan(titulos.indexOf("Peso corporal"));
   });
 

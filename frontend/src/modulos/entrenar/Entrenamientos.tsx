@@ -67,7 +67,7 @@ export function Entrenamientos() {
             <ErrorDePantalla onReintentar={refetch} />
           ) : data.results.length ? (
             <>
-              <div className="card-list">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {data.results.map((sesion) => {
                   const fecha = comoFecha(sesion.date);
                   const enCurso = sesion.finished_at === null;
@@ -78,49 +78,47 @@ export function Entrenamientos() {
                     sesion.routine_name ?? (sesion.routine ? "Rutina" : "Entrenamiento libre");
 
                   return (
-                    <Link className="history-row hover:no-underline" to={destino} key={sesion.id}>
-                      <span className="date-block">
-                        <span className="metric-md text-ink">{DIA.format(fecha)}</span>
-                        <span className="tag text-ink-muted">{MES.format(fecha)}</span>
-                      </span>
-
-                      <span className="min-w-0">
-                        <span className="title-sm block truncate text-ink">{nombre}</span>
-                        <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-                          {enCurso ? (
-                            <Badge tono="warn">En curso</Badge>
-                          ) : (
-                            <Badge tono="done">Finalizado</Badge>
-                          )}
-                          <span className="caption text-ink-muted first-letter:uppercase">
-                            {DIA_SEMANA.format(fecha)}
-                            {sesion.set_count > 0 && (
-                              <>
-                                {" · "}
-                                <span className="num">{sesion.set_count}</span>{" "}
-                                {sesion.set_count === 1 ? "serie" : "series"}
-                              </>
-                            )}
-                            {sesion.duracion_minutos != null && (
-                              <>
-                                {" · "}
-                                <span className="num">{sesion.duracion_minutos}</span> min
-                              </>
-                            )}
-                            {sesion.tonelaje_kg > 0 && (
-                              <>
-                                {" · "}
-                                <span className="num">
-                                  {sesion.tonelaje_kg.toLocaleString("es-ES")}
-                                </span>{" "}
-                                kg
-                              </>
-                            )}
+                    <Link className="diario-card hover:no-underline" to={destino} key={sesion.id}>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <span className="tag block text-ink-subtle first-letter:uppercase">
+                            {DIA_SEMANA.format(fecha)} · {DIA.format(fecha)} {MES.format(fecha)}
                           </span>
-                        </span>
-                      </span>
+                          <h3 className="title-sm mt-0.5 truncate text-ink">{nombre}</h3>
+                        </div>
+                        {enCurso ? (
+                          <Badge tono="warn">En curso</Badge>
+                        ) : (
+                          <Badge tono="done">Finalizado</Badge>
+                        )}
+                      </div>
 
-                      <Icono nombre="chevronDerecha" className="size-4 shrink-0 text-ink-subtle" />
+                      <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+                        {sesion.set_count > 0 && (
+                          <span>
+                            <span className="metric-sm num block text-ink">{sesion.set_count}</span>
+                            <span className="tag text-ink-subtle">
+                              {sesion.set_count === 1 ? "serie" : "series"}
+                            </span>
+                          </span>
+                        )}
+                        {sesion.duracion_minutos != null && (
+                          <span>
+                            <span className="metric-sm num block text-ink">
+                              {sesion.duracion_minutos}
+                            </span>
+                            <span className="tag text-ink-subtle">min</span>
+                          </span>
+                        )}
+                        {sesion.tonelaje_kg > 0 && (
+                          <span>
+                            <span className="metric-sm num block text-ink">
+                              {sesion.tonelaje_kg.toLocaleString("es-ES")}
+                            </span>
+                            <span className="tag text-ink-subtle">kg movidos</span>
+                          </span>
+                        )}
+                      </div>
                     </Link>
                   );
                 })}

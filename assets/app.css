@@ -308,6 +308,11 @@
 @utility rutina-portada-vacia {
   @apply flex items-center justify-center bg-surface-200 text-ink-subtle;
 }
+@utility diario-card {
+  @apply block rounded-2xl bg-surface-100 p-4;
+  box-shadow: var(--shadow-raised);
+  @apply transition-transform active:scale-[0.99];
+}
 @utility tag-musculo {
   @apply inline-flex max-w-full items-center truncate rounded-full bg-data-soft px-2 py-0.5;
   @apply text-[12px]/[16px] font-semibold text-data;

@@ -98,6 +98,24 @@ export function Inicio() {
       </header>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Card className="card-elevada lg:col-span-2">
+          <h2 className="sr-only">Lo de hoy</h2>
+          <QueTocaHoy toca={data.hoy_toca} hoy={data.hoy} />
+
+          <div className="mt-5 border-t border-line pt-5">
+            <WeekStrip
+              dias={data.semana.map((dia) => ({
+                inicial: dia.inicial,
+                numero: dia.numero,
+                hoy: dia.hoy,
+                futuro: dia.futuro,
+                entrenado: dia.entrenado,
+                planificado: dia.planificado,
+              }))}
+            />
+          </div>
+        </Card>
+
         <Card className="card-calida flex flex-wrap items-center gap-x-5 gap-y-4 lg:col-span-2">
           <Anillo
             hecho={racha.hechas_esta_semana}
@@ -135,24 +153,6 @@ export function Inicio() {
             <EnlaceBoton a="/progreso/" variante="secondary" tamano="sm">
               Ver mi progreso
             </EnlaceBoton>
-          </div>
-        </Card>
-
-        <Card className="card-accent lg:col-span-2">
-          <h2 className="sr-only">Tu semana</h2>
-          <WeekStrip
-            dias={data.semana.map((dia) => ({
-              inicial: dia.inicial,
-              numero: dia.numero,
-              hoy: dia.hoy,
-              futuro: dia.futuro,
-              entrenado: dia.entrenado,
-              planificado: dia.planificado,
-            }))}
-          />
-
-          <div className="mt-5 border-t border-line pt-5">
-            <QueTocaHoy toca={data.hoy_toca} hoy={data.hoy} />
           </div>
         </Card>
 
