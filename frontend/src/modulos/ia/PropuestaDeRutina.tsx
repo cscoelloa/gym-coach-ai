@@ -46,6 +46,7 @@ export function PropuestaDeRutina() {
       <PageHeader
         kicker="Propuesta — todavía no guardada"
         titulo={data.nombre}
+        hero="primary"
         entradilla={data.descripcion}
       >
         {data.ya_aplicada && (

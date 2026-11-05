@@ -57,6 +57,7 @@ function Editor({ rutina }: { rutina?: Rutina }) {
     <div className="routine-editor mx-auto max-w-3xl">
       <Cabecera
         titulo={e.rutinaId ? "Editar rutina" : "Nueva rutina"}
+        hero="primary"
         descripcion="Tu entrenamiento, ejercicio a ejercicio."
       />
 

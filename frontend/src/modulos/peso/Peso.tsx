@@ -33,6 +33,7 @@ export function Peso() {
       <PageHeader
         kicker="Composición y tendencia"
         titulo="Peso corporal"
+        hero="data"
         entradilla="Un dato breve; una señal útil cuando se mira en el tiempo."
       >
         {ultimo && (

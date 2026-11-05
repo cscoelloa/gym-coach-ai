@@ -18,13 +18,23 @@ export function PageHeader({
   titulo,
   entradilla,
   children,
+  hero,
 }: {
   kicker?: string;
   titulo: string;
   entradilla?: ReactNode;
   children?: ReactNode;
+  hero?: "primary" | "data" | "calido";
 }) {
-  return <Cabecera titulo={titulo} kicker={kicker} descripcion={entradilla} acciones={children} />;
+  return (
+    <Cabecera
+      titulo={titulo}
+      kicker={kicker}
+      descripcion={entradilla}
+      acciones={children}
+      hero={hero}
+    />
+  );
 }
 
 export function SectionKicker({ children }: { children: ReactNode }) {

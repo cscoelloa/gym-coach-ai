@@ -26,6 +26,7 @@ export function Progreso() {
       <PageHeader
         kicker="Panel de rendimiento"
         titulo="Progreso"
+        hero="data"
         entradilla="Señales claras para decidir qué ajustar después."
       >
         <EnlaceBoton a="/metricas/" variante="secondary">

@@ -43,6 +43,7 @@ export function Metricas() {
       <PageHeader
         kicker="Tu panel"
         titulo="Catálogo de métricas"
+        hero="data"
         entradilla="Elige cuáles quieres ver en tu panel de progreso."
       >
         <EnlaceBoton a="/progreso/?vista=metricas" variante="secondary">

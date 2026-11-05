@@ -103,6 +103,7 @@ export function Plan() {
     <>
       <Cabecera
         titulo="Plan"
+        hero="primary"
         descripcion={programa?.nombre ?? "Tu semana de entrenamiento"}
         acciones={
           <>

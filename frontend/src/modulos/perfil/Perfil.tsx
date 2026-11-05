@@ -77,6 +77,7 @@ export function Perfil() {
       <PageHeader
         kicker="Configuración personal"
         titulo="Tu perfil"
+        hero="primary"
         entradilla="Esto es lo que usa la IA para calibrar tus rutinas."
       >
         <Button

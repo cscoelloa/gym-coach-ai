@@ -70,6 +70,7 @@ export function GenerarRutina() {
       <PageHeader
         kicker="Con ayuda de la IA"
         titulo="Generar rutina"
+        hero="primary"
         entradilla="Se te mostrará la propuesta antes de guardar nada."
       >
         <Badge tono={sinCupo ? "down" : "record"}>

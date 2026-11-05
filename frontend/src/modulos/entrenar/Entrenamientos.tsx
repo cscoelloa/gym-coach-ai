@@ -36,7 +36,7 @@ export function Entrenamientos() {
 
   return (
     <div className="mx-auto max-w-3xl lg:max-w-6xl">
-      <PageHeader titulo="Entrenar" entradilla="Lo de hoy, y todo lo que llevas hecho." />
+      <PageHeader titulo="Entrenar" hero="primary" entradilla="Lo de hoy, y todo lo que llevas hecho." />
 
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-8">
         <div className="lg:sticky lg:top-20">

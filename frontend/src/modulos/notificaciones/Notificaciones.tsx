@@ -144,6 +144,7 @@ export function Notificaciones() {
       <PageHeader
         kicker="Centro de señales"
         titulo="Notificaciones"
+        hero="primary"
         entradilla="Cambios importantes, sin mezclar con el resto."
       >
         {sinLeer > 0 && (

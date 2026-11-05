@@ -43,6 +43,7 @@ export function AnalisisDeProgreso() {
       <PageHeader
         kicker="Con ayuda de la IA"
         titulo="Análisis de progreso"
+        hero="data"
         entradilla="Lee tus métricas y te dice qué cambiar."
       >
         <Badge tono={sinCupo ? "down" : "record"}>
