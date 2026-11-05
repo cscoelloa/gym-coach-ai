@@ -40,6 +40,16 @@ export function Peso() {
             <span className="tag block text-ink-subtle">Último registro</span>
             <strong className="metric-xl">{ultimo.weight_kg}</strong>
             <span className="stat-tile-unit"> kg</span>
+            {resumen.data.cambio != null && resumen.data.cambio !== 0 && (
+              <span
+                className={`caption num mt-0.5 block font-semibold ${
+                  resumen.data.cambio > 0 ? "text-accent" : "text-data"
+                }`}
+              >
+                {resumen.data.cambio > 0 ? "▲" : "▼"}{" "}
+                {Math.abs(resumen.data.cambio).toFixed(1)} kg
+              </span>
+            )}
           </div>
         )}
       </PageHeader>

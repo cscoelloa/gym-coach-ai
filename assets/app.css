@@ -809,8 +809,8 @@
 @utility ex-figure-md { & .ex-frame { @apply max-w-72; } & .ex-credit { @apply text-center; } }
 @utility ex-figure-lg { & .ex-frame { @apply max-w-md; } }
 @utility ex-figure-foco {
-  & .ex-frame { @apply w-26 rounded-xl; }
-  @media (max-width: 25.99rem) { & .ex-frame { @apply w-[5.5rem]; } }
+  & .ex-frame { @apply w-28 rounded-xl; }
+  @media (max-width: 23.99rem) { & .ex-frame { @apply w-24; } }
   @media (min-width: 64rem) { & .ex-frame { @apply w-full max-w-80 rounded-2xl; } }
 }
 @utility ex-frame-img { @apply block size-full object-contain p-1.5; }
@@ -1183,7 +1183,8 @@
   @media (min-width: 64rem) { align-self: end; }
 }
 @utility focus-card-grid {
-  @apply grid grid-cols-[6.5rem_minmax(0,1fr)] items-start gap-3;
+  @apply grid grid-cols-[7rem_minmax(0,1fr)] items-start gap-3;
+  @media (max-width: 23.99rem) { @apply grid-cols-[6rem_minmax(0,1fr)]; }
   @media (min-width: 64rem) { @apply grid-cols-1 gap-4; }
 }
 @utility focus-chips {
