@@ -19,11 +19,12 @@ const HISTORIAL: Paginado<SesionEnHistorial> = {
     {
       id: 9, date: "2026-09-14", routine: 7, routine_name: "Empuje A",
       started_at: "2026-09-14T10:00:00Z", finished_at: null, notes: "", set_count: 4,
+      duracion_minutos: null, tonelaje_kg: 0,
     },
     {
       id: 8, date: "2026-09-12", routine: null, routine_name: null,
       started_at: "2026-09-12T10:00:00Z", finished_at: "2026-09-12T11:00:00Z", notes: "",
-      set_count: 12,
+      set_count: 12, duracion_minutos: 60, tonelaje_kg: 4200,
     },
   ],
 };
@@ -55,13 +56,20 @@ describe("Entrenamientos", () => {
     conHoy({
       estado: "rutina",
       sesion: null,
-      rutina: { id: 7, nombre: "Empuje A", ejercicios: ["Press de banca", "Fondos"] },
+      rutina: {
+        id: 7,
+        nombre: "Empuje A",
+        ejercicios: [
+          { id: 1, name: "Press de banca", image: null },
+          { id: 2, name: "Fondos", image: null },
+        ],
+      },
     });
 
     montar(<Entrenamientos />);
 
     expect(await screen.findByRole("button", { name: "Empezar" })).toBeVisible();
-    expect(screen.getByText("Press de banca · Fondos")).toBeVisible();
+    expect(screen.getByRole("img", { name: "Press de banca" })).toBeVisible();
   });
 
   it("cada sesión dice de qué rutina fue, no «Rutina»", async () => {

@@ -29,13 +29,20 @@ const FECHA_Y_HORA = new Intl.DateTimeFormat("es-ES", {
 
 const CON_ANALISIS = new Set(["stall_detected", "progress_ready"]);
 
+const ICONO_POR_TIPO = {
+  stall_detected: "diana",
+  weight_off_track: "bascula",
+  progress_ready: "trofeo",
+  routine_ready: "plan",
+} as const;
+
 function Tarjeta({ aviso }: { aviso: Notificacion }) {
   const marcar = useMarcarLeida();
 
   return (
     <div className={`notification-card ${aviso.is_read ? "" : "border border-primary"}`.trim()}>
-      <span className="notification-mark" aria-hidden="true">
-        <Icono nombre="campana" />
+      <span className="notification-mark" data-tipo={aviso.kind} aria-hidden="true">
+        <Icono nombre={ICONO_POR_TIPO[aviso.kind]} />
       </span>
 
       <div className="min-w-0">

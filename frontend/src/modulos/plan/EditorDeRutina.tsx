@@ -46,6 +46,12 @@ export function EditorDeRutina({ nueva = false }: { nueva?: boolean }) {
 function Editor({ rutina }: { rutina?: Rutina }) {
   const e = useEditorDeRutina(rutina);
   const { borrador, campos } = e;
+  const anadidos = new Map(
+    borrador.exercises.map((f) => [
+      f.exercise,
+      `${f.target_sets}×${f.target_reps_min}–${f.target_reps_max}`,
+    ]),
+  );
 
   return (
     <div className="routine-editor mx-auto max-w-3xl">
@@ -153,7 +159,11 @@ function Editor({ rutina }: { rutina?: Rutina }) {
 
       {e.hoja === "buscar" && (
         <Panel titulo="Añadir ejercicio" onCerrar={() => e.setHoja(null)}>
-          <SelectorDeEjercicios onElegir={e.seleccionar} />
+          <SelectorDeEjercicios
+            onElegir={e.seleccionar}
+            anadidos={anadidos}
+            onListo={() => e.setHoja(null)}
+          />
         </Panel>
       )}
 

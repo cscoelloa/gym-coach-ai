@@ -41,6 +41,7 @@ export function useEditorDeRutina(rutina?: Rutina) {
   const [rutinaId, setRutinaId] = useState(rutina?.id);
   const [hoja, setHoja] = useState<HojaDelEditor>(null);
   const [elegido, setElegido] = useState<Fila | null>(null);
+  const [origen, setOrigen] = useState<"buscar" | "lista">("buscar");
   const ubicacion = useLocation();
   const [exitoEn, setExitoEn] = useState<number | null>(() =>
     ubicacion.state?.guardada ? Date.now() : null,
@@ -66,20 +67,25 @@ export function useEditorDeRutina(rutina?: Rutina) {
   }
 
   function seleccionar(ejercicio: Ejercicio) {
-    setElegido({
-      clave: crypto.randomUUID(),
-      exercise: ejercicio.id,
-      exercise_detail: ejercicio,
-      target_sets: 3,
-      target_reps_min: 8,
-      target_reps_max: 12,
-      rest_seconds: descansoPorDefecto(ejercicio),
-    });
+    const existente = borrador.exercises.find((e) => e.exercise === ejercicio.id);
+    setElegido(
+      existente ?? {
+        clave: crypto.randomUUID(),
+        exercise: ejercicio.id,
+        exercise_detail: ejercicio,
+        target_sets: 3,
+        target_reps_min: 8,
+        target_reps_max: 12,
+        rest_seconds: descansoPorDefecto(ejercicio),
+      },
+    );
+    setOrigen("buscar");
     setHoja("configurar");
   }
 
   function editar(fila: Fila) {
     setElegido(fila);
+    setOrigen("lista");
     setHoja("configurar");
   }
 
@@ -97,12 +103,12 @@ export function useEditorDeRutina(rutina?: Rutina) {
         ? borrador.exercises.map((e) => (e.clave === fila.clave ? fila : e))
         : [...borrador.exercises, fila],
     });
-    setHoja(null);
+    setHoja(origen === "buscar" ? "buscar" : null);
   }
 
   function quitar(clave: string) {
     cambiar({ ...borrador, exercises: borrador.exercises.filter((e) => e.clave !== clave) });
-    setHoja(null);
+    setHoja(origen === "buscar" ? "buscar" : null);
   }
 
   function enviar() {

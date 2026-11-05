@@ -61,7 +61,14 @@ def _hoy_toca(usuario, hoy) -> dict:
     if entrada.routine is None:
         return {"estado": "descanso", "sesion": None, "rutina": None}
 
-    ejercicios = [item.exercise.name for item in entrada.routine.exercises.all()]
+    ejercicios = [
+        {
+            "id": item.exercise_id,
+            "name": item.exercise.name,
+            "image": item.exercise.image.url if item.exercise.image else None,
+        }
+        for item in entrada.routine.exercises.all()
+    ]
     return {
         "estado": "rutina",
         "sesion": None,
@@ -144,6 +151,11 @@ class PlanView(APIView):
         )
 
         por_dia = {entrada.weekday: entrada for entrada in activo.schedule.all()} if activo else {}
+        conteos = dict(
+            Routine.objects.filter(user=usuario)
+            .annotate(n=Count("exercises", distinct=True))
+            .values_list("pk", "n")
+        )
         semana = [
             {
                 "weekday": weekday,
@@ -153,6 +165,7 @@ class PlanView(APIView):
                     {
                         "id": por_dia[weekday].routine.pk,
                         "nombre": por_dia[weekday].routine.name,
+                        "n_ejercicios": conteos.get(por_dia[weekday].routine.pk, 0),
                     }
                     if weekday in por_dia and por_dia[weekday].routine
                     else None

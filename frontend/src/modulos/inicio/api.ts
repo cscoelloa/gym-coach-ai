@@ -14,10 +14,12 @@ export type DiaDeLaSemanaApi = {
   planificado: boolean;
 };
 
+export type EjercicioDeHoy = { id: number; name: string; image: string | null };
+
 export type HoyToca = {
   estado: "sesion_abierta" | "sin_programa" | "descanso" | "rutina";
   sesion: { id: number; fecha: string } | null;
-  rutina: { id: number; nombre: string; ejercicios: string[] } | null;
+  rutina: { id: number; nombre: string; ejercicios: EjercicioDeHoy[] } | null;
 };
 
 export type Inicio = {

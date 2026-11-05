@@ -101,6 +101,21 @@ export function Entrenamientos() {
                                 {sesion.set_count === 1 ? "serie" : "series"}
                               </>
                             )}
+                            {sesion.duracion_minutos != null && (
+                              <>
+                                {" · "}
+                                <span className="num">{sesion.duracion_minutos}</span> min
+                              </>
+                            )}
+                            {sesion.tonelaje_kg > 0 && (
+                              <>
+                                {" · "}
+                                <span className="num">
+                                  {sesion.tonelaje_kg.toLocaleString("es-ES")}
+                                </span>{" "}
+                                kg
+                              </>
+                            )}
                           </span>
                         </span>
                       </span>

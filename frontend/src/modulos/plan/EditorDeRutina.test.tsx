@@ -173,6 +173,9 @@ describe("Editor con borrador", () => {
     expect(consulta).toContain("mi_material=1"); expect(consulta).toContain("page=1");
     await userEvent.click(screen.getByRole("button", { name: /^Fondos/ }));
     await userEvent.click(screen.getByRole("button", { name: "Añadir al borrador" }));
+    expect(screen.getByRole("dialog", { name: "Añadir ejercicio" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Listo · 3" })).toBeVisible();
+    await userEvent.click(screen.getByRole("button", { name: "Listo · 3" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByText("Fondos")).toBeVisible();
   });

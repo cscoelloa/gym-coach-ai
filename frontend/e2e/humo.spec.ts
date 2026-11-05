@@ -128,6 +128,7 @@ test("montar la semana: crear rutina, añadirle un ejercicio y asignarla a un d�
   await page.getByRole("button", { name: /Añadir ejercicio/ }).click();
   await page.getByRole("dialog").locator("button.compact-row").first().click();
   await page.getByRole("button", { name: "Añadir al borrador" }).click();
+  await page.getByRole("button", { name: /^Listo/ }).click();
   await expect(page).toHaveURL(/rutinas\/nueva/);
   await page.getByRole("button", { name: "Guardar rutina" }).click();
   await expect(page).toHaveURL(/\/rutinas\/\d+\/?$/);
@@ -163,6 +164,7 @@ test("entrenar: empezar una rutina, registrar una serie y cerrar", async ({ page
   await page.getByRole("button", { name: /Añadir ejercicio/ }).click();
   await page.getByRole("dialog").locator("button.compact-row").first().click();
   await page.getByRole("button", { name: "Añadir al borrador" }).click();
+  await page.getByRole("button", { name: /^Listo/ }).click();
   await page.getByRole("button", { name: "Guardar rutina" }).click();
   await expect(page).toHaveURL(/\/rutinas\/\d+\/?$/);
   await page.getByRole("button", { name: "Entrenar", exact: true }).click();

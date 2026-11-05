@@ -68,6 +68,8 @@ export type SesionEnHistorial = {
   finished_at: string | null;
   notes: string;
   set_count: number;
+  duracion_minutos: number | null;
+  tonelaje_kg: number;
 };
 
 export function useFoco(sesion: number, indice: number | null) {

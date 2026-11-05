@@ -98,7 +98,7 @@ export function Inicio() {
       </header>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="flex flex-wrap items-center gap-x-5 gap-y-4 lg:col-span-2">
+        <Card className="card-calida flex flex-wrap items-center gap-x-5 gap-y-4 lg:col-span-2">
           <Anillo
             hecho={racha.hechas_esta_semana}
             total={racha.planificadas_esta_semana}
@@ -119,7 +119,7 @@ export function Inicio() {
           <div className="min-w-0 flex-1">
             <h2 className="title-md">Constancia</h2>
             <p className="mt-1 flex items-baseline gap-1.5">
-              <Icono nombre="fuego" className="size-5 self-center text-warning" />
+              <Icono nombre="fuego" className="size-5 self-center text-accent" />
               <span className="metric-xl">{racha.semanas}</span>
               <span className="stat-tile-unit">
                 semana{racha.semanas === 1 ? "" : "s"} seguida{racha.semanas === 1 ? "" : "s"}

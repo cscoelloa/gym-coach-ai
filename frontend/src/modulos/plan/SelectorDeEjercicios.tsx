@@ -15,7 +15,15 @@ import {
 
 import { useBuscadorDeEjercicios } from "./api";
 
-export function SelectorDeEjercicios({ onElegir }: { onElegir: (ejercicio: Ejercicio) => void }) {
+export function SelectorDeEjercicios({
+  onElegir,
+  anadidos,
+  onListo,
+}: {
+  onElegir: (ejercicio: Ejercicio) => void;
+  anadidos: Map<number, string>;
+  onListo: () => void;
+}) {
   const [filtros, setFiltros] = useState<FiltrosDeCatalogo>(SIN_FILTROS);
   const [texto, setTexto] = useState("");
   const [pagina, setPagina] = useState(1);
@@ -123,29 +131,42 @@ export function SelectorDeEjercicios({ onElegir }: { onElegir: (ejercicio: Ejerc
         <>
           <p className="tag mb-2 px-1 text-ink-subtle">{listado.data?.count ?? 0} ejercicios</p>
           <div className="compact-list" aria-busy={listado.isFetching}>
-            {listado.data?.results.map((ejercicio) => (
-              <button
-                key={ejercicio.id}
-                className="compact-row"
-                disabled={listado.isPlaceholderData}
-                onClick={() => onElegir(ejercicio)}
-              >
-                {ejercicio.image ? (
-                  <img src={ejercicio.image} className="ex-media" alt="" loading="lazy" />
-                ) : (
-                  <span className="ex-glyph">
-                    <Icono nombre="entrenar" />
+            {listado.data?.results.map((ejercicio) => {
+              const esquema = anadidos.get(ejercicio.id);
+              return (
+                <button
+                  key={ejercicio.id}
+                  className="compact-row"
+                  data-anadido={esquema ? "true" : "false"}
+                  disabled={listado.isPlaceholderData}
+                  onClick={() => onElegir(ejercicio)}
+                >
+                  {ejercicio.image ? (
+                    <img src={ejercicio.image} className="ex-media" alt="" loading="lazy" />
+                  ) : (
+                    <span className="ex-glyph">
+                      <Icono nombre="entrenar" />
+                    </span>
+                  )}
+                  <span className="min-w-0 flex-1">
+                    <span className="ex-name block truncate">{ejercicio.name}</span>
+                    {ejercicio.target_muscle ? (
+                      <span className="tag-musculo">{ejercicio.target_muscle.name}</span>
+                    ) : (
+                      <span className="caption text-ink-muted">{ejercicio.body_part_label}</span>
+                    )}
                   </span>
-                )}
-                <span className="min-w-0 flex-1">
-                  <span className="ex-name block truncate">{ejercicio.name}</span>
-                  <span className="caption text-ink-muted">
-                    {ejercicio.body_part_label} · {ejercicio.equipment_label}
-                  </span>
-                </span>
-                <Icono nombre="mas" className="size-5 text-primary" />
-              </button>
-            ))}
+                  {esquema ? (
+                    <span className="flex shrink-0 items-center gap-1.5 text-primary">
+                      <span className="tag num">{esquema}</span>
+                      <Icono nombre="comprobado" className="size-5" />
+                    </span>
+                  ) : (
+                    <Icono nombre="mas" className="size-5 text-primary" />
+                  )}
+                </button>
+              );
+            })}
           </div>
           {!listado.data?.count && (
             <p className="body-sm py-6 text-center text-ink-muted">
@@ -162,6 +183,12 @@ export function SelectorDeEjercicios({ onElegir }: { onElegir: (ejercicio: Ejerc
           />
         </>
       )}
+
+      <div className="selector-pie">
+        <Button variante="primary" bloque onClick={onListo}>
+          {anadidos.size ? `Listo · ${anadidos.size}` : "Listo"}
+        </Button>
+      </div>
     </div>
   );
 }

@@ -130,6 +130,26 @@ class TestElDiario:
 
         assert filas[0]["routine_name"] is None
 
+    def test_cada_sesion_trae_su_duracion_y_su_tonelaje(self, api, ana, rutina, catalogo):
+        sesion = WorkoutSession.objects.create(
+            user=ana,
+            routine=rutina,
+            date=timezone.localdate(),
+            started_at=timezone.now() - timedelta(minutes=45),
+            finished_at=timezone.now(),
+        )
+        registrar(sesion, catalogo["press"], 2)
+
+        fila = api.get(reverse("api-session-list")).json()["results"][0]
+
+        assert fila["duracion_minutos"] == 45
+        assert fila["tonelaje_kg"] == 800
+
+    def test_una_sesion_sin_terminar_no_tiene_duracion(self, api, sesion):
+        fila = api.get(reverse("api-session-list")).json()["results"][0]
+
+        assert fila["duracion_minutos"] is None
+
 
 class TestElFoco:
     def test_arranca_en_el_primer_ejercicio(self, api, sesion):

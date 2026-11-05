@@ -14,6 +14,14 @@ def is_working_set(set_log) -> bool:
     )
 
 
+def tonelaje_simple(sets) -> int:
+    total = Decimal("0")
+    for set_log in sets:
+        if is_working_set(set_log) and set_log.weight_kg is not None and set_log.reps is not None:
+            total += set_log.weight_kg * set_log.reps
+    return round(float(total))
+
+
 def is_effective_set(set_log) -> bool:
     if not is_working_set(set_log):
         return False

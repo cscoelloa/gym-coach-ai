@@ -5,7 +5,7 @@ import { useUnRato } from "@/ds/AvisoPasajero";
 import { Badge } from "@/ds/Badge";
 import { Button, EnlaceBoton } from "@/ds/Button";
 import { Campo } from "@/ds/Campo";
-import { Card, Pill } from "@/ds/Card";
+import { Card } from "@/ds/Card";
 import { Cargando, ErrorDePantalla } from "@/ds/estados";
 import { Icono } from "@/ds/Icono";
 import { NotaDeStat, StatTile } from "@/ds/StatTile";
@@ -57,7 +57,7 @@ export function CierreDeEntrenamiento() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-start">
         <div>
           {data.records.length > 0 && (
-            <Card className="card-accent mb-4">
+            <Card className="card-calida mb-4">
               <p className="section-kicker">
                 {data.records.length === 1 ? "Récord personal" : "Récords personales"}
               </p>
@@ -116,7 +116,9 @@ export function CierreDeEntrenamiento() {
               <p className="section-kicker">Lo que has trabajado</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {data.musculos.map((musculo) => (
-                  <Pill key={musculo}>{musculo}</Pill>
+                  <span className="tag-musculo px-2.5 py-1 text-[13px]" key={musculo}>
+                    {musculo}
+                  </span>
                 ))}
               </div>
             </Card>

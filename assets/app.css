@@ -66,6 +66,11 @@
   --danger-soft: #fde7e9;
   --warning: #935300;
   --warning-soft: #fdf0d9;
+  --accent: #c2410c;
+  --accent-soft: #ffedd5;
+  --accent-strong: #ea580c;
+  --accent-deep: #9a3412;
+  --data-strong: #0b5f59;
 
   --track: #e5e5ea;
   --focus: #1f5fe6;
@@ -108,6 +113,11 @@
   --danger-soft: #3a1413;
   --warning: #ffb340;
   --warning-soft: #382505;
+  --accent: #fb923c;
+  --accent-soft: #3a1c0a;
+  --accent-strong: #f97316;
+  --accent-deep: #c2410c;
+  --data-strong: #1f8f83;
 
   --track: #2c2c2e;
   --focus: #409cff;
@@ -148,6 +158,9 @@
   --color-danger-soft: var(--danger-soft);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-strong: var(--accent-strong);
 
   --color-track: var(--track);
   --color-focus: var(--focus);
@@ -280,6 +293,14 @@
 @utility tag {
   @apply font-sans text-[12px]/[16px] font-semibold uppercase tracking-[0.04em] tabular-nums;
 }
+@utility tag-musculo {
+  @apply inline-flex max-w-full items-center truncate rounded-full bg-data-soft px-2 py-0.5;
+  @apply text-[12px]/[16px] font-semibold text-data;
+}
+@utility selector-pie {
+  @apply sticky bottom-0 z-[1] -mx-5 mt-2 border-t border-line bg-surface-000 px-5 pt-3;
+  padding-bottom: max(0.25rem, env(safe-area-inset-bottom));
+}
 
 @utility num { @apply tabular-nums; }
 
@@ -295,6 +316,41 @@
 @utility card-accent {
   @apply card;
   background-image: linear-gradient(to bottom, var(--primary-soft), var(--surface-100) 7rem);
+}
+@utility card-teal {
+  @apply card;
+  background-image: linear-gradient(to bottom, var(--data-soft), var(--surface-100) 7rem);
+}
+@utility card-calida {
+  @apply card;
+  background-image: linear-gradient(to bottom, var(--accent-soft), var(--surface-100) 7rem);
+}
+@utility card-elevada {
+  @apply card;
+  box-shadow: var(--shadow-pop);
+}
+
+@utility hero {
+  @apply relative isolate overflow-hidden rounded-3xl p-5 text-on-primary sm:p-6;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+}
+@utility hero-data {
+  background: linear-gradient(135deg, var(--data), var(--data-strong));
+}
+@utility hero-calido {
+  background: linear-gradient(135deg, var(--accent-strong), var(--accent-deep));
+}
+@utility hero-kicker {
+  @apply text-[12px]/[16px] font-semibold uppercase tracking-[0.06em] opacity-80;
+}
+@utility ex-cover {
+  @apply relative block aspect-[16/10] w-full overflow-hidden rounded-2xl bg-surface-100;
+  box-shadow: var(--shadow-raised);
+}
+@utility ex-cover-scrim {
+  @apply absolute inset-x-0 bottom-0 flex items-end gap-2 p-3;
+  @apply text-[15px]/[20px] font-semibold text-white;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0) 70%);
 }
 
 @utility page-head {
@@ -562,7 +618,7 @@
   @apply text-[12px]/[18px] font-semibold tabular-nums;
   @apply bg-surface-200 text-ink-muted;
 }
-@utility badge-record  { @apply bg-primary-soft text-primary; }
+@utility badge-record  { @apply bg-accent-soft text-accent; }
 @utility badge-done    { @apply bg-success-soft text-success; }
 @utility badge-warn    { @apply bg-warning-soft text-warning; }
 @utility badge-down    { @apply bg-danger-soft text-danger; }
@@ -881,6 +937,9 @@
 }
 @utility notification-mark {
   @apply flex size-11 items-center justify-center rounded-full bg-primary-soft text-primary;
+  &[data-tipo="stall_detected"] { @apply bg-accent-soft text-accent; }
+  &[data-tipo="weight_off_track"] { @apply bg-data-soft text-data; }
+  &[data-tipo="progress_ready"] { @apply bg-success-soft text-success; }
 }
 
 @utility table-stack {
@@ -1301,6 +1360,8 @@
   .app-panel .form-actions > * { flex: 1 1 0; min-width: fit-content; }
   .app-panel .compact-list { background: var(--surface-100); }
   .app-panel .compact-row { min-height: 3.5rem; }
+  .compact-row[data-anadido="true"] { background: var(--primary-soft); }
+  .compact-row[data-anadido="true"] .ex-name { color: var(--primary); }
   .card .card { box-shadow: none; background: var(--surface-200); background-image: none; }
   .pill { max-width: 65%; white-space: normal; overflow-wrap: anywhere; text-align: left; }
   @media (min-width: 48rem) {

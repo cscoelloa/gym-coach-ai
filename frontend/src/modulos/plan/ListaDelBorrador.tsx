@@ -45,9 +45,16 @@ export function ListaDelBorrador({ e }: { e: ControlDelEditor }) {
                   )}
                   <span className="min-w-0">
                     <span className="ex-name block truncate">{fila.exercise_detail.name}</span>
-                    <span className="caption num text-ink-muted">
-                      {fila.target_sets} × {fila.target_reps_min}–{fila.target_reps_max} ·{" "}
-                      {fila.rest_seconds} s
+                    <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                      {fila.exercise_detail.target_muscle && (
+                        <span className="tag-musculo">
+                          {fila.exercise_detail.target_muscle.name}
+                        </span>
+                      )}
+                      <span className="caption num text-ink-muted">
+                        {fila.target_sets} × {fila.target_reps_min}–{fila.target_reps_max} ·{" "}
+                        {fila.rest_seconds} s
+                      </span>
                     </span>
                   </span>
                 </button>

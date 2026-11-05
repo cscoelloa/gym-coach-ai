@@ -34,7 +34,7 @@ const CON_PROGRAMA: DatosDePlan = {
     weekday,
     etiqueta,
     entrada_id: weekday + 10,
-    rutina: weekday === 0 ? { id: 7, nombre: "Empuje A" } : null,
+    rutina: weekday === 0 ? { id: 7, nombre: "Empuje A", n_ejercicios: 4 } : null,
   })),
   rutinas: [
     { id: 7, nombre: "Empuje A", descripcion: "", n_ejercicios: 4, dias: ["Lunes"] },
@@ -42,8 +42,51 @@ const CON_PROGRAMA: DatosDePlan = {
   ],
 };
 
+const RUTINA_7 = {
+  id: 7,
+  name: "Empuje A",
+  description: "",
+  source: "manual",
+  source_label: "Manual",
+  created_at: "2026-01-01T00:00:00Z",
+  exercises: [
+    {
+      id: 1,
+      routine: 7,
+      exercise: 101,
+      order: 0,
+      target_sets: 4,
+      target_reps_min: 6,
+      target_reps_max: 8,
+      rest_seconds: 180,
+      exercise_detail: {
+        id: 101,
+        external_id: "x1",
+        name: "Press de banca",
+        slug: "press-banca",
+        body_part: "chest",
+        body_part_label: "Pecho",
+        equipment: "barbell",
+        equipment_label: "Barra",
+        target_muscle: { slug: "pectorals", name: "Pectoral" },
+        secondary_muscles: [],
+        is_cardio: false,
+        is_bodyweight: false,
+        image: null,
+        animation: null,
+        attribution: "",
+        steps: [],
+      },
+    },
+  ],
+};
+
 function responder(datos: DatosDePlan) {
   servidor.use(http.get("/api/plan/", () => HttpResponse.json(datos)));
+}
+
+function responderRutina7() {
+  servidor.use(http.get("/api/rutinas/7/", () => HttpResponse.json(RUTINA_7)));
 }
 
 beforeEach(() => responder(CON_PROGRAMA));
@@ -77,17 +120,40 @@ describe("Plan", () => {
     }
   });
 
-  it("cada día abre la asignación en un panel", async () => {
+  it("un día con rutina se desglosa, con editar y entrenar", async () => {
+    responderRutina7();
     montar(<Plan />, { ruta: "/plan/" });
 
     const semana = await screen.findByRole("region", { name: "Tu semana" });
-    const lunes = within(semana).getByRole("button", { name: /Lunes/ });
-    await userEvent.click(lunes);
-    const hoja = await screen.findByRole("dialog", { name: "Organizar el lunes" });
-    expect(hoja).toBeVisible();
-    expect(screen.getByRole("radio", { name: /Empuje A/ })).toBeChecked();
-    expect(within(hoja).getByRole("heading", { name: "Organizar el lunes" })).toHaveFocus();
+    await userEvent.click(within(semana).getByRole("button", { name: /Lunes/ }));
+    const hoja = await screen.findByRole("dialog", { name: "Lunes" });
+    expect(within(hoja).getByRole("heading", { name: "Lunes" })).toHaveFocus();
     expect(within(hoja).getByRole("button", { name: "Cerrar panel" })).not.toHaveFocus();
+    expect(await within(hoja).findByText("Press de banca")).toBeVisible();
+    expect(within(hoja).getByRole("link", { name: "Editar rutina" })).toHaveAttribute(
+      "href",
+      "/rutinas/7/",
+    );
+    expect(within(hoja).getByRole("button", { name: /Entrenar/ })).toBeVisible();
+  });
+
+  it("desde el desglose se puede cambiar la rutina del día", async () => {
+    responderRutina7();
+    montar(<Plan />, { ruta: "/plan/" });
+
+    const semana = await screen.findByRole("region", { name: "Tu semana" });
+    await userEvent.click(within(semana).getByRole("button", { name: /Lunes/ }));
+    await userEvent.click(await screen.findByRole("button", { name: /Cambiar la rutina/ }));
+    expect(screen.getByRole("radio", { name: /Empuje A/ })).toBeChecked();
+  });
+
+  it("un día de descanso abre la asignación directamente", async () => {
+    montar(<Plan />, { ruta: "/plan/" });
+
+    const semana = await screen.findByRole("region", { name: "Tu semana" });
+    await userEvent.click(within(semana).getByRole("button", { name: /Martes/ }));
+    const hoja = await screen.findByRole("dialog", { name: "Martes" });
+    expect(within(hoja).getByRole("radio", { name: /Descanso/ })).toBeChecked();
   });
 
   it("la biblioteca dice en qué días está cada rutina", async () => {

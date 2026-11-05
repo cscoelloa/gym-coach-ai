@@ -78,6 +78,7 @@ class TestLaPantallaDePlan:
 
         assert [dia["weekday"] for dia in semana] == [0, 1, 2, 3, 4, 5, 6]
         assert semana[0]["rutina"]["nombre"] == "Empuje A"
+        assert semana[0]["rutina"]["n_ejercicios"] == 0
         assert semana[3]["rutina"] is None
 
     def test_las_rutinas_dicen_cuantos_ejercicios_y_en_qué_días_están(

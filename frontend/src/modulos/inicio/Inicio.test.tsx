@@ -57,14 +57,22 @@ describe("Inicio", () => {
       hoy_toca: {
         estado: "rutina",
         sesion: null,
-        rutina: { id: 7, nombre: "Empuje A", ejercicios: ["Press de banca", "Press militar"] },
+        rutina: {
+          id: 7,
+          nombre: "Empuje A",
+          ejercicios: [
+            { id: 1, name: "Press de banca", image: null },
+            { id: 2, name: "Press militar", image: null },
+          ],
+        },
       },
     });
 
     montar(<Inicio />);
 
     expect(await screen.findByText("Empuje A")).toBeVisible();
-    expect(screen.getByText(/Press de banca · Press militar/)).toBeVisible();
+    expect(screen.getByRole("img", { name: "Press de banca" })).toBeVisible();
+    expect(screen.getByRole("img", { name: "Press militar" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Empezar" })).toBeVisible();
   });
 
@@ -73,7 +81,7 @@ describe("Inicio", () => {
       hoy_toca: {
         estado: "rutina",
         sesion: null,
-        rutina: { id: 7, nombre: "Empuje A", ejercicios: ["Press de banca"] },
+        rutina: { id: 7, nombre: "Empuje A", ejercicios: [{ id: 1, name: "Press de banca", image: null }] },
       },
     });
     let recibido: unknown = null;

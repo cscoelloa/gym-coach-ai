@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 
 from apps.bodyweight.models import BodyWeightEntry
+from apps.metrics.loads import tonelaje_simple
 from apps.metrics.models import Metric
 from apps.notifications.models import Notification
 from apps.workouts.models import (
@@ -253,15 +254,25 @@ class WorkoutSessionSerializer(serializers.ModelSerializer):
     routine_name = serializers.CharField(
         source="routine.name", read_only=True, default=None, allow_null=True
     )
+    duracion_minutos = serializers.SerializerMethodField()
+    tonelaje_kg = serializers.SerializerMethodField()
 
     class Meta:
         model = WorkoutSession
         fields = ("id", "date", "routine", "routine_name", "started_at", "finished_at",
-                  "notes", "sets", "set_count")
+                  "notes", "sets", "set_count", "duracion_minutos", "tonelaje_kg")
         read_only_fields = ("started_at", "finished_at")
         extra_kwargs = {
             "date": {"required": False},
         }
+
+    def get_duracion_minutos(self, obj):
+        if not obj.started_at or not obj.finished_at:
+            return None
+        return round((obj.finished_at - obj.started_at).total_seconds() / 60)
+
+    def get_tonelaje_kg(self, obj):
+        return tonelaje_simple(obj.sets.all())
 
     def validate_routine(self, value):
         if value and value.user != self.context["request"].user:

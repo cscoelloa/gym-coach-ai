@@ -89,14 +89,24 @@ export function FichaDeEjercicio() {
               <div className="space-y-3">
                 <div>
                   <h3>Músculo objetivo</h3>
-                  <p className="mt-1">{ejercicio.target_muscle?.name ?? "—"}</p>
+                  {ejercicio.target_muscle ? (
+                    <span className="tag-musculo mt-1 px-2.5 py-1 text-[13px]">
+                      {ejercicio.target_muscle.name}
+                    </span>
+                  ) : (
+                    <p className="mt-1">—</p>
+                  )}
                 </div>
                 {ejercicio.secondary_muscles.length > 0 && (
                   <div>
                     <h3>También trabaja</h3>
-                    <p className="mt-1 text-ink-muted">
-                      {ejercicio.secondary_muscles.map((m) => m.name).join(", ")}
-                    </p>
+                    <div className="mt-1 flex flex-wrap gap-1.5">
+                      {ejercicio.secondary_muscles.map((m) => (
+                        <span className="tag-musculo" key={m.slug}>
+                          {m.name}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 )}
                 {fueraDelMapa.length > 0 && (

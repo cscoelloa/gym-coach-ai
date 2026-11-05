@@ -84,7 +84,9 @@ class TestQueTocaHoy:
         assert datos["estado"] == "rutina"
         assert datos["rutina"]["id"] == rutina.pk
         assert datos["rutina"]["nombre"] == "Empuje"
-        assert datos["rutina"]["ejercicios"] == ["Press de banca"]
+        assert datos["rutina"]["ejercicios"] == [
+            {"id": ejercicio.pk, "name": "Press de banca", "image": None}
+        ]
 
     def test_una_sesion_sin_terminar_manda_sobre_todo_lo_demas(self, api, ana, ejercicio):
         con_rutina_hoy(ana, ejercicio)

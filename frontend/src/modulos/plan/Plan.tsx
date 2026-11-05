@@ -10,7 +10,7 @@ import { Icono } from "@/ds/Icono";
 import { Panel } from "@/ds/Panel";
 
 import { useActivarPrograma, useBorrarPrograma, usePlan } from "./api";
-import { DiaDelPlan } from "./DiaDelPlan";
+import { DetalleDelDia } from "./DetalleDelDia";
 
 function HojaDeProgramas({ onCerrar }: { onCerrar: () => void }) {
   const { data } = usePlan();
@@ -131,16 +131,24 @@ export function Plan() {
                   >
                     {d.etiqueta.slice(0, 2)}
                   </span>
-                  <span className="w-24 shrink-0 font-semibold">{d.etiqueta}</span>
-                  <span
-                    className={`min-w-0 flex-1 truncate text-right ${
-                      d.rutina ? "text-ink" : "text-ink-subtle"
-                    }`}
-                  >
-                    {d.rutina ? d.rutina.nombre : "Descanso"}
+                  <span className="w-20 shrink-0 font-semibold">{d.etiqueta}</span>
+                  <span className="min-w-0 flex-1 text-right">
+                    <span
+                      className={`block truncate font-medium ${
+                        d.rutina ? "text-ink" : "text-ink-subtle"
+                      }`}
+                    >
+                      {d.rutina ? d.rutina.nombre : "Descanso"}
+                    </span>
+                    {d.rutina && (
+                      <span className="caption text-ink-muted">
+                        <span className="num">{d.rutina.n_ejercicios}</span>{" "}
+                        {d.rutina.n_ejercicios === 1 ? "ejercicio" : "ejercicios"}
+                      </span>
+                    )}
                   </span>
                   {d.weekday === hoy_weekday && <Badge tono="record">Hoy</Badge>}
-                  <Icono nombre="chevronDerecha" className="size-4" />
+                  <Icono nombre="chevronDerecha" className="size-4 shrink-0" />
                 </button>
               ))}
             </div>
@@ -200,10 +208,10 @@ export function Plan() {
 
       {dia !== null && (
         <Panel
-          titulo={`Organizar el ${(semana.find((d) => d.weekday === dia)?.etiqueta ?? "día").toLowerCase()}`}
+          titulo={semana.find((d) => d.weekday === dia)?.etiqueta ?? "Día"}
           onCerrar={() => setDia(null)}
         >
-          <DiaDelPlan diaElegido={dia} onListo={() => setDia(null)} />
+          <DetalleDelDia diaElegido={dia} onListo={() => setDia(null)} />
         </Panel>
       )}
       {programas && <HojaDeProgramas onCerrar={() => setProgramas(false)} />}

@@ -5,7 +5,7 @@ import { Button, EnlaceBoton } from "@/ds/Button";
 import { Icono } from "@/ds/Icono";
 import { useEmpezar } from "@/modulos/entrenar/api";
 
-import type { HoyToca } from "./api";
+import type { EjercicioDeHoy, HoyToca } from "./api";
 
 const DIA_Y_MES = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "long" });
 
@@ -62,10 +62,47 @@ function Marco({
       <div className="min-w-0">
         <p className="section-kicker">{kicker}</p>
         <p className="title-lg">{titulo}</p>
-        {detalle && <p className="body-sm mt-1 line-clamp-2 text-ink-muted">{detalle}</p>}
+        {detalle && <div className="body-sm mt-1 text-ink-muted">{detalle}</div>}
       </div>
       <div className="shrink-0 [&>*]:w-full sm:[&>*]:w-auto">{accion}</div>
     </div>
+  );
+}
+
+function TiraDeEjercicios({ ejercicios }: { ejercicios: EjercicioDeHoy[] }) {
+  const visibles = ejercicios.slice(0, 6);
+  const resto = ejercicios.length - visibles.length;
+
+  return (
+    <span className="flex flex-wrap items-center gap-1.5">
+      {visibles.map((ej) =>
+        ej.image ? (
+          <img
+            key={ej.id}
+            src={ej.image}
+            alt={ej.name}
+            title={ej.name}
+            loading="lazy"
+            className="size-10 rounded-lg bg-surface-100 object-contain ring-1 ring-line"
+          />
+        ) : (
+          <span
+            key={ej.id}
+            role="img"
+            aria-label={ej.name}
+            title={ej.name}
+            className="flex size-10 items-center justify-center rounded-lg bg-surface-200 text-ink-subtle"
+          >
+            <Icono nombre="entrenar" className="size-5" />
+          </span>
+        ),
+      )}
+      {resto > 0 && (
+        <span className="num flex size-10 items-center justify-center rounded-lg bg-surface-200 text-[13px] font-semibold text-ink-muted">
+          +{resto}
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -117,7 +154,11 @@ export function QueTocaHoy({ toca, hoy }: { toca: HoyToca; hoy: string }) {
       kicker={`Hoy · ${DIA_Y_MES.format(comoFecha(hoy))}`}
       titulo={rutina.nombre}
       detalle={
-        rutina.ejercicios.length ? rutina.ejercicios.join(" · ") : "Sin ejercicios todavía"
+        rutina.ejercicios.length ? (
+          <TiraDeEjercicios ejercicios={rutina.ejercicios} />
+        ) : (
+          "Sin ejercicios todavía"
+        )
       }
       accion={
         rutina.ejercicios.length ? (

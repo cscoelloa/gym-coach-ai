@@ -9,7 +9,7 @@ export type DiaDelPlan = {
   weekday: number;
   etiqueta: string;
   entrada_id: number | null;
-  rutina: { id: number; nombre: string } | null;
+  rutina: { id: number; nombre: string; n_ejercicios: number } | null;
 };
 
 export type RutinaEnBiblioteca = {
