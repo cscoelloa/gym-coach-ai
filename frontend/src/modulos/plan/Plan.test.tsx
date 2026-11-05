@@ -34,11 +34,12 @@ const CON_PROGRAMA: DatosDePlan = {
     weekday,
     etiqueta,
     entrada_id: weekday + 10,
-    rutina: weekday === 0 ? { id: 7, nombre: "Empuje A", n_ejercicios: 4 } : null,
+    rutina:
+      weekday === 0 ? { id: 7, nombre: "Empuje A", n_ejercicios: 4, imagenes: [] } : null,
   })),
   rutinas: [
-    { id: 7, nombre: "Empuje A", descripcion: "", n_ejercicios: 4, dias: ["Lunes"] },
-    { id: 8, nombre: "Pierna", descripcion: "", n_ejercicios: 6, dias: [] },
+    { id: 7, nombre: "Empuje A", descripcion: "", n_ejercicios: 4, imagenes: [], dias: ["Lunes"] },
+    { id: 8, nombre: "Pierna", descripcion: "", n_ejercicios: 6, imagenes: [], dias: [] },
   ],
 };
 

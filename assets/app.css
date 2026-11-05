@@ -293,6 +293,21 @@
 @utility tag {
   @apply font-sans text-[12px]/[16px] font-semibold uppercase tracking-[0.04em] tabular-nums;
 }
+@utility rutina-card {
+  @apply block overflow-hidden rounded-2xl bg-surface-100;
+  box-shadow: var(--shadow-raised);
+  @apply transition-transform active:scale-[0.99];
+}
+@utility rutina-portada {
+  @apply flex gap-px overflow-hidden bg-surface-200;
+  aspect-ratio: 5 / 2;
+  & img {
+    @apply min-w-0 flex-1 bg-surface-100 object-contain p-1.5;
+  }
+}
+@utility rutina-portada-vacia {
+  @apply flex items-center justify-center bg-surface-200 text-ink-subtle;
+}
 @utility tag-musculo {
   @apply inline-flex max-w-full items-center truncate rounded-full bg-data-soft px-2 py-0.5;
   @apply text-[12px]/[16px] font-semibold text-data;

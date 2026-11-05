@@ -159,12 +159,16 @@ function Editor({ rutina }: { rutina?: Rutina }) {
       </fieldset>
 
       {e.hoja === "buscar" && (
-        <Panel titulo="Añadir ejercicio" onCerrar={() => e.setHoja(null)}>
-          <SelectorDeEjercicios
-            onElegir={e.seleccionar}
-            anadidos={anadidos}
-            onListo={() => e.setHoja(null)}
-          />
+        <Panel
+          titulo="Añadir ejercicio"
+          onCerrar={() => e.setHoja(null)}
+          accion={
+            <Button variante="primary" tamano="sm" onClick={() => e.setHoja(null)}>
+              {anadidos.size ? `Listo (${anadidos.size})` : "Listo"}
+            </Button>
+          }
+        >
+          <SelectorDeEjercicios onElegir={e.seleccionar} anadidos={anadidos} />
         </Panel>
       )}
 

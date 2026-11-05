@@ -48,6 +48,17 @@ describe("Panel", () => {
     expect(screen.getByLabelText("Buscar ejercicio")).toHaveFocus();
   });
 
+  it("con una acción en la cabecera, esa acción sustituye a la ✕", () => {
+    medios();
+    render(
+      <Panel titulo="Añadir ejercicio" onCerrar={() => {}} accion={<button type="button">Listo (2)</button>}>
+        <p>Lista</p>
+      </Panel>,
+    );
+    expect(screen.getByRole("button", { name: "Listo (2)" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Cerrar panel" })).not.toBeInTheDocument();
+  });
+
   it("en una pantalla táctil no abre el teclado: el foco va al título", () => {
     medios(TACTIL);
     hoja();

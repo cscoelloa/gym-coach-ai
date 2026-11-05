@@ -90,6 +90,20 @@ class TestLaPantallaDePlan:
 
         assert fila["n_ejercicios"] == 1
         assert fila["dias"] == ["Lunes"]
+        assert fila["imagenes"] == []
+
+    def test_la_rutina_trae_portada_con_las_imagenes_de_sus_ejercicios(
+        self, api, programa, rutina, catalogo
+    ):
+        catalogo["press"].image = "exercises/images/press.png"
+        catalogo["press"].save(update_fields=["image"])
+        RoutineExercise.objects.create(routine=rutina, exercise=catalogo["press"], order=0)
+        RoutineExercise.objects.create(routine=rutina, exercise=catalogo["fondos"], order=1)
+
+        fila = api.get(reverse("api-plan")).json()["rutinas"][0]
+
+        assert len(fila["imagenes"]) == 1
+        assert fila["imagenes"][0].endswith("exercises/images/press.png")
 
     def test_los_dias_son_solo_los_del_programa_activo(self, api, ana, programa, rutina):
         otro = Program.objects.create(user=ana, name="Viejo", is_active=False)

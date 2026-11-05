@@ -18,11 +18,9 @@ import { useBuscadorDeEjercicios } from "./api";
 export function SelectorDeEjercicios({
   onElegir,
   anadidos,
-  onListo,
 }: {
   onElegir: (ejercicio: Ejercicio) => void;
   anadidos: Map<number, string>;
-  onListo: () => void;
 }) {
   const [filtros, setFiltros] = useState<FiltrosDeCatalogo>(SIN_FILTROS);
   const [texto, setTexto] = useState("");
@@ -183,12 +181,6 @@ export function SelectorDeEjercicios({
           />
         </>
       )}
-
-      <div className="selector-pie">
-        <Button variante="primary" bloque onClick={onListo}>
-          {anadidos.size ? `Listo · ${anadidos.size}` : "Listo"}
-        </Button>
-      </div>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router";
 
 import { Aviso } from "@/ds/Aviso";
 import { Badge } from "@/ds/Badge";
@@ -11,6 +10,7 @@ import { Panel } from "@/ds/Panel";
 
 import { useActivarPrograma, useBorrarPrograma, usePlan } from "./api";
 import { DetalleDelDia } from "./DetalleDelDia";
+import { TarjetaDeRutina } from "./TarjetaDeRutina";
 
 function HojaDeProgramas({ onCerrar }: { onCerrar: () => void }) {
   const { data } = usePlan();
@@ -175,21 +175,9 @@ export function Plan() {
             </EnlaceBoton>
           </div>
           {rutinas.length ? (
-            <div className="compact-list">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {rutinas.map((r) => (
-                <Link key={r.id} className="compact-row hover:no-underline" to={`/rutinas/${r.id}/`}>
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                    <Icono nombre="entrenar" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate font-semibold text-ink">{r.nombre}</span>
-                    <span className="caption text-ink-muted">
-                      {r.n_ejercicios} ejercicio{r.n_ejercicios !== 1 ? "s" : ""} ·{" "}
-                      {r.dias.length ? r.dias.join(", ") : "sin asignar"}
-                    </span>
-                  </span>
-                  <Icono nombre="chevronDerecha" className="size-4" />
-                </Link>
+                <TarjetaDeRutina key={r.id} rutina={r} />
               ))}
             </div>
           ) : (

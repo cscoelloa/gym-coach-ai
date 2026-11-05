@@ -15,9 +15,27 @@ from apps.metrics.summary import (
     week_strip,
 )
 from apps.workouts import bodymap
-from apps.workouts.models import Program, Routine, ScheduleEntry, Weekday, WorkoutSession
+from apps.workouts.models import (
+    Program,
+    Routine,
+    RoutineExercise,
+    ScheduleEntry,
+    Weekday,
+    WorkoutSession,
+)
 
 PUNTOS_DE_PESO_EN_INICIO = 60
+PORTADA_MAXIMA = 4
+
+
+def _portada(rutina) -> list[str]:
+    urls = []
+    for item in rutina.exercises.all():
+        if item.exercise.image:
+            urls.append(item.exercise.image.url)
+        if len(urls) == PORTADA_MAXIMA:
+            break
+    return urls
 
 
 def serie_de_peso(usuario, limite: int | None = None) -> dict:
@@ -151,11 +169,22 @@ class PlanView(APIView):
         )
 
         por_dia = {entrada.weekday: entrada for entrada in activo.schedule.all()} if activo else {}
-        conteos = dict(
+
+        rutinas = list(
             Routine.objects.filter(user=usuario)
-            .annotate(n=Count("exercises", distinct=True))
-            .values_list("pk", "n")
+            .annotate(n_ejercicios=Count("exercises", distinct=True))
+            .prefetch_related(
+                Prefetch(
+                    "exercises",
+                    queryset=RoutineExercise.objects.select_related("exercise").order_by("order"),
+                ),
+                "scheduled_on__program",
+            )
+            .order_by("name", "pk")
         )
+        conteos = {r.pk: r.n_ejercicios for r in rutinas}
+        portadas = {r.pk: _portada(r) for r in rutinas}
+
         semana = [
             {
                 "weekday": weekday,
@@ -166,6 +195,7 @@ class PlanView(APIView):
                         "id": por_dia[weekday].routine.pk,
                         "nombre": por_dia[weekday].routine.name,
                         "n_ejercicios": conteos.get(por_dia[weekday].routine.pk, 0),
+                        "imagenes": portadas.get(por_dia[weekday].routine.pk, []),
                     }
                     if weekday in por_dia and por_dia[weekday].routine
                     else None
@@ -173,13 +203,6 @@ class PlanView(APIView):
             }
             for weekday, etiqueta in Weekday.choices
         ]
-
-        rutinas = (
-            Routine.objects.filter(user=usuario)
-            .annotate(n_ejercicios=Count("exercises", distinct=True))
-            .prefetch_related("scheduled_on__program")
-            .order_by("name", "pk")
-        )
 
         return Response({
             "hoy_weekday": timezone.localdate().weekday(),
@@ -199,6 +222,7 @@ class PlanView(APIView):
                     "nombre": rutina.name,
                     "descripcion": rutina.description,
                     "n_ejercicios": rutina.n_ejercicios,
+                    "imagenes": portadas.get(rutina.pk, []),
                     "dias": [
                         entrada.get_weekday_display()
                         for entrada in rutina.scheduled_on.all()

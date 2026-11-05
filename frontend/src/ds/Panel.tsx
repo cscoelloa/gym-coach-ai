@@ -7,10 +7,12 @@ export function Panel({
   titulo,
   onCerrar,
   children,
+  accion,
 }: {
   titulo: string;
   onCerrar: () => void;
   children: ReactNode;
+  accion?: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const id = useId();
@@ -69,14 +71,16 @@ export function Panel({
         <h2 id={id} tabIndex={-1}>
           {titulo}
         </h2>
-        <button
-          type="button"
-          className="icon-button size-9 bg-surface-200 text-ink-muted"
-          onClick={onCerrar}
-          aria-label="Cerrar panel"
-        >
-          <Icono nombre="cerrar" className="size-4" />
-        </button>
+        {accion ?? (
+          <button
+            type="button"
+            className="icon-button size-9 bg-surface-200 text-ink-muted"
+            onClick={onCerrar}
+            aria-label="Cerrar panel"
+          >
+            <Icono nombre="cerrar" className="size-4" />
+          </button>
+        )}
       </header>
       <div className="panel-body">{children}</div>
     </dialog>

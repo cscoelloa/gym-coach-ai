@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { Route, Routes } from "react-router";
@@ -173,9 +173,9 @@ describe("Editor con borrador", () => {
     expect(consulta).toContain("mi_material=1"); expect(consulta).toContain("page=1");
     await userEvent.click(screen.getByRole("button", { name: /^Fondos/ }));
     await userEvent.click(screen.getByRole("button", { name: "Añadir al borrador" }));
-    expect(screen.getByRole("dialog", { name: "Añadir ejercicio" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Listo · 3" })).toBeVisible();
-    await userEvent.click(screen.getByRole("button", { name: "Listo · 3" }));
+    const hoja = screen.getByRole("dialog", { name: "Añadir ejercicio" });
+    expect(within(hoja).getByRole("button", { name: "Listo (3)" })).toBeVisible();
+    await userEvent.click(within(hoja).getByRole("button", { name: "Listo (3)" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByText("Fondos")).toBeVisible();
   });
