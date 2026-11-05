@@ -139,7 +139,13 @@ class TestElPeso:
         serie = api.get(reverse("api-inicio")).json()["peso"]["serie"]
 
         assert serie["values"] == [80.0, 81.0, 82.0]
-        assert serie["labels"] == sorted(serie["labels"])
+        meses = ("ene", "feb", "mar", "abr", "may", "jun",
+                 "jul", "ago", "sep", "oct", "nov", "dic")
+        esperado = [
+            f"{(hoy - timedelta(days=dias)).day} {meses[(hoy - timedelta(days=dias)).month - 1]}"
+            for dias in (4, 2, 0)
+        ]
+        assert serie["labels"] == esperado
 
     def test_con_un_solo_registro_no_hay_serie(self, api, ana):
         BodyWeightEntry.objects.create(

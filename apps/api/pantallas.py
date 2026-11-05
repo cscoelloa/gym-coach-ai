@@ -27,6 +27,15 @@ from apps.workouts.models import (
 PUNTOS_DE_PESO_EN_INICIO = 60
 PORTADA_MAXIMA = 4
 
+MESES_CORTOS = (
+    "ene", "feb", "mar", "abr", "may", "jun",
+    "jul", "ago", "sep", "oct", "nov", "dic",
+)
+
+
+def etiqueta_de_fecha(fecha) -> str:
+    return f"{fecha.day} {MESES_CORTOS[fecha.month - 1]}"
+
 
 def _portada(rutina) -> list[str]:
     urls = []
@@ -45,7 +54,7 @@ def serie_de_peso(usuario, limite: int | None = None) -> dict:
     filas.reverse()
 
     return {
-        "labels": [fecha.isoformat() for fecha, _peso in filas],
+        "labels": [etiqueta_de_fecha(fecha) for fecha, _peso in filas],
         "values": [float(peso) for _fecha, peso in filas],
         "goal": float(usuario.target_weight_kg) if usuario.target_weight_kg else None,
     }
