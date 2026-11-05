@@ -21,7 +21,7 @@ export function Marca() {
     <>
       <Placa />
       <span className="brand-name title-sm text-ink">
-        Project<span className="text-primary">/Gym</span>
+        Fit<span className="text-primary">Up</span>
       </span>
     </>
   );

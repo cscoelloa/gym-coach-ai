@@ -1,4 +1,4 @@
-# Gym Coach AI
+# FitUp
 
 Aplicación de gimnasio donde planificas tu semana de entrenamiento, registras lo que realmente
 levantas y una IA te dice cuándo has dejado de progresar. Se instala en el teléfono como una

@@ -13,15 +13,15 @@ export function BarraDeRegistrar({ e }: { e: Entreno }) {
       {e.descanso.restante !== null && <OfertaDeAvisos />}
       {e.descanso.restante !== null && (
         <RestTimer
-          compacto
+          grande
           restante={e.descanso.restante}
           total={e.descanso.total}
           siguiente={e.activa ? textoDeLaSiguiente(e.activa) : undefined}
         >
-          <Button variante="ghost" tamano="sm" onClick={e.alargarDescanso}>
+          <Button variante="secondary" onClick={e.alargarDescanso}>
             +30 s
           </Button>
-          <Button variante="secondary" tamano="sm" onClick={e.saltarDescanso}>
+          <Button variante="secondary" onClick={e.saltarDescanso}>
             Saltar
           </Button>
         </RestTimer>

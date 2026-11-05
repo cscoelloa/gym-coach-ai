@@ -69,6 +69,11 @@ class TestElManifiesto:
         assert respuesta.status_code == 200
         assert respuesta["Content-Type"] == "application/manifest+json"
 
+    def test_lleva_el_nombre_de_la_marca(self, client):
+        datos = client.get(reverse("manifest")).json()
+
+        assert datos["name"] == datos["short_name"] == "FitUp"
+
     def test_lo_que_lo_hace_instalable(self, client):
         datos = client.get(reverse("manifest")).json()
 

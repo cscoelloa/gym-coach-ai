@@ -108,7 +108,7 @@ function conPaciencia(promesa, ms) {
 function paginaSinConexion() {
   const html = `<!doctype html><html lang="es"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sin conexión · PROJECT_GYM</title>
+<title>Sin conexión · FitUp</title>
 <style>
   body { margin: 0; min-height: 100vh; display: grid; place-items: center; text-align: center;
          font: 17px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -118,7 +118,7 @@ function paginaSinConexion() {
   p { margin: 0; opacity: .75; max-width: 22rem; }
 </style>
 <main><h1>Sin conexión</h1>
-<p>PROJECT_GYM necesita red la primera vez que se abre. Vuelve a intentarlo cuando tengas cobertura.</p></main>
+<p>FitUp necesita red la primera vez que se abre. Vuelve a intentarlo cuando tengas cobertura.</p></main>
 </html>`;
   return new Response(html, {
     status: 503,
@@ -165,7 +165,7 @@ self.addEventListener("push", (evento) => {
         );
       if (mirando && !esWebKit()) return;
 
-      await self.registration.showNotification(datos.titulo || "PROJECT_GYM", {
+      await self.registration.showNotification(datos.titulo || "FitUp", {
         body: datos.cuerpo || "",
         tag: datos.tag || "aviso",
         renotify: true,

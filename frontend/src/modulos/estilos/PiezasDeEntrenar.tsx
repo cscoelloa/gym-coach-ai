@@ -154,7 +154,16 @@ export function PiezasDeEntrenar() {
           </RestTimer>
         </div>
         <p className="body-sm mt-4 mb-2 text-ink-muted">
-          En una sola fila (<code>compacto</code>), encima de la barra de registrar:
+          Grande (<code>grande</code>), el que domina la barra de registrar al descansar:
+        </p>
+        <div className="max-w-xs">
+          <RestTimer grande restante={62} total={90} siguiente="Luego: Serie 3 · 82.5 kg × 8">
+            <Button variante="secondary">+30 s</Button>
+            <Button variante="secondary">Saltar</Button>
+          </RestTimer>
+        </div>
+        <p className="body-sm mt-4 mb-2 text-ink-muted">
+          En una sola fila (<code>compacto</code>), para la cabecera y otros huecos estrechos:
         </p>
         <RestTimer compacto restante={62} total={90} siguiente="Serie 3 · 82.5 kg × 8">
           <Button variante="ghost" tamano="sm">

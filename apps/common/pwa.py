@@ -93,8 +93,8 @@ def manifiesto(request):
     return JsonResponse(
         {
             "id": "/",
-            "name": "PROJECT_GYM",
-            "short_name": "Gym",
+            "name": "FitUp",
+            "short_name": "FitUp",
             "description": "Tus rutinas, tus entrenamientos y tu progreso.",
             "lang": "es",
             "dir": "ltr",

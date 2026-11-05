@@ -18,7 +18,7 @@ export function MarcoDeAcceso({
   return (
     <main className="auth-page">
       <div className="auth-shell">
-        <section className="auth-brand" aria-label="PROJECT_GYM">
+        <section className="auth-brand" aria-label="FitUp">
           <div className="flex items-center gap-3">
             <Marca />
           </div>
@@ -30,7 +30,7 @@ export function MarcoDeAcceso({
             <div className="mb-8 flex flex-col items-center gap-3 text-center lg:hidden">
               <Placa className="size-20 rounded-[22px] shadow-[var(--shadow-pop)]" />
               <span className="title-sm text-ink">
-                Project<span className="text-primary">/Gym</span>
+                Fit<span className="text-primary">Up</span>
               </span>
             </div>
             <p className="section-kicker text-primary">{kicker}</p>

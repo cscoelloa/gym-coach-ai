@@ -51,7 +51,7 @@ def deliver_email(notification: Notification) -> bool:
         f"Hola {nombre}:\n\n"
         f"{notification.body}\n\n"
         f"Puedes verlo en {settings.SITE_URL}{reverse('notification_list')}\n\n"
-        "— PROJECT_GYM"
+        "— FitUp"
     )
 
     send_mail(
