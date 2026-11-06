@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse
+from whitenoise.media_types import MediaTypes
 
 from apps.common import vite
 
@@ -226,3 +227,8 @@ class TestLaCacheLargaDelBundle:
 
     def test_no_se_borran_los_originales(self, settings):
         assert not getattr(settings, "WHITENOISE_KEEP_ONLY_HASHED_FILES", False)
+
+    def test_el_audio_del_bundle_sale_como_audio(self, settings):
+        tipos = MediaTypes(extra_types=settings.WHITENOISE_MIMETYPES)
+
+        assert tipos.get_type("/static/spa/assets/silencio-BgZ7jpbT.wav") == "audio/wav"

@@ -42,6 +42,7 @@ self.addEventListener("fetch", (evento) => {
 
   const peticion = evento.request;
   if (peticion.method !== "GET") return;
+  if (peticion.headers.has("range")) return;
 
   const url = new URL(peticion.url);
   if (url.origin !== self.location.origin) return;

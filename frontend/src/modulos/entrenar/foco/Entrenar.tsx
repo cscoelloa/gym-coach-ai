@@ -10,6 +10,7 @@ import { BarraDeRegistrar } from "./BarraDeRegistrar";
 import { ChipsDeEjercicios } from "./ChipsDeEjercicios";
 import { ComoSeHace } from "./ComoSeHace";
 import { CorregirSerie } from "./CorregirSerie";
+import { InterruptorDeBloqueo } from "./InterruptorDeBloqueo";
 import { InterruptorDePantalla } from "./InterruptorDePantalla";
 import { SeriesDelEjercicio } from "./SeriesDelEjercicio";
 import { SesionSinRutina } from "./SesionSinRutina";
@@ -32,15 +33,21 @@ export function Entrenar() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="mb-3 grid grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center gap-2">
-        <Link className="icon-button bg-surface-200 text-ink-muted" to="/entrenamientos/">
+      <header className="mb-3 grid grid-cols-[5.75rem_minmax(0,1fr)_5.75rem] items-center gap-2">
+        <Link
+          className="icon-button justify-self-start bg-surface-200 text-ink-muted"
+          to="/entrenamientos/"
+        >
           <Icono nombre="cerrar" className="size-5" />
           <span className="sr-only">Salir del entrenamiento</span>
         </Link>
         <p className="truncate text-center text-[15px]/[20px] font-semibold text-ink">
           {datos.sesion.rutina ? datos.sesion.rutina.nombre : "Entrenamiento libre"}
         </p>
-        <InterruptorDePantalla />
+        <div className="flex items-center justify-end gap-1">
+          <InterruptorDeBloqueo bloqueo={e.bloqueo} />
+          <InterruptorDePantalla />
+        </div>
       </header>
 
       {!actual ? (

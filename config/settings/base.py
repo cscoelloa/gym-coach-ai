@@ -220,6 +220,8 @@ WHITENOISE_IMMUTABLE_FILE_TEST = (
     r"|\.[0-9a-f]{12}\.[A-Za-z0-9]+$"
 )
 
+WHITENOISE_MIMETYPES = {".wav": "audio/wav"}
+
 
 CONTENT_SECURITY_POLICY = {
     "DIRECTIVES": {

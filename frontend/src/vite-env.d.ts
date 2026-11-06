@@ -17,6 +17,7 @@ declare global {
 
   interface Navigator {
     readonly standalone?: boolean;
+    readonly audioSession?: { type: string };
   }
 }
 

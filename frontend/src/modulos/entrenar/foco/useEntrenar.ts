@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router";
 
 import { useEnLinea } from "@/lib/conexion";
 import { useCuentaAtras } from "@/lib/cuentaAtras";
+import { useDescansoEnBloqueo } from "@/lib/descansoEnBloqueo";
 
 import {
   useAccionDeDescanso,
@@ -27,6 +28,7 @@ export function useEntrenar(sesionId: number) {
   const finalizar = useFinalizar(sesionId);
   const accionDeDescanso = useAccionDeDescanso(sesionId);
   const descanso = useCuentaAtras(sesionId);
+  const bloqueo = useDescansoEnBloqueo(descanso.restante, descanso.total);
   const enLinea = useEnLinea();
 
   const [peso, setPeso] = useState("");
@@ -71,6 +73,7 @@ export function useEntrenar(sesionId: number) {
 
   function registrarSerie() {
     if (!datos?.actual) return;
+    bloqueo.armar();
     const yaEstabaCompleto = datos.actual.completo;
 
     registrar.mutate(
@@ -93,6 +96,7 @@ export function useEntrenar(sesionId: number) {
   }
 
   function alargarDescanso() {
+    bloqueo.armar();
     descanso.alargar(ALARGAR_SEGUNDOS);
     accionDeDescanso.mutate("alargar", {
       onSuccess: (respuesta) => descanso.sincronizar(respuesta.descanso),
@@ -133,6 +137,7 @@ export function useEntrenar(sesionId: number) {
     terminar,
     irAEjercicio,
     descanso,
+    bloqueo,
     alargarDescanso,
     saltarDescanso,
     enLinea,

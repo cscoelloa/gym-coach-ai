@@ -125,6 +125,12 @@ export const TRAZADOS = {
       <path d="M11 18.5h2M3.5 9v6M20.5 9v6" />
     </>
   ),
+  candado: (
+    <>
+      <rect x="5" y="10.5" width="14" height="10.5" rx="2.5" />
+      <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3M12 14.5v2.5" />
+    </>
+  ),
 
   compartir: (
     <>

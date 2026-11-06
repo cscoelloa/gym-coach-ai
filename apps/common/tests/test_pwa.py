@@ -131,6 +131,11 @@ class TestElServiceWorker:
             assert f'"{prefijo}"' in nunca, f"el service worker no excluye {prefijo}"
         assert 'peticion.method !== "GET"' in texto
 
+    def test_deja_al_servidor_las_peticiones_por_trozos(self, client, bundle):
+        texto = client.get(reverse("service_worker")).content.decode()
+
+        assert 'peticion.headers.has("range")) return' in texto
+
     def test_la_version_nueva_espera_a_que_la_pidan(self, client, bundle):
         texto = re.sub(r"//.*", "", client.get(reverse("service_worker")).content.decode())
         instalar = tramo(texto, 'addEventListener("install"', 'addEventListener("activate"')
