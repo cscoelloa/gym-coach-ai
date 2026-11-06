@@ -186,12 +186,13 @@
   --shadow-sheet: var(--shadow-pop);
 
   --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
   --radius-lg: 16px;
-  --radius-xl: 20px;
+  --radius-xl: 22px;
   --radius-2xl: 24px;
   --radius-3xl: 32px;
+  --radius-4xl: 36px;
 
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
@@ -237,7 +238,7 @@
   }
 
   h1 {
-    @apply font-sans text-[34px]/[41px] font-bold tracking-[-0.022em];
+    @apply font-sans text-[34px]/[41px] font-bold tracking-[-0.03em];
     text-wrap: balance;
   }
   h2 { @apply font-sans text-[22px]/[28px] font-bold tracking-[-0.017em]; }
@@ -268,6 +269,7 @@
   select:focus,
   textarea:focus {
     @apply border-primary bg-surface-100;
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 28%, transparent);
   }
 
   input[type="number"] { @apply tabular-nums; }
@@ -294,7 +296,7 @@
   }
 }
 
-@utility display-lg { @apply font-sans text-[34px]/[41px] font-bold tracking-[-0.022em]; }
+@utility display-lg { @apply font-sans text-[34px]/[41px] font-bold tracking-[-0.03em]; }
 @utility display-md { @apply font-sans text-[28px]/[34px] font-bold tracking-[-0.02em]; }
 @utility title-lg   { @apply font-sans text-[22px]/[28px] font-bold tracking-[-0.017em]; }
 @utility title-md   { @apply font-sans text-[20px]/[25px] font-semibold tracking-[-0.012em]; }
@@ -304,12 +306,18 @@
 @utility label      { @apply font-sans text-[13px]/[18px] font-semibold; }
 @utility caption    { @apply font-sans text-[12px]/[16px] font-medium; }
 
-@utility metric-xl { @apply font-sans text-[40px]/[44px] font-bold tabular-nums tracking-[-0.025em]; }
-@utility metric-md { @apply font-sans text-[22px]/[28px] font-semibold tabular-nums tracking-[-0.012em]; }
-@utility metric-sm { @apply font-sans text-[15px]/[20px] font-medium tabular-nums; }
+@utility metric-2xl {
+  @apply font-sans font-bold tabular-nums tracking-[-0.045em];
+  font-size: clamp(3rem, 14vw, 4rem);
+  line-height: 0.95;
+}
+@utility metric-xl { @apply font-sans text-[44px]/[46px] font-bold tabular-nums tracking-[-0.035em]; }
+@utility metric-lg { @apply font-sans text-[30px]/[34px] font-bold tabular-nums tracking-[-0.025em]; }
+@utility metric-md { @apply font-sans text-[24px]/[28px] font-bold tabular-nums tracking-[-0.015em]; }
+@utility metric-sm { @apply font-sans text-[15px]/[20px] font-semibold tabular-nums; }
 
 @utility tag {
-  @apply font-sans text-[12px]/[16px] font-semibold uppercase tracking-[0.04em] tabular-nums;
+  @apply font-sans text-[12px]/[16px] font-semibold uppercase tracking-[0.06em] tabular-nums;
 }
 @utility rutina-card {
   @apply block overflow-hidden rounded-2xl bg-surface-100;
@@ -343,7 +351,7 @@
 @utility hairline      { @apply border-line; }
 
 @utility card {
-  @apply relative min-w-0 rounded-xl bg-surface-100 p-4 sm:rounded-2xl sm:p-5;
+  @apply relative min-w-0 rounded-2xl bg-surface-100 p-4 sm:p-5;
   box-shadow: var(--shadow-raised);
 }
 @utility card-accent {
@@ -718,31 +726,31 @@
 }
 
 @utility segmented {
-  @apply inline-flex flex-wrap gap-0.5 rounded-md bg-surface-200 p-0.5;
+  @apply inline-flex flex-wrap gap-0.5 rounded-full bg-surface-200 p-1;
 }
 @utility segmented-option {
-  @apply flex min-h-10 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-[10px] px-4;
+  @apply flex min-h-10 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full px-4;
   @apply whitespace-nowrap;
   @apply text-[15px]/[20px] font-medium text-ink-muted;
   @apply transition-colors hover:text-ink hover:no-underline;
 }
 @utility segmented-on {
   @apply bg-surface-300 font-semibold text-ink;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.04);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
 }
 
 @utility tabs {
-  @apply mb-5 flex gap-0.5 overflow-x-auto rounded-[12px] bg-surface-200 p-0.5 sm:w-fit;
+  @apply mb-5 flex gap-0.5 overflow-x-auto rounded-full bg-surface-200 p-1 sm:w-fit;
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
 }
 @utility tab {
-  @apply flex min-h-10 flex-1 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-[10px];
+  @apply flex min-h-10 flex-1 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-full;
   @apply px-3 whitespace-nowrap text-[15px]/[20px] font-medium text-ink-muted sm:px-5;
   @apply transition-colors hover:text-ink;
   &[aria-selected="true"] {
     @apply bg-surface-300 font-semibold text-ink;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.04);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
   }
 }
 @utility tab-panel {
@@ -761,7 +769,7 @@
   @apply num font-medium text-ink-muted;
 }
 @utility progress-track {
-  @apply h-1.5 w-full overflow-hidden rounded-full bg-track;
+  @apply h-2 w-full overflow-hidden rounded-full bg-track;
 }
 @utility progress-fill {
   @apply h-full rounded-full bg-data transition-[width] duration-300;
@@ -775,10 +783,10 @@
 }
 
 @utility stat-tile {
-  @apply card flex flex-col gap-1 p-4 sm:p-4;
+  @apply card flex flex-col gap-2 p-4 sm:p-4;
 }
 @utility stat-tile-label {
-  @apply flex items-center gap-2 text-[13px]/[18px] font-semibold text-ink-subtle;
+  @apply flex min-w-0 items-center gap-2 text-[13px]/[18px] font-semibold text-ink-subtle;
 }
 @utility stat-tile-icon {
   @apply flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary;
@@ -798,7 +806,7 @@
   }
 }
 @utility stat-tile-value {
-  @apply metric-md flex items-baseline gap-1 text-ink;
+  @apply metric-lg flex items-baseline gap-1 text-ink;
 }
 @utility stat-tile-unit {
   @apply text-[15px]/[20px] font-medium text-ink-muted;
@@ -1282,15 +1290,17 @@
   & .rest-next { @apply text-[15px]/[20px] font-medium; }
 }
 @utility rest-grande {
-  @apply flex flex-col items-center gap-3 rounded-3xl bg-primary-soft px-4 py-4;
+  @apply flex flex-col items-center gap-3 rounded-[1.25rem] bg-primary-soft px-4 py-4;
 }
 @utility rest-ring {
   @apply relative size-[88px] shrink-0;
   & svg { @apply block size-full; transform: rotate(-90deg); }
 }
 @utility rest-ring-grande {
-  width: clamp(7rem, 32vw, 9.5rem);
-  height: clamp(7rem, 32vw, 9.5rem);
+  width: clamp(7.5rem, 36vw, 10rem);
+  height: clamp(7.5rem, 36vw, 10rem);
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, var(--primary-glow), transparent);
 }
 @utility rest-ring-track {
   fill: none;
@@ -1309,9 +1319,9 @@
   @apply metric-md absolute inset-0 flex items-center justify-center text-ink;
 }
 @utility rest-count-grande {
-  font-size: clamp(2rem, 9vw, 2.75rem);
+  font-size: clamp(2.25rem, 10vw, 3rem);
   line-height: 1;
-  @apply font-bold tabular-nums tracking-[-0.025em] text-primary;
+  @apply font-bold tabular-nums tracking-[-0.035em] text-primary;
 }
 @utility rest-label { @apply tag text-ink-subtle; }
 @utility rest-next { @apply body text-ink; }

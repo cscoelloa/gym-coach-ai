@@ -35,7 +35,7 @@ export function Entrenar() {
     <div className="flex flex-1 flex-col">
       <header className="mb-3 grid grid-cols-[5.75rem_minmax(0,1fr)_5.75rem] items-center gap-2">
         <Link
-          className="icon-button justify-self-start bg-surface-200 text-ink-muted"
+          className="icon-button justify-self-start bg-surface-200 text-ink"
           to="/entrenamientos/"
         >
           <Icono nombre="cerrar" className="size-5" />

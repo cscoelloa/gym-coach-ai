@@ -42,8 +42,8 @@ export function CierreDeEntrenamiento() {
   return (
     <div className="mx-auto max-w-2xl lg:max-w-5xl">
       <header className="mb-6 flex flex-col items-center text-center">
-        <span className="mb-4 flex size-16 items-center justify-center rounded-full bg-success-soft text-success">
-          <Icono nombre="comprobado" className="size-9" />
+        <span className="mb-4 flex size-20 items-center justify-center rounded-full bg-success-soft text-success">
+          <Icono nombre="comprobado" className="size-11" />
         </span>
         <p className="section-kicker">Entrenamiento terminado</p>
         <h1 ref={observar}>

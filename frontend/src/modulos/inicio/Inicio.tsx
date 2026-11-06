@@ -138,7 +138,7 @@ export function Inicio() {
             <h2 className="title-md">Constancia</h2>
             <p className="mt-1 flex items-baseline gap-1.5">
               <Icono nombre="fuego" className="size-5 self-center text-primary" />
-              <span className="metric-xl">{racha.semanas}</span>
+              <span className="metric-2xl">{racha.semanas}</span>
               <span className="stat-tile-unit">
                 semana{racha.semanas === 1 ? "" : "s"} seguida{racha.semanas === 1 ? "" : "s"}
               </span>

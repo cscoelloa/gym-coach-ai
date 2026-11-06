@@ -40,7 +40,7 @@ export function Peso() {
         {ultimo && (
           <div className="text-right">
             <span className="tag block text-ink-subtle">Último registro</span>
-            <strong className="metric-xl">{ultimo.weight_kg}</strong>
+            <strong className="metric-xl sm:metric-2xl">{ultimo.weight_kg}</strong>
             <span className="stat-tile-unit"> kg</span>
             {resumen.data.cambio != null && resumen.data.cambio !== 0 && (
               <div className="mt-1">

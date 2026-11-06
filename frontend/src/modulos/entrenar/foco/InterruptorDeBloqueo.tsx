@@ -8,7 +8,7 @@ export function InterruptorDeBloqueo({ bloqueo }: { bloqueo: Entreno["bloqueo"] 
   return (
     <button
       type="button"
-      className={`icon-button ${bloqueo.activo ? "bg-primary-soft text-primary" : "bg-surface-200 text-ink-muted"}`}
+      className={`icon-button ${bloqueo.activo ? "bg-primary-soft text-primary" : "bg-surface-200 text-ink"}`}
       aria-pressed={bloqueo.activo}
       onClick={bloqueo.cambiar}
     >

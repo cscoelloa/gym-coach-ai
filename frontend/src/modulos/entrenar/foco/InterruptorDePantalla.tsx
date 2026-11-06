@@ -8,7 +8,7 @@ export function InterruptorDePantalla() {
   return (
     <button
       type="button"
-      className={`icon-button ${pantalla.activa ? "bg-primary-soft text-primary" : "bg-surface-200 text-ink-muted"}`}
+      className={`icon-button ${pantalla.activa ? "bg-primary-soft text-primary" : "bg-surface-200 text-ink"}`}
       aria-pressed={pantalla.activa}
       onClick={pantalla.cambiar}
     >
