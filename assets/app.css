@@ -274,6 +274,22 @@
 
   input[type="number"] { @apply tabular-nums; }
 
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  input::-webkit-date-and-time-value {
+    min-height: 1.375rem;
+    text-align: start;
+  }
+
   textarea { @apply min-h-24 resize-y; }
 
   input[type="checkbox"], input[type="radio"] {

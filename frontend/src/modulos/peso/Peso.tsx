@@ -38,7 +38,7 @@ export function Peso() {
         entradilla="Un dato breve; una señal útil cuando se mira en el tiempo."
       >
         {ultimo && (
-          <div className="text-right">
+          <div className="sm:text-right">
             <span className="tag block text-ink-subtle">Último registro</span>
             <strong className="metric-xl sm:metric-2xl">{ultimo.weight_kg}</strong>
             <span className="stat-tile-unit"> kg</span>
