@@ -239,14 +239,13 @@ class TestBorrarDocumento:
 
     @patch("openai.OpenAI")
     def test_si_ya_no_estaba_alli_no_es_un_fallo(self, cliente, config_openai, documento):
-        import httpx
         import openai
 
         documento.openai_file_id = "file_123"
         documento.save()
         cliente.return_value.vector_stores.files.delete.side_effect = openai.NotFoundError(
             "no está",
-            response=httpx.Response(404, request=httpx.Request("DELETE", "https://api.openai.com")),
+            response=MagicMock(status_code=404, headers={}),
             body=None,
         )
 
