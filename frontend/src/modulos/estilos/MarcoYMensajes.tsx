@@ -16,8 +16,34 @@ export function MarcoYMensajes() {
     <>
       <Seccion
         titulo="El marco y la PWA"
-        nota="La barra superior y la de pestañas son de cristal: el contenido pasa por detrás difuminado, y si el teléfono pide menos transparencia se pintan opacas. Las hojas suben desde abajo en el teléfono y se centran en escritorio."
+        nota="El cristal es solo para lo que controla: la barra de pestañas flota como una cápsula, arriba los botones son cápsulas y el contenido se funde en el borde de scroll en vez de chocar con una línea. Sobre cristal el texto es tinta o lima, nunca gris. Si el teléfono pide más contraste, el cristal se vuelve opaco. Las tarjetas y las hojas son sólidas: son contenido."
       >
+        <Card className="mb-4 space-y-3">
+          <p className="section-kicker">El cristal</p>
+          <div className="relative h-44 overflow-hidden rounded-2xl bg-linear-to-br from-primary-soft via-data-soft to-surface-200 p-4">
+            <p className="metric-2xl text-ink">92,5</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <span className="chip chip-on">Pecho</span>
+              <span className="chip">Espalda</span>
+              <span className="chip">Pierna</span>
+            </div>
+            <div className="glass absolute inset-x-3 bottom-3 grid grid-cols-3 rounded-full p-1">
+              <span className="tab-link tab-link-on">
+                <Icono nombre="inicio" className="size-6" />
+                Inicio
+              </span>
+              <span className="tab-link">
+                <Icono nombre="plan" className="size-6" />
+                Plan
+              </span>
+              <span className="tab-link">
+                <Icono nombre="entrenar" className="size-6" />
+                Entrenar
+              </span>
+            </div>
+          </div>
+        </Card>
+
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <Card className="space-y-4">
             <p className="section-kicker">La placa de la marca</p>
@@ -57,7 +83,7 @@ export function MarcoYMensajes() {
         {hoja && (
           <Panel titulo="Una hoja" onCerrar={() => setHoja(false)}>
             <p className="body">
-              Con la agarradera arriba y el radio de 32 px de las hojas de iOS. Escape, el fondo o
+              Con la agarradera arriba y el radio de 36 px de las hojas de iOS. Escape, el fondo o
               la ✕ la cierran, y el foco vuelve al botón que la abrió.
             </p>
           </Panel>

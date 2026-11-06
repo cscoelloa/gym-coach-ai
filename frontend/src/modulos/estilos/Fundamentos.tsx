@@ -6,13 +6,15 @@ const SUPERFICIES = [
   { token: "surface-000", clase: "bg-surface-000", para: "Fondo de pantalla" },
   { token: "surface-100", clase: "bg-surface-100", para: "Fondo de tarjeta" },
   { token: "surface-200", clase: "bg-surface-200", para: "Elevada en tarjeta" },
+  { token: "surface-300", clase: "bg-surface-300", para: "Opción elegida" },
   { token: "surface-inset", clase: "bg-surface-inset", para: "Campo numérico" },
 ] as const;
 
 const ACENTOS = [
-  { token: "primary", clase: "bg-primary", para: "La acción" },
+  { token: "primary-fill", clase: "bg-primary-fill", para: "La acción, de relleno" },
+  { token: "primary", clase: "bg-primary", para: "La acción, de tinta" },
   { token: "data", clase: "bg-data", para: "El dato" },
-  { token: "success", clase: "bg-success", para: "Completada" },
+  { token: "success", clase: "bg-success", para: "Hecho" },
   { token: "warning", clase: "bg-warning", para: "Aviso" },
   { token: "danger", clase: "bg-danger", para: "Peligro" },
   { token: "line-strong", clase: "bg-line-strong", para: "Borde de control" },
@@ -28,7 +30,9 @@ const TIPOGRAFIA = [
   { clase: "body-sm", muestra: "Descanso de noventa segundos entre series." },
   { clase: "label", muestra: "Carga (kg)" },
   { clase: "caption", muestra: "vs. semana pasada" },
+  { clase: "metric-2xl", muestra: "12" },
   { clase: "metric-xl", muestra: "92,5" },
+  { clase: "metric-lg", muestra: "1 240" },
   { clase: "metric-md", muestra: "12 480" },
   { clase: "metric-sm", muestra: "4 × 8" },
   { clase: "tag", muestra: "récord" },
@@ -41,15 +45,16 @@ export function Fundamentos() {
         titulo="Color"
         nota={
           <>
-            Dos acentos, y esa es la decisión que sostiene el sistema:{" "}
-            <strong className="text-ink">primary</strong> es la acción y{" "}
-            <strong className="text-ink">data</strong> es el dato. Una serie de gráfica pintada del
-            color del botón principal invita a pulsarla.
+            Un color por significado: la <strong className="text-ink">lima</strong> es la acción,
+            el progreso y el logro; el <strong className="text-ink">violeta</strong> es el dato; la{" "}
+            <strong className="text-ink">menta</strong> es lo hecho. En claro la lima solo rellena
+            —con texto casi negro y un borde oliva— y, cuando tiene que ser tinta, pasa a oliva.
+            Una serie de gráfica del color del botón principal invitaría a pulsarla.
           </>
         }
       >
         <h3 className="mb-2">Superficies</h3>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
           {SUPERFICIES.map((s) => (
             <div key={s.token} className="card p-3">
               <span className={`hairline block h-10 rounded-sm border ${s.clase}`} />
@@ -60,7 +65,7 @@ export function Fundamentos() {
         </div>
 
         <h3 className="mb-2 mt-5">Acento y estado</h3>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
           {ACENTOS.map((a) => (
             <div key={a.token} className="card p-3">
               <span className={`block h-10 rounded-sm ${a.clase}`} />
@@ -75,8 +80,9 @@ export function Fundamentos() {
         titulo="Tipografía"
         nota={
           <>
-            Inter para todo, con la escala de iOS: título grande de 34 px y cuerpo de 17. Toda cifra
-            que lea una persona va con dígitos tabulares, para que las columnas de kg no bailen.
+            Inter para todo, con la escala de iOS: título grande de 34 px y cuerpo de 17. Los números
+            que importan se leen de un vistazo: ganan tamaño, no peso. Toda cifra va con dígitos
+            tabulares, para que las columnas de kg no bailen.
             Autoalojada: la CSP declara <code>font-src: 'self'</code> y un enlace a Google Fonts
             quedaría bloqueado sin más rastro que una tipografía que no es la que se pidió.
           </>

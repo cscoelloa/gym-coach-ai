@@ -11,7 +11,7 @@ export function GuiaDeEstilos() {
   return (
     <>
       <PageHeader
-        kicker="Aire · sistema de diseño"
+        kicker="Cristal · sistema de diseño"
         titulo="Guía de estilos"
         entradilla={
           <>
