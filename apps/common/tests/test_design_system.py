@@ -251,6 +251,32 @@ class TestElTextoSobreLaAccion:
         assert not culpables, "`text-on-primary` suelto en:\n" + "\n".join(culpables)
 
 
+class TestElCristal:
+    def cuerpo(self, nombre: str) -> str:
+        cuerpos = dict(utilidades())
+        assert nombre in cuerpos, f"no existe `@utility {nombre}`"
+        return cuerpos[nombre]
+
+    def test_la_receta_tiene_safari_y_sus_respaldos(self):
+        cristal = self.cuerpo("glass")
+
+        assert "-webkit-backdrop-filter" in cristal, "Safari necesita el prefijo"
+        assert "@supports not" in cristal, "sin respaldo donde no hay backdrop-filter"
+        assert "prefers-reduced-transparency" in cristal
+        assert "prefers-contrast: more" in cristal, "iOS solo respeta «Aumentar contraste»"
+
+    def test_solo_el_cristal_y_el_borde_de_la_barra_desenfocan(self):
+        desenfocan = {
+            nombre
+            for nombre, cuerpo in utilidades()
+            if "backdrop-filter" in cuerpo or "backdrop-blur" in cuerpo
+        }
+
+        assert desenfocan <= {"glass", "app-bar"}, "desenfoque fuera del cristal: " + ", ".join(
+            sorted(desenfocan - {"glass", "app-bar"})
+        )
+
+
 class TestLaLimaNoEsTinta:
     TINTA = re.compile(
         r"(?:\btext-primary-fill\b|\b(?:color|stroke|fill)\s*:\s*var\(--primary-fill\))"

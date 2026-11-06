@@ -72,11 +72,13 @@ function BarraSuperior({ usuario }: { usuario: UsuarioDeSesion }) {
           )}
         </div>
 
-        <div className="flex items-center justify-end gap-0.5">
+        <div className="flex items-center justify-end gap-1.5">
           <DescansoEnCurso />
-          <div className="flex items-center gap-0.5 lg:hidden">
-            <Campana />
-            <Cuenta usuario={usuario} variante="avatar" />
+          <div className="lg:hidden">
+            <div className="glass-cluster">
+              <Campana />
+              <Cuenta usuario={usuario} variante="avatar" />
+            </div>
           </div>
         </div>
       </div>
@@ -90,7 +92,7 @@ function BarraLateral({ usuario }: { usuario: UsuarioDeSesion }) {
   const { data: sinLeer = 0 } = useSinLeer();
 
   return (
-    <aside className="app-sidebar side-rail fixed inset-y-0 left-0 z-30 hidden w-20 flex-col px-2 py-5 lg:flex xl:w-64 xl:px-3">
+    <aside className="app-sidebar side-rail fixed inset-y-3 left-3 z-30 hidden w-20 flex-col px-2 py-5 lg:flex xl:w-64 xl:px-3">
       <EnlaceDeDestino
         a="/"
         className="mb-8 flex items-center justify-center gap-3 hover:no-underline xl:justify-start xl:px-3"
@@ -157,7 +159,7 @@ function BarraDePestanas() {
 
   return (
     <nav className="tab-bar" aria-label="Principal">
-      <div className="mx-auto grid max-w-lg grid-cols-5">
+      <div className="grid grid-cols-5">
         {DESTINOS.map((destino) => {
           const activo = estaActivo(destino, pathname);
           return (
@@ -192,7 +194,7 @@ export function AppShell({
     <ProveedorDeMarco>
       <BarraLateral usuario={usuario} />
 
-      <div className="lg:pl-20 xl:pl-64">
+      <div className="lg:pl-[6.5rem] xl:pl-[17.5rem]">
         <BarraSuperior usuario={usuario} />
 
         <main className="app-main pt-2 lg:pt-10">

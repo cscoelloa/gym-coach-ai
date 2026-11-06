@@ -448,6 +448,37 @@ test("el CSS del sistema de diseño llega de verdad", async ({ page }) => {
   await expect.poll(fondo).toBe("rgb(0, 0, 0)");
 });
 
+test("en el móvil las pestañas flotan como cristal y el editor las sustituye", async ({
+  page,
+}) => {
+  test.skip(test.info().project.name !== "movil", "la barra de pestañas solo existe en el móvil");
+  await enInicio(page);
+
+  const barra = page.locator(".tab-bar");
+  await expect(barra).toBeVisible();
+  const medida = await barra.evaluate((nodo) => {
+    const estilo = getComputedStyle(nodo);
+    return {
+      filtro: estilo.backdropFilter || estilo.getPropertyValue("-webkit-backdrop-filter"),
+      radio: parseFloat(estilo.borderTopLeftRadius),
+      hueco: window.innerHeight - nodo.getBoundingClientRect().bottom,
+    };
+  });
+  expect(medida.filtro).toContain("blur");
+  expect(medida.radio).toBeGreaterThanOrEqual(28);
+  expect(medida.hueco).toBeGreaterThan(0);
+
+  await page.emulateMedia({ contrast: "more" });
+  await expect
+    .poll(() => barra.evaluate((nodo) => getComputedStyle(nodo).backdropFilter))
+    .toBe("none");
+  await page.emulateMedia({ contrast: "no-preference" });
+
+  await page.goto("/rutinas/nueva/");
+  await expect(page.locator(".editor-actions")).toBeVisible();
+  await expect(barra).toBeHidden();
+});
+
 test("la tipografía autoalojada se aplica", async ({ page }) => {
   await enInicio(page);
   await page.goto("/estilos/");
