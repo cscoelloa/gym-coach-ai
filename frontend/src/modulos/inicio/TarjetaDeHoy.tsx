@@ -83,7 +83,7 @@ function TiraDeEjercicios({ ejercicios }: { ejercicios: EjercicioDeHoy[] }) {
             alt={ej.name}
             title={ej.name}
             loading="lazy"
-            className="size-10 rounded-lg bg-surface-100 object-contain ring-1 ring-line"
+            className="ex-thumb size-10 rounded-lg ring-1 ring-line"
           />
         ) : (
           <span

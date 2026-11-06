@@ -15,7 +15,7 @@ export function tokens(): TokensDeGrafica {
     estilo.getPropertyValue(nombre).trim() || respaldo;
 
   return {
-    acento: leer("--chart-accent", "#0f766e"),
+    acento: leer("--chart-accent", "#5b47d6"),
     tinta: leer("--chart-ink", "#48484d"),
     rejilla: leer("--chart-grid", "#e3e3e8"),
     meta: leer("--chart-goal", "#935300"),

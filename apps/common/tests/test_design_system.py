@@ -64,7 +64,7 @@ class TestLosDosTemasDeclaranLoMismo:
 class TestNingunaUtilidadEscribeUnColorEnCrudo:
     HEX = re.compile(r"#[0-9a-fA-F]{3,8}\b")
 
-    PERMITIDAS = {"ex-media"}
+    PERMITIDAS: set[str] = set()
 
     def test_las_utilidades_usan_tokens(self):
         encontradas = utilidades()
@@ -93,21 +93,38 @@ class TestElContrasteSeCalcula:
         ("primary", "surface-200", 4.5, "un enlace o un icono dentro de una superficie elevada"),
         ("on-primary", "primary-fill", 4.5, "el texto del botón primario"),
         ("on-primary", "primary-hover", 4.5, "el texto del botón primario al pasar por encima"),
-        ("primary", "primary-soft", 4.5, "botón secundario, badge de récord y fila activa"),
+        ("primary", "primary-soft", 4.5, "badge de récord, fila activa y el descanso"),
         ("success", "success-soft", 4.5, "badge de completada y la sugerencia de progresión"),
         ("warning", "warning-soft", 4.5, "badge de aviso"),
         ("danger", "danger-soft", 4.5, "badge de bajada y el botón de peligro"),
         ("data", "data-soft", 4.5, "badge informativo"),
         ("danger", "surface-100", 4.5, "el error de un campo"),
-        ("ink-subtle", "surface-000", 4.5, "la etiqueta de una pestaña sobre la barra"),
+        ("ink-subtle", "surface-000", 4.5, "una etiqueta suelta sobre el fondo"),
         ("ink-subtle", "surface-200", 4.5, "el recuento dentro de un chip"),
         ("line-strong", "surface-000", 3.0, "el borde de un control sobre el fondo"),
         ("line-strong", "surface-100", 3.0, "el borde de un control dentro de una tarjeta"),
         ("focus", "surface-000", 3.0, "el anillo de foco sobre el fondo"),
         ("focus", "surface-100", 3.0, "el anillo de foco dentro de una tarjeta"),
-        ("data", "surface-100", 3.0, "la serie de una gráfica"),
+        ("data", "surface-100", 4.5, "la serie de una gráfica y el texto de un dato"),
         ("warning", "surface-100", 3.0, "la línea de meta de una gráfica"),
-        ("surface-000", "success", 3.0, "la marca de serie hecha sobre su círculo verde"),
+        ("surface-000", "success", 3.0, "la marca de serie hecha sobre su círculo"),
+        ("ink", "primary-soft", 4.5, "el título de una cabecera sobre su halo; la fila activa"),
+        ("ink-muted", "primary-soft", 4.5, "la entradilla de una cabecera sobre su halo"),
+        ("ink", "data-soft", 4.5, "el título de una cabecera de datos"),
+        ("ink-muted", "data-soft", 4.5, "la entradilla de una cabecera de datos"),
+        ("ink", "surface-200", 4.5, "un chip o un botón secundario"),
+        ("ink", "surface-300", 4.5, "la opción elegida de un control segmentado"),
+        ("ink-muted", "surface-000", 4.5, "la entradilla bajo el título de una pantalla"),
+        ("ink-muted", "surface-200", 4.5, "un estado vacío o un badge neutro"),
+        ("success", "surface-100", 4.5, "el texto de una confirmación o un chip hecho"),
+        ("primary-edge", "surface-100", 3.0, "el borde de un relleno lima dentro de una tarjeta"),
+        ("primary-edge", "surface-000", 3.0, "el borde de un relleno lima sobre el fondo"),
+        ("primary", "track", 3.0, "el arco de progreso sobre su pista"),
+        ("data", "track", 3.0, "una celda llena del calendario frente a una vacía"),
+        ("ink", "glass-solid", 4.5, "una pestaña cuando el cristal es opaco"),
+        ("primary", "glass-solid", 4.5, "la pestaña elegida cuando el cristal es opaco"),
+        ("surface-100", "danger", 4.5, "el número de avisos sin leer"),
+        ("primary-fill", "brand-plate", 3.0, "la mancuerna sobre la placa de la marca"),
     ]
 
     @staticmethod
@@ -170,29 +187,93 @@ class TestLasFuentesEstanDondeDiceElCss:
         assert "fonts.gstatic.com" not in texto
 
 
+def codigo_del_frontend() -> list[Path]:
+    raiz = Path(settings.BASE_DIR)
+    return [
+        archivo
+        for archivo in [
+            *raiz.glob("frontend/src/**/*.ts"),
+            *raiz.glob("frontend/src/**/*.tsx"),
+        ]
+        if "tests" not in archivo.parts and ".test." not in archivo.name
+    ]
+
+
 class TestNingunComponenteNombraUnTokenQueYaNoExiste:
-    VIEJO = re.compile(
-        r"\b(?:bg|text|border|fill|stroke|ring|outline|from|via|to|accent|divide|decoration|"
-        r"placeholder|caret|shadow)-(?:on-)?(?:ember|steel)\b"
-    )
+    RETIRADOS = [
+        re.compile(
+            r"\b(?:bg|text|border|fill|stroke|ring|outline|from|via|to|accent|divide|decoration|"
+            r"placeholder|caret|shadow)-(?:on-)?(?:ember|steel)\b"
+        ),
+        re.compile(
+            r"\b(?:bg|text|border|fill|stroke|ring|outline|from|via|to|divide|decoration|"
+            r"shadow)-accent(?:-soft|-strong|-deep)?\b"
+        ),
+        re.compile(r"var\(--(?:accent|data-strong|bar)\b"),
+        re.compile(r"\b(?:hero-calido|card-calida|card-teal|bar-glass)\b"),
+    ]
 
     def test_no_queda_ninguna_clase_con_el_nombre_viejo(self):
         raiz = Path(settings.BASE_DIR)
-        archivos = [
-            *raiz.glob("frontend/src/**/*.ts"),
-            *raiz.glob("frontend/src/**/*.tsx"),
-            *raiz.glob("apps/**/*.py"),
-            CSS,
-        ]
+        archivos = [*raiz.glob("frontend/src/**/*.ts"), *raiz.glob("frontend/src/**/*.tsx")]
+        archivos += [*raiz.glob("apps/**/*.py"), CSS]
         assert len(archivos) > 50, "no se ha encontrado el código del frontend"
 
         culpables = [
-            f"{archivo.relative_to(raiz)}: {clase}"
+            f"{archivo.relative_to(raiz)}: {nombre}"
             for archivo in archivos
             if "tests" not in archivo.parts
-            for clase in self.VIEJO.findall(archivo.read_text(encoding="utf-8"))
+            for patron in self.RETIRADOS
+            for nombre in patron.findall(archivo.read_text(encoding="utf-8"))
         ]
-        assert not culpables, "clases con tokens de Forja:\n" + "\n".join(culpables)
+        assert not culpables, "clases o tokens retirados:\n" + "\n".join(culpables)
+
+
+class TestElTextoSobreLaAccion:
+    def test_quien_escribe_sobre_la_accion_pinta_tambien_su_relleno(self):
+        culpables = [
+            nombre
+            for nombre, cuerpo in utilidades()
+            if "on-primary" in cuerpo
+            and "primary-fill" not in cuerpo
+            and "relleno-accion" not in cuerpo
+        ]
+
+        assert not culpables, "texto de la acción sin su relleno lima:\n" + "\n".join(culpables)
+
+    def test_los_componentes_no_escriben_el_texto_de_la_accion_por_su_cuenta(self):
+        culpables = [
+            str(archivo.name)
+            for archivo in codigo_del_frontend()
+            if "text-on-primary" in archivo.read_text(encoding="utf-8")
+        ]
+
+        assert not culpables, "`text-on-primary` suelto en:\n" + "\n".join(culpables)
+
+
+class TestLaLimaNoEsTinta:
+    TINTA = re.compile(
+        r"(?:\btext-primary-fill\b|\b(?:color|stroke|fill)\s*:\s*var\(--primary-fill\))"
+    )
+    PERMITIDAS = {"brand-mark"}
+
+    def test_las_utilidades_no_escriben_con_el_relleno_lima(self):
+        culpables = [
+            nombre
+            for nombre, cuerpo in utilidades()
+            if nombre not in self.PERMITIDAS and self.TINTA.search(cuerpo)
+        ]
+
+        assert not culpables, "la lima de relleno usada como tinta en:\n" + "\n".join(culpables)
+
+    def test_los_componentes_tampoco(self):
+        culpables = [
+            str(archivo.name)
+            for archivo in codigo_del_frontend()
+            if self.TINTA.search(archivo.read_text(encoding="utf-8"))
+        ]
+
+        assert not culpables, "la lima de relleno usada como tinta en:\n" + "\n".join(culpables)
 
 
 class TestLasClasesConstruidasExisten:

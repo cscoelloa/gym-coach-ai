@@ -84,7 +84,7 @@ export function RestTimer({
       {compacto ? (
         <>
           <div className="flex min-w-0 flex-1 flex-col">
-            <span className="caption text-data">Descanso</span>
+            <span className="caption text-primary">Descanso</span>
             {siguiente && <span className="rest-next truncate">{siguiente}</span>}
           </div>
           {children && <div className="flex shrink-0 gap-1.5">{children}</div>}

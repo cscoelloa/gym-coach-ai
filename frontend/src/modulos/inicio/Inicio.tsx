@@ -93,12 +93,12 @@ export function Inicio() {
   return (
     <>
       <header className="mb-5">
-        <span className="section-kicker">{FECHA_LARGA.format(hoy)}</span>
+        <span className="hero-kicker">{FECHA_LARGA.format(hoy)}</span>
         <h1 ref={observar}>Tu semana</h1>
       </header>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="card-elevada lg:col-span-2">
+        <section className="hero lg:col-span-2">
           <h2 className="sr-only">Lo de hoy</h2>
           <QueTocaHoy toca={data.hoy_toca} hoy={data.hoy} />
 
@@ -114,9 +114,9 @@ export function Inicio() {
               }))}
             />
           </div>
-        </Card>
+        </section>
 
-        <Card className="card-calida flex flex-wrap items-center gap-x-5 gap-y-4 lg:col-span-2">
+        <Card className="card-logro flex flex-wrap items-center gap-x-5 gap-y-4 lg:col-span-2">
           <Anillo
             hecho={racha.hechas_esta_semana}
             total={racha.planificadas_esta_semana}
@@ -137,7 +137,7 @@ export function Inicio() {
           <div className="min-w-0 flex-1">
             <h2 className="title-md">Constancia</h2>
             <p className="mt-1 flex items-baseline gap-1.5">
-              <Icono nombre="fuego" className="size-5 self-center text-accent" />
+              <Icono nombre="fuego" className="size-5 self-center text-primary" />
               <span className="metric-xl">{racha.semanas}</span>
               <span className="stat-tile-unit">
                 semana{racha.semanas === 1 ? "" : "s"} seguida{racha.semanas === 1 ? "" : "s"}

@@ -56,7 +56,7 @@ export function Vitrina() {
           <div className="min-w-0">
             <p className="tag text-ink-subtle">Constancia</p>
             <p className="flex items-baseline gap-1">
-              <Icono nombre="fuego" className="size-5 self-center text-warning" />
+              <Icono nombre="fuego" className="size-5 self-center text-primary" />
               <span className="metric-xl">6</span>
               <span className="stat-tile-unit">semanas</span>
             </p>

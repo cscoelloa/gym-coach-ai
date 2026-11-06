@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { useTituloDeLaPantalla } from "@/lib/marco";
 
-type Hero = "primary" | "data" | "calido";
+type Hero = "primary" | "data";
 
 export function Cabecera({
   titulo,
@@ -20,13 +20,13 @@ export function Cabecera({
   const observar = useTituloDeLaPantalla(titulo);
 
   if (hero) {
-    const tono = hero === "data" ? "hero-data" : hero === "calido" ? "hero-calido" : "";
+    const tono = hero === "data" ? "hero-data" : "";
     return (
       <header className={`hero ${tono} page-hero`.trim()}>
         <div className="min-w-0">
           {kicker && <p className="hero-kicker">{kicker}</p>}
           <h1 ref={observar}>{titulo}</h1>
-          {descripcion && <p className="body-sm mt-1.5 text-on-primary/85">{descripcion}</p>}
+          {descripcion && <p className="body-sm mt-1.5 text-ink-muted">{descripcion}</p>}
         </div>
         {acciones && <div className="flex flex-wrap items-center gap-2">{acciones}</div>}
       </header>

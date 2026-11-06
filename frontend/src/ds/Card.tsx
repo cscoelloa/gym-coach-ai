@@ -24,7 +24,7 @@ export function PageHeader({
   titulo: string;
   entradilla?: ReactNode;
   children?: ReactNode;
-  hero?: "primary" | "data" | "calido";
+  hero?: "primary" | "data";
 }) {
   return (
     <Cabecera

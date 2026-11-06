@@ -122,7 +122,7 @@ export function PropuestaDeRutina() {
                   <li className="flex items-start gap-3" key={ejercicio.external_id}>
                     {ejercicio.imagen && (
                       <img
-                        className="size-12 shrink-0 rounded-lg bg-white object-contain"
+                        className="ex-thumb size-12 shrink-0 rounded-lg"
                         src={ejercicio.imagen}
                         alt=""
                         loading="lazy"

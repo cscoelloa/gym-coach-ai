@@ -45,7 +45,7 @@ export function Progreso() {
           valor={cifras.racha_semanas}
           unidad="sem."
           icono="fuego"
-          tono="warning"
+          tono="primary"
         />
         <StatTile
           etiqueta="Peso 30 días"
