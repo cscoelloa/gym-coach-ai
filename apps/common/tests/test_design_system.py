@@ -277,6 +277,21 @@ class TestElCristal:
         )
 
 
+class TestElHoverNoSeQuedaPegadoAlTocar:
+    HOVER = re.compile(r":hover\b")
+
+    def test_cada_hover_escrito_a_mano_pide_un_puntero_que_flote(self):
+        culpables = [
+            nombre
+            for nombre, cuerpo in utilidades()
+            if self.HOVER.search(cuerpo) and "(hover: hover)" not in cuerpo
+        ]
+
+        assert not culpables, "`:hover` que en el móvil se queda puesto tras tocar:\n" + "\n".join(
+            culpables
+        )
+
+
 class TestLaLimaNoEsTinta:
     TINTA = re.compile(
         r"(?:\btext-primary-fill\b|\b(?:color|stroke|fill)\s*:\s*var\(--primary-fill\))"

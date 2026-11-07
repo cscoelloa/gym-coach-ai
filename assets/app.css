@@ -584,7 +584,9 @@
 @utility side-link {
   @apply flex min-h-11 w-full items-center gap-3 rounded-full px-3 text-[15px]/[20px] font-semibold;
   @apply text-ink transition-colors hover:no-underline;
-  &:hover { background: var(--glass-selected); }
+  @media (hover: hover) {
+    &:hover { background: var(--glass-selected); }
+  }
 }
 @custom-variant carril (@media (min-width: 64rem) and (max-width: 79.98rem));
 @utility side-rail {
@@ -1049,7 +1051,9 @@
   @media (min-width: 48rem) {
     & thead th { border-bottom: 1px solid var(--line-strong); }
     & tbody tr { transition: background-color 0.15s; }
-    & tbody tr:hover { background: var(--surface-200); }
+    @media (hover: hover) {
+      & tbody tr:hover { background: var(--surface-200); }
+    }
     & tbody tr:last-child { border-bottom: 0; }
   }
 }
@@ -1066,7 +1070,9 @@
     font-variant-numeric: tabular-nums;
   }
   & tbody tr:last-child td { border-bottom: 0; }
-  & tbody tr:hover { background: var(--surface-200); }
+  @media (hover: hover) {
+    & tbody tr:hover { background: var(--surface-200); }
+  }
 }
 
 @utility cal-scroll {
@@ -1114,7 +1120,9 @@
 }
 @utility bm-hit {
   @apply cursor-pointer;
-  &:hover path { fill: var(--primary); fill-opacity: 0.6; }
+  @media (hover: hover) {
+    &:not([aria-pressed="true"]):hover path { fill: var(--primary); fill-opacity: 0.6; }
+  }
   &:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
 }
 
@@ -1396,7 +1404,9 @@
   @apply transition-colors hover:no-underline;
   overflow-wrap: anywhere;
   & > svg:last-child { flex-shrink: 0; color: var(--ink-subtle); }
-  &:is(button, a):hover { background: var(--surface-200); }
+  @media (hover: hover) {
+    &:is(button, a):hover { background: var(--surface-200); }
+  }
   &:is(button, a):active { background: var(--surface-200); }
 }
 @utility switch {
