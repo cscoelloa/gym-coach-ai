@@ -177,7 +177,7 @@ function Editor({ rutina }: { rutina?: Rutina }) {
       {e.hoja === "configurar" && e.elegido && (
         <Panel
           titulo={nombreDeEjercicio(e.elegido.exercise_detail.name)}
-          onCerrar={() => e.setHoja(null)}
+          onCerrar={e.cerrarFicha}
         >
           <Configuracion
             key={e.elegido.clave}

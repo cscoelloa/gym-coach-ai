@@ -171,7 +171,7 @@ describe("Editor con borrador", () => {
     await userEvent.click(screen.getByRole("button", { name: /Añadir ejercicio/ }));
     expect(await screen.findByText("Fondos")).toBeVisible();
     expect(consulta).toContain("mi_material=1"); expect(consulta).toContain("page=1");
-    await userEvent.click(screen.getByRole("button", { name: /^Fondos/ }));
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: /^Fondos/ }));
     await userEvent.click(screen.getByRole("button", { name: "Añadir al borrador" }));
     const hoja = screen.getByRole("dialog", { name: "Añadir ejercicio" });
     expect(within(hoja).getByRole("button", { name: "Listo (3)" })).toBeVisible();
@@ -209,6 +209,18 @@ describe("Editor con borrador", () => {
     await userEvent.click(screen.getByRole("button", { name: /^Fondos/ }));
     await userEvent.click(screen.getByRole("button", { name: "Añadir al borrador" }));
     await sigueFiltrado();
+
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: /^Fondos/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Cerrar panel" }));
+    await sigueFiltrado();
+  });
+
+  it("cerrar la ficha abierta desde la rutina no abre el buscador", async () => {
+    montarEditor();
+    await userEvent.click(await screen.findByRole("button", { name: /^Press de banca/ }));
+    expect(screen.getByRole("dialog", { name: "Press De Banca" })).toBeVisible();
+    await userEvent.click(screen.getByRole("button", { name: "Cerrar panel" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("no crea nada al abrir o cancelar una rutina nueva", async () => {

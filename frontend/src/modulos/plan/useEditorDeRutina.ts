@@ -95,6 +95,10 @@ export function useEditorDeRutina(rutina?: Rutina) {
     cambiar({ ...borrador, exercises: lista });
   }
 
+  function cerrarFicha() {
+    setHoja(origen === "buscar" ? "buscar" : null);
+  }
+
   function aplicar(fila: Fila) {
     const existe = borrador.exercises.some((e) => e.clave === fila.clave);
     cambiar({
@@ -103,12 +107,12 @@ export function useEditorDeRutina(rutina?: Rutina) {
         ? borrador.exercises.map((e) => (e.clave === fila.clave ? fila : e))
         : [...borrador.exercises, fila],
     });
-    setHoja(origen === "buscar" ? "buscar" : null);
+    cerrarFicha();
   }
 
   function quitar(clave: string) {
     cambiar({ ...borrador, exercises: borrador.exercises.filter((e) => e.clave !== clave) });
-    setHoja(origen === "buscar" ? "buscar" : null);
+    cerrarFicha();
   }
 
   function enviar() {
@@ -184,6 +188,7 @@ export function useEditorDeRutina(rutina?: Rutina) {
     elegido,
     seleccionar,
     editar,
+    cerrarFicha,
     mover,
     aplicar,
     quitar,
