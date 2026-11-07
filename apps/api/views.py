@@ -146,6 +146,16 @@ class RoutineViewSet(OwnedModelViewSet):
     def get_serializer_class(self):
         return RoutineListSerializer if self.action == "list" else RoutineSerializer
 
+    @action(detail=False, methods=["get"])
+    def ejercicios(self, request):
+        excluir = request.query_params.get("excluir", "")
+        rutinas = catalog.rutinas_con_ejercicios(
+            request.user,
+            nombre=(request.query_params.get("q") or "").strip(),
+            excluir=int(excluir) if excluir.isdigit() else None,
+        )
+        return Response(RoutineSerializer(rutinas, many=True, context={"request": request}).data)
+
 
 class ProgramViewSet(OwnedModelViewSet):
     queryset = Program.objects.prefetch_related(

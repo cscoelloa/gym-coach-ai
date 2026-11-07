@@ -38,6 +38,7 @@ export function usePlan() {
 function invalidarPlan(cache: ReturnType<typeof useQueryClient>) {
   cache.invalidateQueries({ queryKey: CLAVE });
   cache.invalidateQueries({ queryKey: ["inicio"] });
+  cache.invalidateQueries({ queryKey: ["rutinas", "ejercicios"] });
 }
 
 export function useAsignarRutina() {
@@ -205,6 +206,19 @@ export function useMoverEjercicio(rutina: number) {
         cuerpo: { direccion },
       }),
     onSuccess: () => invalidarRutina(cache, rutina),
+  });
+}
+
+export function useRutinasConEjercicios(excluir?: number, q = "") {
+  const params = new URLSearchParams();
+  if (excluir !== undefined) params.set("excluir", String(excluir));
+  if (q) params.set("q", q);
+  const consulta = params.toString();
+
+  return useQuery({
+    queryKey: ["rutinas", "ejercicios", excluir ?? null, q],
+    queryFn: () => api<Rutina[]>(`/api/rutinas/ejercicios/${consulta ? `?${consulta}` : ""}`),
+    placeholderData: (anterior) => anterior,
   });
 }
 

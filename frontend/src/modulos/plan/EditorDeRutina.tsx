@@ -170,7 +170,12 @@ function Editor({ rutina }: { rutina?: Rutina }) {
             </Button>
           }
         >
-          <SelectorDeEjercicios busqueda={busqueda} onElegir={e.seleccionar} anadidos={anadidos} />
+          <SelectorDeEjercicios
+            busqueda={busqueda}
+            excluir={e.rutinaId}
+            onElegir={e.seleccionar}
+            anadidos={anadidos}
+          />
         </Panel>
       )}
 

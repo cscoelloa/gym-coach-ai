@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 
 import { SIN_FILTROS, type FiltrosDeCatalogo } from "@/modulos/ejercicios/api";
 
+export type FuenteDeEjercicios = "catalogo" | "rutinas";
+
 export function useBusquedaDeEjercicios() {
   const [filtros, setFiltros] = useState<FiltrosDeCatalogo>(SIN_FILTROS);
   const [texto, setTexto] = useState("");
   const [pagina, setPagina] = useState(1);
   const [abierta, setAbierta] = useState(false);
+  const [fuente, setFuente] = useState<FuenteDeEjercicios>("catalogo");
 
   useEffect(() => {
     if (texto === filtros.q) return;
@@ -28,7 +31,19 @@ export function useBusquedaDeEjercicios() {
     setPagina(1);
   }
 
-  return { filtros, texto, pagina, abierta, setTexto, setPagina, setAbierta, cambiar, limpiar };
+  return {
+    filtros,
+    texto,
+    pagina,
+    abierta,
+    fuente,
+    setTexto,
+    setPagina,
+    setAbierta,
+    setFuente,
+    cambiar,
+    limpiar,
+  };
 }
 
 export type BusquedaDeEjercicios = ReturnType<typeof useBusquedaDeEjercicios>;

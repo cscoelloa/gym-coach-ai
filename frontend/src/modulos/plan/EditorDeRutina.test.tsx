@@ -54,6 +54,7 @@ const RUTINA: Rutina = {
 
 function responder(rutina: Partial<Rutina> = {}, dias: string[] = ["Lunes"]) {
   servidor.use(
+    http.get("/api/rutinas/ejercicios/", () => HttpResponse.json([])),
     http.get("/api/rutinas/:id/", () => HttpResponse.json({ ...RUTINA, ...rutina })),
     http.get("/api/plan/", () =>
       HttpResponse.json({
@@ -221,6 +222,45 @@ describe("Editor con borrador", () => {
     expect(screen.getByRole("dialog", { name: "Press De Banca" })).toBeVisible();
     await userEvent.click(screen.getByRole("button", { name: "Cerrar panel" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("sin otras rutinas con ejercicios el buscador no ofrece pestañas", async () => {
+    let consulta = "";
+    servidor.use(http.get("/api/rutinas/ejercicios/", ({ request }) => { consulta = request.url; return HttpResponse.json([]); }));
+    montarEditor(); await screen.findByLabelText("Nombre");
+    await userEvent.click(screen.getByRole("button", { name: /Añadir ejercicio/ }));
+    await waitFor(() => expect(consulta).toContain("excluir=7"));
+    expect(await screen.findByText("0 ejercicios")).toBeVisible();
+    expect(screen.queryByRole("button", { name: "De mis rutinas" })).not.toBeInTheDocument();
+  });
+
+  it("«De mis rutinas» trae los ejercicios de tus otras rutinas con su configuración", async () => {
+    let consulta = "";
+    const sentadilla = item(5, "Sentadilla", { routine: 9, target_sets: 5, target_reps_min: 5, target_reps_max: 5, rest_seconds: 120 });
+    servidor.use(http.get("/api/rutinas/ejercicios/", ({ request }) => { consulta = request.url; return HttpResponse.json([{ ...RUTINA, id: 9, name: "Pierna", exercises: [sentadilla] }]); }));
+    montarEditor(); await screen.findByLabelText("Nombre");
+    await userEvent.click(screen.getByRole("button", { name: /Añadir ejercicio/ }));
+    await userEvent.click(await screen.findByRole("button", { name: "De mis rutinas" }));
+    expect(consulta).toContain("excluir=7");
+
+    const hoja = screen.getByRole("dialog", { name: "Añadir ejercicio" });
+    expect(within(hoja).getByRole("heading", { name: "Pierna · 1" })).toBeVisible();
+    expect(within(hoja).getByText("5 × 5–5 · 120 s")).toBeVisible();
+    expect(within(hoja).queryByText(/Según el material de tu perfil/)).not.toBeInTheDocument();
+    await userEvent.type(within(hoja).getByLabelText("Buscar ejercicio"), "sen");
+    await waitFor(() => expect(consulta).toContain("q=sen"));
+
+    await userEvent.click(within(hoja).getByRole("button", { name: /^Sentadilla/ }));
+    expect(screen.getByLabelText("Series")).toHaveDisplayValue("5");
+    expect(screen.getByLabelText("Descanso (s)")).toHaveDisplayValue("120");
+    await userEvent.click(screen.getByRole("button", { name: "Añadir al borrador" }));
+
+    const otraVez = await screen.findByRole("dialog", { name: "Añadir ejercicio" });
+    expect(within(otraVez).getByRole("button", { name: "De mis rutinas" })).toHaveAttribute("aria-pressed", "true");
+    expect(within(otraVez).getByText("5×5–5")).toBeVisible();
+    await userEvent.click(within(otraVez).getByRole("button", { name: "Listo (3)" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByText("Sentadilla")).toBeVisible();
   });
 
   it("no crea nada al abrir o cancelar una rutina nueva", async () => {

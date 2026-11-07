@@ -1,7 +1,7 @@
-from django.db.models import Count, Q
+from django.db.models import Count, Prefetch, Q
 from django.utils.text import slugify
 
-from .models import Exercise, MuscleGroup
+from .models import Exercise, MuscleGroup, Routine, RoutineExercise
 from .taxonomy import muscle_label
 
 TAMANO_DE_PAGINA = 24
@@ -39,6 +39,22 @@ def filtrar(user, filtros: dict[str, str]):
 
     return queryset.order_by("name", "pk")
 
+
+def rutinas_con_ejercicios(user, *, nombre: str = "", excluir: int | None = None):
+    filas = (
+        RoutineExercise.objects.filter(routine__user=user)
+        .select_related("exercise", "exercise__target_muscle")
+        .prefetch_related("exercise__secondary_muscles")
+        .order_by("order", "pk")
+    )
+    if nombre:
+        filas = filas.filter(exercise__name__icontains=nombre)
+
+    rutinas = Routine.objects.filter(user=user, pk__in=filas.values("routine"))
+    if excluir is not None:
+        rutinas = rutinas.exclude(pk=excluir)
+
+    return rutinas.prefetch_related(Prefetch("exercises", queryset=filas)).order_by("name", "pk")
 
 def musculos_con_ejercicios(user) -> list[tuple[str, str, int]]:
     visibles = Exercise.objects.visible_to(user)

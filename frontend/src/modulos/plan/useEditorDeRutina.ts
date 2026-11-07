@@ -66,7 +66,7 @@ export function useEditorDeRutina(rutina?: Rutina) {
     guardar.reset();
   }
 
-  function seleccionar(ejercicio: Ejercicio) {
+  function seleccionar(ejercicio: Ejercicio, config?: ConfigDeEjercicio) {
     const existente = borrador.exercises.find((e) => e.exercise === ejercicio.id);
     setElegido(
       existente ?? {
@@ -77,6 +77,7 @@ export function useEditorDeRutina(rutina?: Rutina) {
         target_reps_min: 8,
         target_reps_max: 12,
         rest_seconds: descansoPorDefecto(ejercicio),
+        ...config,
       },
     );
     setOrigen("buscar");

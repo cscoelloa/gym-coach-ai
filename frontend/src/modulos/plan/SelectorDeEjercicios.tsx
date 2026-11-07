@@ -1,29 +1,44 @@
-import { Aviso } from "@/ds/Aviso";
-import { BodyMap } from "@/ds/BodyMap";
-import { Button } from "@/ds/Button";
-import { GrupoDeChips } from "@/ds/GrupoDeChips";
+import type { ConfigDeEjercicio } from "@/ds/ConfigDeSeries";
 import { Icono } from "@/ds/Icono";
-import { Paginacion } from "@/ds/Paginacion";
-import { useFacetas, type Ejercicio } from "@/modulos/ejercicios/api";
+import { SegmentedControl, type Segmento } from "@/ds/SegmentedControl";
+import type { Ejercicio } from "@/modulos/ejercicios/api";
 
-import { useBuscadorDeEjercicios } from "./api";
-import type { BusquedaDeEjercicios } from "./useBusquedaDeEjercicios";
+import { useRutinasConEjercicios } from "./api";
+import { DelCatalogo } from "./DelCatalogo";
+import { DeMisRutinas } from "./DeMisRutinas";
+import type { BusquedaDeEjercicios, FuenteDeEjercicios } from "./useBusquedaDeEjercicios";
+
+const FUENTES: ReadonlyArray<Segmento<FuenteDeEjercicios>> = [
+  { valor: "catalogo", etiqueta: "Catálogo" },
+  { valor: "rutinas", etiqueta: "De mis rutinas" },
+];
 
 export function SelectorDeEjercicios({
   busqueda,
+  excluir,
   onElegir,
   anadidos,
 }: {
   busqueda: BusquedaDeEjercicios;
-  onElegir: (ejercicio: Ejercicio) => void;
+  excluir?: number;
+  onElegir: (ejercicio: Ejercicio, config?: ConfigDeEjercicio) => void;
   anadidos: Map<number, string>;
 }) {
-  const { filtros, texto, pagina, setTexto, setPagina, cambiar } = busqueda;
-  const listado = useBuscadorDeEjercicios(filtros, pagina);
-  const facetas = useFacetas(filtros);
+  const conRutinas = useRutinasConEjercicios(excluir);
+  const hayRutinas = Boolean(conRutinas.data?.length);
+  const fuente = hayRutinas ? busqueda.fuente : "catalogo";
 
   return (
     <div>
+      {hayRutinas && (
+        <SegmentedControl
+          opciones={FUENTES}
+          valor={fuente}
+          onCambio={busqueda.setFuente}
+          etiqueta="Origen de los ejercicios"
+          className="mb-3 flex w-full"
+        />
+      )}
       <label className="sr-only" htmlFor="buscar-en-rutina">
         Buscar ejercicio
       </label>
@@ -38,8 +53,8 @@ export function SelectorDeEjercicios({
             className="pl-11"
             type="search"
             data-autofocus
-            value={texto}
-            onChange={(evento) => setTexto(evento.target.value)}
+            value={busqueda.texto}
+            onChange={(evento) => busqueda.setTexto(evento.target.value)}
             placeholder="Buscar un movimiento…"
             autoComplete="off"
             enterKeyHint="search"
@@ -47,116 +62,15 @@ export function SelectorDeEjercicios({
         </div>
       </div>
 
-      <details
-        className="mb-3 rounded-xl bg-surface-100 px-3 py-1"
-        open={busqueda.abierta}
-        onToggle={(evento) => busqueda.setAbierta(evento.currentTarget.open)}
-      >
-        <summary className="body-sm cursor-pointer py-2.5 font-medium text-primary">
-          Filtros · músculo y equipamiento
-        </summary>
-        <div className="mt-1 space-y-4 pb-3">
-          <BodyMap
-            niveles={{}}
-            activo={filtros.muscle}
-            onMusculo={(muscle) => cambiar({ muscle: filtros.muscle === muscle ? "" : muscle })}
-            compacto
-            leyenda="Toca un músculo para filtrar"
-          />
-          <GrupoDeChips
-            titulo="Músculo"
-            opciones={facetas.data?.muscle ?? []}
-            activo={filtros.muscle}
-            onElegir={(muscle) => cambiar({ muscle })}
-          />
-          <GrupoDeChips
-            titulo="Zona corporal"
-            opciones={facetas.data?.body_part ?? []}
-            activo={filtros.body_part}
-            onElegir={(body_part) => cambiar({ body_part })}
-          />
-          <GrupoDeChips
-            titulo="Equipamiento"
-            opciones={facetas.data?.equipment ?? []}
-            activo={filtros.equipment}
-            onElegir={(equipment) => cambiar({ equipment })}
-          />
-          <Button tamano="sm" onClick={busqueda.limpiar}>
-            Quitar filtros
-          </Button>
-        </div>
-      </details>
-
-      <p className="caption mb-3 text-ink-muted">
-        Según el material de tu perfil. Puedes elegir otro en Filtros.
-      </p>
-
-      {listado.isPending ? (
-        <p role="status" className="body-sm py-6 text-center text-ink-muted">
-          Buscando ejercicios…
-        </p>
-      ) : listado.error ? (
-        <Aviso tono="error">
-          No se pudieron cargar los ejercicios.{" "}
-          <Button tamano="sm" onClick={() => void listado.refetch()}>
-            Reintentar
-          </Button>
-        </Aviso>
+      {fuente === "rutinas" ? (
+        <DeMisRutinas
+          excluir={excluir}
+          q={busqueda.filtros.q}
+          anadidos={anadidos}
+          onElegir={onElegir}
+        />
       ) : (
-        <>
-          <p className="tag mb-2 px-1 text-ink-subtle">{listado.data?.count ?? 0} ejercicios</p>
-          <div className="compact-list" aria-busy={listado.isFetching}>
-            {listado.data?.results.map((ejercicio) => {
-              const esquema = anadidos.get(ejercicio.id);
-              return (
-                <button
-                  key={ejercicio.id}
-                  className="compact-row"
-                  data-anadido={esquema ? "true" : "false"}
-                  disabled={listado.isPlaceholderData}
-                  onClick={() => onElegir(ejercicio)}
-                >
-                  {ejercicio.image ? (
-                    <img src={ejercicio.image} className="ex-media" alt="" loading="lazy" />
-                  ) : (
-                    <span className="ex-glyph">
-                      <Icono nombre="entrenar" />
-                    </span>
-                  )}
-                  <span className="min-w-0 flex-1">
-                    <span className="ex-name block truncate">{ejercicio.name}</span>
-                    {ejercicio.target_muscle ? (
-                      <span className="tag-musculo">{ejercicio.target_muscle.name}</span>
-                    ) : (
-                      <span className="caption text-ink-muted">{ejercicio.body_part_label}</span>
-                    )}
-                  </span>
-                  {esquema ? (
-                    <span className="flex shrink-0 items-center gap-1.5 text-primary">
-                      <span className="tag num">{esquema}</span>
-                      <Icono nombre="comprobado" className="size-5" />
-                    </span>
-                  ) : (
-                    <Icono nombre="mas" className="size-5 text-primary" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-          {!listado.data?.count && (
-            <p className="body-sm py-6 text-center text-ink-muted">
-              Ningún ejercicio con esos filtros. Prueba otra búsqueda o quita los filtros.
-            </p>
-          )}
-          <Paginacion
-            pagina={pagina}
-            total={listado.data?.total_pages}
-            hayAnterior={pagina > 1}
-            haySiguiente={Boolean(listado.data?.next)}
-            ocupado={listado.isFetching}
-            onCambio={setPagina}
-          />
-        </>
+        <DelCatalogo busqueda={busqueda} anadidos={anadidos} onElegir={onElegir} />
       )}
     </div>
   );

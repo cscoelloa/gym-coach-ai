@@ -509,3 +509,100 @@ class TestGuardadoCompleto:
         item.refresh_from_db()
         assert item.target_reps_min == 8
         assert item.target_reps_max == 8
+
+
+class TestEjerciciosDeMisRutinas:
+    def url(self):
+        return reverse("api-routine-ejercicios")
+
+    @pytest.fixture
+    def pierna(self, ana, catalogo):
+        pierna = Routine.objects.create(user=ana, name="Pierna")
+        RoutineExercise.objects.create(
+            routine=pierna, exercise=catalogo["fondos"], order=1,
+            target_sets=3, target_reps_min=10, target_reps_max=12, rest_seconds=90,
+        )
+        RoutineExercise.objects.create(
+            routine=pierna, exercise=catalogo["press"], order=0,
+            target_sets=5, target_reps_min=5, target_reps_max=5, rest_seconds=120,
+        )
+        return pierna
+
+    def nombres(self, respuesta):
+        return [
+            (r["name"], [e["exercise_detail"]["name"] for e in r["exercises"]])
+            for r in respuesta.json()
+        ]
+
+    def test_trae_mis_rutinas_con_sus_ejercicios_en_orden_y_su_configuracion(
+        self, api, pierna, rutina, catalogo
+    ):
+        RoutineExercise.objects.create(routine=rutina, exercise=catalogo["fondos"])
+
+        respuesta = api.get(self.url())
+
+        assert respuesta.status_code == 200
+        assert self.nombres(respuesta) == [
+            ("Empuje A", ["Fondos"]),
+            ("Pierna", ["Press de banca", "Fondos"]),
+        ]
+        press = respuesta.json()[1]["exercises"][0]
+        assert (press["target_sets"], press["target_reps_min"], press["target_reps_max"]) == (
+            5, 5, 5,
+        )
+        assert press["rest_seconds"] == 120
+
+    def test_una_rutina_vacia_no_sale(self, api, rutina, pierna):
+        assert self.nombres(api.get(self.url())) == [("Pierna", ["Press de banca", "Fondos"])]
+
+    def test_excluir_quita_la_rutina_que_se_esta_editando(self, api, pierna, rutina, catalogo):
+        RoutineExercise.objects.create(routine=rutina, exercise=catalogo["fondos"])
+
+        respuesta = api.get(self.url(), {"excluir": pierna.pk})
+
+        assert self.nombres(respuesta) == [("Empuje A", ["Fondos"])]
+
+    @pytest.mark.parametrize("excluir", ["abc", "-1", "99999999999999999999999999"])
+    def test_un_excluir_raro_no_rompe_nada(self, api, pierna, excluir):
+        respuesta = api.get(self.url(), {"excluir": excluir})
+
+        assert respuesta.status_code == 200
+        assert self.nombres(respuesta) == [("Pierna", ["Press de banca", "Fondos"])]
+
+    def test_el_texto_filtra_por_nombre_y_omite_las_rutinas_sin_coincidencias(
+        self, api, pierna, rutina, catalogo
+    ):
+        RoutineExercise.objects.create(routine=rutina, exercise=catalogo["fondos"])
+
+        respuesta = api.get(self.url(), {"q": "pRESs"})
+
+        assert self.nombres(respuesta) == [("Pierna", ["Press de banca"])]
+
+    def test_nunca_salen_las_rutinas_de_otra_persona(self, api, beto, catalogo, pierna):
+        ajena = Routine.objects.create(user=beto, name="Secreta")
+        RoutineExercise.objects.create(routine=ajena, exercise=catalogo["press"])
+
+        assert self.nombres(api.get(self.url())) == [("Pierna", ["Press de banca", "Fondos"])]
+        assert self.nombres(api.get(self.url(), {"excluir": ajena.pk})) == [
+            ("Pierna", ["Press de banca", "Fondos"])
+        ]
+
+    def test_sin_sesion_no_hay_datos(self, pierna):
+        respuesta = APIClient().get(self.url())
+
+        assert respuesta.status_code == 401
+
+    def test_no_consulta_una_vez_por_ejercicio(
+        self, api, ana, catalogo, pierna, django_assert_max_num_queries
+    ):
+        for n in range(5):
+            otra = Routine.objects.create(user=ana, name=f"Otra {n}")
+            for orden, clave in enumerate(("press", "fondos")):
+                RoutineExercise.objects.create(
+                    routine=otra, exercise=catalogo[clave], order=orden
+                )
+
+        with django_assert_max_num_queries(8):
+            respuesta = api.get(self.url())
+
+        assert len(respuesta.json()) == 6
