@@ -343,3 +343,28 @@ class TestLasClasesConstruidasExisten:
             self.union("Button.tsx", "TamanoDeBoton") - {"md"}
         )
         assert construidas <= self.en_linea("btn")
+
+
+class TestLasBarrasFijasSiguenAlTeclado:
+    ANCLA = re.compile(r"^\s*bottom:[^;]*var\(--barra-bajo\)[^;]*;", re.M)
+
+    def test_cada_barra_anclada_abajo_descuenta_el_desfase_del_teclado(self):
+        anclas = [
+            (nombre, linea.strip())
+            for nombre, cuerpo in utilidades()
+            for linea in self.ANCLA.findall(cuerpo)
+        ]
+        culpables = [f"{n}: {linea}" for n, linea in anclas if "--desfase-teclado" not in linea]
+
+        assert {n for n, _ in anclas} >= {"tab-bar", "editor-actions", "focus-dock", "toast"}
+        assert not culpables, "barras que flotarían tras cerrar el teclado en iOS:\n" + "\n".join(
+            culpables
+        )
+
+    def test_la_barra_de_arriba_tambien(self):
+        cuerpo = dict(utilidades())["app-bar"]
+
+        assert re.search(r"^\s*top:\s*var\(--desfase-teclado\);", cuerpo, re.M)
+
+    def test_sin_desfase_no_se_mueve_nada(self):
+        assert re.search(r"^\s*--desfase-teclado:\s*0px;", fuente(), re.M)

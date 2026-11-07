@@ -8,6 +8,7 @@ import "../../assets/app.css";
 import { App } from "./App";
 import { LimiteDeError } from "./ds/LimiteDeError";
 import { crearCache } from "./lib/cache";
+import { vigilarElDesfaseDelTeclado } from "./lib/desfaseDelTeclado";
 import { escucharInstalacion } from "./lib/instalar";
 import { registrarServiceWorker } from "./lib/pwa";
 
@@ -21,6 +22,7 @@ if (!raiz) {
 
 escucharInstalacion();
 registrarServiceWorker();
+vigilarElDesfaseDelTeclado();
 
 onlineManager.setOnline(navigator.onLine);
 
