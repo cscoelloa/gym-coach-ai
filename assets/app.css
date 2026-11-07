@@ -152,6 +152,7 @@
   --color-surface-200: var(--surface-200);
   --color-surface-300: var(--surface-300);
   --color-surface-inset: var(--surface-inset);
+  --color-panel: var(--panel);
 
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);

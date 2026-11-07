@@ -180,6 +180,37 @@ describe("Editor con borrador", () => {
     expect(screen.getByText("Fondos")).toBeVisible();
   });
 
+  it("volver a buscar conserva los filtros y el texto", async () => {
+    let consulta = "";
+    servidor.use(
+      http.get("/api/ejercicios/facetas/", () =>
+        HttpResponse.json({ total: 1, body_part: [], equipment: [], muscle: [{ valor: "pectorals", etiqueta: "Pectorales", n: 1 }] }),
+      ),
+      http.get("/api/ejercicios/", ({ request }) => { consulta = request.url; return HttpResponse.json({ count: 1, next: null, previous: null, results: [item(3, "Fondos").exercise_detail] }); }),
+    );
+    montarEditor(); await screen.findByLabelText("Nombre");
+    await userEvent.click(screen.getByRole("button", { name: /Añadir ejercicio/ }));
+    await userEvent.click(await screen.findByRole("button", { name: /^Pectorales/ }));
+    await userEvent.type(screen.getByLabelText("Buscar ejercicio"), "fon");
+    await waitFor(() => expect(consulta).toContain("q=fon"));
+
+    async function sigueFiltrado() {
+      const hoja = await screen.findByRole("dialog", { name: "Añadir ejercicio" });
+      expect(within(hoja).getByLabelText("Buscar ejercicio")).toHaveValue("fon");
+      expect(within(hoja).getByRole("button", { name: /^Pectorales/ })).toHaveAttribute("aria-pressed", "true");
+      expect(await within(hoja).findByRole("button", { name: /^Fondos/ })).toBeVisible();
+      expect(consulta).toContain("muscle=pectorals"); expect(consulta).toContain("q=fon");
+    }
+
+    await userEvent.click(await screen.findByRole("button", { name: /^Fondos/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Volver a buscar" }));
+    await sigueFiltrado();
+
+    await userEvent.click(screen.getByRole("button", { name: /^Fondos/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Añadir al borrador" }));
+    await sigueFiltrado();
+  });
+
   it("no crea nada al abrir o cancelar una rutina nueva", async () => {
     montar(<EditorDeRutina nueva />, { ruta: "/rutinas/nueva/" });
     expect(screen.getByRole("heading", { name: "Nueva rutina" })).toBeVisible();

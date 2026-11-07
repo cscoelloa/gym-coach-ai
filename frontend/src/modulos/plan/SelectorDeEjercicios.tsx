@@ -1,53 +1,33 @@
-import { useEffect, useState } from "react";
-
 import { Aviso } from "@/ds/Aviso";
 import { BodyMap } from "@/ds/BodyMap";
 import { Button } from "@/ds/Button";
 import { GrupoDeChips } from "@/ds/GrupoDeChips";
 import { Icono } from "@/ds/Icono";
 import { Paginacion } from "@/ds/Paginacion";
-import {
-  SIN_FILTROS,
-  useFacetas,
-  type Ejercicio,
-  type FiltrosDeCatalogo,
-} from "@/modulos/ejercicios/api";
+import { useFacetas, type Ejercicio } from "@/modulos/ejercicios/api";
 
 import { useBuscadorDeEjercicios } from "./api";
+import type { BusquedaDeEjercicios } from "./useBusquedaDeEjercicios";
 
 export function SelectorDeEjercicios({
+  busqueda,
   onElegir,
   anadidos,
 }: {
+  busqueda: BusquedaDeEjercicios;
   onElegir: (ejercicio: Ejercicio) => void;
   anadidos: Map<number, string>;
 }) {
-  const [filtros, setFiltros] = useState<FiltrosDeCatalogo>(SIN_FILTROS);
-  const [texto, setTexto] = useState("");
-  const [pagina, setPagina] = useState(1);
-
-  useEffect(() => {
-    const espera = setTimeout(() => {
-      setFiltros((previos) => ({ ...previos, q: texto }));
-      setPagina(1);
-    }, 300);
-    return () => clearTimeout(espera);
-  }, [texto]);
-
+  const { filtros, texto, pagina, setTexto, setPagina, cambiar } = busqueda;
   const listado = useBuscadorDeEjercicios(filtros, pagina);
   const facetas = useFacetas(filtros);
-
-  function cambiar(cambios: Partial<FiltrosDeCatalogo>) {
-    setFiltros((previos) => ({ ...previos, ...cambios }));
-    setPagina(1);
-  }
 
   return (
     <div>
       <label className="sr-only" htmlFor="buscar-en-rutina">
         Buscar ejercicio
       </label>
-      <div className="sticky -top-1 z-[1] -mt-1 bg-surface-000 pt-1 pb-3">
+      <div className="sticky -top-1 z-[1] -mt-1 bg-panel pt-1 pb-3">
         <div className="relative">
           <Icono
             nombre="lupa"
@@ -67,7 +47,11 @@ export function SelectorDeEjercicios({
         </div>
       </div>
 
-      <details className="mb-3 rounded-xl bg-surface-100 px-3 py-1">
+      <details
+        className="mb-3 rounded-xl bg-surface-100 px-3 py-1"
+        open={busqueda.abierta}
+        onToggle={(evento) => busqueda.setAbierta(evento.currentTarget.open)}
+      >
         <summary className="body-sm cursor-pointer py-2.5 font-medium text-primary">
           Filtros · músculo y equipamiento
         </summary>
@@ -97,14 +81,7 @@ export function SelectorDeEjercicios({
             activo={filtros.equipment}
             onElegir={(equipment) => cambiar({ equipment })}
           />
-          <Button
-            tamano="sm"
-            onClick={() => {
-              setTexto("");
-              setFiltros(SIN_FILTROS);
-              setPagina(1);
-            }}
-          >
+          <Button tamano="sm" onClick={busqueda.limpiar}>
             Quitar filtros
           </Button>
         </div>

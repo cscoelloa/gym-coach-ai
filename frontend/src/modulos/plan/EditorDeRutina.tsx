@@ -17,6 +17,7 @@ import { useRutina, type Rutina } from "./api";
 import { Configuracion } from "./Configuracion";
 import { ListaDelBorrador } from "./ListaDelBorrador";
 import { SelectorDeEjercicios } from "./SelectorDeEjercicios";
+import { useBusquedaDeEjercicios } from "./useBusquedaDeEjercicios";
 import { useEditorDeRutina } from "./useEditorDeRutina";
 
 export function EditorDeRutina({ nueva = false }: { nueva?: boolean }) {
@@ -45,6 +46,7 @@ export function EditorDeRutina({ nueva = false }: { nueva?: boolean }) {
 
 function Editor({ rutina }: { rutina?: Rutina }) {
   const e = useEditorDeRutina(rutina);
+  const busqueda = useBusquedaDeEjercicios();
   const { borrador, campos } = e;
   const anadidos = new Map(
     borrador.exercises.map((f) => [
@@ -168,7 +170,7 @@ function Editor({ rutina }: { rutina?: Rutina }) {
             </Button>
           }
         >
-          <SelectorDeEjercicios onElegir={e.seleccionar} anadidos={anadidos} />
+          <SelectorDeEjercicios busqueda={busqueda} onElegir={e.seleccionar} anadidos={anadidos} />
         </Panel>
       )}
 
